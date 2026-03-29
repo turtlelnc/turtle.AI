@@ -33,7 +33,10 @@ jobs:
               train.cpp BPE.cpp \
               -o train.exe \
               -I. \
-              -fopenmp -static-libgcc -static-libstdc++ -static-libgomp
+              -fopenmp \
+              -static-libgcc \
+              -static-libstdc++ \
+              -Wl,-Bstatic -lgomp -Wl,-Bdynamic
 
     - name: Verify Output
       shell: msys2 {0}
