@@ -29,9 +29,8 @@ jobs:
     - name: Compile train.cpp and BPE sources
       shell: msys2 {0}
       run: |
-        SOURCES="train.cpp BPE.cpp"
         g++ -O3 -std=c++17 \
-            $SOURCES $OTHER_CPP \
+            train.cpp BPE.cpp \
             -o train.exe \
             -I. \
             -L"C:/msys64/mingw64/lib" \
