@@ -390,6 +390,14 @@ public:
     Q.clear_grad();
     K.clear_grad();
     V.clear_grad();
+    // 清零所有中间缓冲区的梯度，防止跨 step 累积
+    scores.clear_grad();
+    scores_softmax.clear_grad();
+    d_scores_softmax.clear_grad();
+    d_scores_raw.clear_grad();
+    d_scores_raw_tp.clear_grad();
+    K_tp.clear_grad();
+    V_tp.clear_grad();
   }
 
   void save(std::ofstream &out) {
