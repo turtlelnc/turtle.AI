@@ -29,27 +29,8 @@ jobs:
     - name: Compile train.cpp and BPE sources
       shell: msys2 {0}
       run: |
-        # 1. 找到所有相关的 cpp 文件 (假设 bpe 相关文件在 src 目录或根目录)
-        # 请根据你实际的文件夹结构调整下面的 *.cpp 路径
-        # 如果不确定有哪些文件，先运行: ls -R *.cpp
-        
-        SOURCES="train.cpp"
-        
-        # 自动查找当前目录及子目录下的其他 cpp 文件 (排除 train.cpp)
-        # 注意：如果你的项目结构复杂，可能需要手动指定，例如: "src/bpe_trainer.cpp src/bpe_config.cpp"
-        OTHER_CPP=$(find . -name "*.cpp" ! -name "train.cpp" | tr '\n' ' ')
-        
-        if [ -z "$OTHER_CPP" ]; then
-          echo "Warning: No other .cpp files found besides train.cpp. If you have separate source files, please edit the workflow to include them manually."
-        fi
-
-        echo "Compiling: $SOURCES $OTHER_CPP"
-
-        # 2. 编译命令
-        # -I. 表示在当前目录寻找头文件
-        # -lopenblas 链接 OpenBLAS (如果在 Windows 上库名不同，需调整)
-        # -static 尝试静态链接以减少依赖 (可选，可能导致文件很大)
-        g++ -O2 -std=c++17 \
+        SOURCES="train.cpp BPE.cpp"
+        g++ -O3 -std=c++17 \
             $SOURCES $OTHER_CPP \
             -o train.exe \
             -I. \
