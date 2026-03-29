@@ -30,11 +30,13 @@ jobs:
       shell: msys2 {0}
       run: |
         g++ -O3 -std=c++17 \
-            train.cpp BPE.cpp \
-            -o train.exe \
-            -I. \
-            -L"C:/msys64/mingw64/lib" \
-            -lopenblas -lpthread -lstdc++ -static-libgcc -static-libstdc++
+          train.cpp BPE.cpp \
+          -o train.exe \
+          -I. \
+          -fopenmp \
+          -static-libgcc \
+          -static-libstdc++ \
+          -Wl,-Bstatic -lgomp -lwinpthread -Wl,-Bdynamic
 
     - name: Verify Output
       shell: msys2 {0}
