@@ -29,11 +29,11 @@ jobs:
     - name: Compile train.cpp and BPE sources
       shell: msys2 {0}
       run: |
-        g++ -O3 -std=c++17 \
-            train.cpp BPE.cpp \
-            -o train.exe \
-            -I. \
-            -fopenmp -lstdc++ -static-libgcc -static-libstdc++
+            g++ -O3 -std=c++17 \
+              train.cpp BPE.cpp \
+              -o train.exe \
+              -I. \
+              -fopenmp -static-libgcc -static-libstdc++
 
     - name: Verify Output
       shell: msys2 {0}
