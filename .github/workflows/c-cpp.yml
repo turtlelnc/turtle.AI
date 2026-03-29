@@ -1,4 +1,4 @@
-name: Build C++ Project
+name: Build Windows EXE
 
 on:
   push:
@@ -7,27 +7,64 @@ on:
     branches: [ "main", "master" ]
 
 jobs:
-  build:
-    runs-on: ubuntu-latest
+  build-windows:
+    runs-on: windows-latest
 
     steps:
     - name: Checkout code
       uses: actions/checkout@v4
 
-    - name: Install dependencies
-      run: |
-        sudo apt-get update
-        sudo apt-get install -y g++ make libpthread-stubs0-dev libopenblas-dev
+    - name: Setup MinGW (GCC for Windows)
+      uses: msys2/setup-msys2@v2
+      with:
+        msystem: MINGW64
+        update: true
+        install: >-
+          mingw-w64-x86_64-gcc
+          mingw-w64-x86_64-openblas
+          mingw-w64-x86_64-cmake
+          make
+          git
 
-    - name: Compile train.cpp
+    - name: Compile train.cpp and BPE sources
+      shell: msys2 {0}
       run: |
-        g++ train.cpp -o train_linux -O2 -static-libgcc -static-libstdc++ -lpthread -lm
-        ls -lh train_linux
-        file train_linux
+        # 1. 找到所有相关的 cpp 文件 (假设 bpe 相关文件在 src 目录或根目录)
+        # 请根据你实际的文件夹结构调整下面的 *.cpp 路径
+        # 如果不确定有哪些文件，先运行: ls -R *.cpp
+        
+        SOURCES="train.cpp"
+        
+        # 自动查找当前目录及子目录下的其他 cpp 文件 (排除 train.cpp)
+        # 注意：如果你的项目结构复杂，可能需要手动指定，例如: "src/bpe_trainer.cpp src/bpe_config.cpp"
+        OTHER_CPP=$(find . -name "*.cpp" ! -name "train.cpp" | tr '\n' ' ')
+        
+        if [ -z "$OTHER_CPP" ]; then
+          echo "Warning: No other .cpp files found besides train.cpp. If you have separate source files, please edit the workflow to include them manually."
+        fi
 
-    - name: Upload Artifact
+        echo "Compiling: $SOURCES $OTHER_CPP"
+
+        # 2. 编译命令
+        # -I. 表示在当前目录寻找头文件
+        # -lopenblas 链接 OpenBLAS (如果在 Windows 上库名不同，需调整)
+        # -static 尝试静态链接以减少依赖 (可选，可能导致文件很大)
+        g++ -O2 -std=c++17 \
+            $SOURCES $OTHER_CPP \
+            -o train.exe \
+            -I. \
+            -L"C:/msys64/mingw64/lib" \
+            -lopenblas -lpthread -lstdc++ -static-libgcc -static-libstdc++
+
+    - name: Verify Output
+      shell: msys2 {0}
+      run: |
+        ls -lh train.exe
+        file train.exe
+
+    - name: Upload Windows Artifact
       uses: actions/upload-artifact@v4
       with:
-        name: train-binary-linux
-        path: train_linux
+        name: train-windows-exe
+        path: train.exe
         retention-days: 5
