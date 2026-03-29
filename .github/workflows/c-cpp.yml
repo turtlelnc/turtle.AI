@@ -33,8 +33,7 @@ jobs:
             train.cpp BPE.cpp \
             -o train.exe \
             -I. \
-            -L"C:/msys64/mingw64/lib" \
-            -lopenblas -lpthread -lstdc++ -static-libgcc -static-libstdc++
+            -fopenmp -lstdc++ -static-libgcc -static-libstdc++
 
     - name: Verify Output
       shell: msys2 {0}
