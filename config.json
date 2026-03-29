@@ -1,0 +1,20 @@
+{
+  "model": {
+    "seq_len": 32,
+    "d_model": 64,
+    "vocab_size": 500
+  },
+  "training": {
+    "corpus_path": "train.txt",
+    "epochs": 200,
+    "learning_rate": 0.001,
+    "batch_size": 4,
+    "clip_threshold": 1.0,
+    "save_point": 100,
+    "save_path": "model.bin",
+    "load_path": ""
+  },
+  "bpe": {
+    "bpe_model_path": "bpe_model.bin"
+  }
+}

@@ -817,7 +817,8 @@ int main() {
   int seq_len = cfg["model"].value("seq_len", 128);
   int d_model = cfg["model"].value("d_model", 128);
   int epochs = cfg["training"].value("epochs", 5000);
-  float lr = cfg["training"].value("learning_rate", 0.0001f);
+  float lr = cfg["training"].value("learning_rate", 0.001f);  // 提高默认值到 1e-3
+  int batch_size = cfg["training"].value("batch_size", 32);   // 新增 batch_size 配置
   float clip_threshold = cfg["training"].value("clip_threshold", 1.0f);
   int save_point = cfg["training"].value("save_point", 100);
   string weight_path = cfg["training"].value("save_path", "model.bin");
@@ -928,9 +929,9 @@ int main() {
   int lr_cooldown = 0;
   const float lr_scale_min = 0.5f;
   const float lr_scale_max = 2.0f;
-  const int plateau_patience = 80;
+  const int plateau_patience = 150;  // 从 80 增加到 150，避免过早降 LR
   const int cooldown_steps = 60;
-  const float rel_improve_eps = 0.003f; // 0.3% 才算显著改进
+  const float rel_improve_eps = 0.002f; // 从 0.003 降到 0.002，更容易触发改进判定
 
   for (int epoch = 0; epoch < epochs; epoch++) {
     auto reset_gradients = [&]() {
@@ -947,122 +948,151 @@ int main() {
     };
     reset_gradients();
 
-    // -1 表示该位置不参与监督；0 是合法 token id，不能再用 0 代表 ignore
-    vector<int> target_ids(seq_len, -1);
-    vector<int> step_input_ids(seq_len, -1);
+    // 累积梯度用于模拟更大的 batch size
+    float accumulated_loss = 0.0f;
+    int accumulated_count = 0;
+    
+    for (int batch_idx = 0; batch_idx < batch_size; batch_idx++) {
+      // -1 表示该位置不参与监督；0 是合法 token id，不能再用 0 代表 ignore
+      vector<int> target_ids(seq_len, -1);
+      vector<int> step_input_ids(seq_len, -1);
 
-    if (is_vlm) {
-      if (vlm_dataset.empty())
-        continue;
-      int idx = rand() % (int)vlm_dataset.size();
-      string img_p =
-          (fs::path(corpus_path) / ("train_" + to_string(idx) + ".jpg"))
-              .string();
-      const int img_tokens = 196;
-      // 保底：VLM 分支可能不会填满整个 seq_len，必须清空未写入区域
-      std::memset(input_tensor.data, 0,
-                  input_tensor.rows * input_tensor.cols * sizeof(float));
-      process_image_to_input(img_p, vision_proj, input_tensor, d_model);
-      string ans = vlm_dataset[idx].value("answer", "");
-      auto tokens = bpe_model.encode(ans, false);
-      for (size_t i = 0; i + 1 < tokens.size() &&
-                         (i + img_tokens < (size_t)seq_len - 1);
-           i++) {
-        int current_id = tokens[i];
-        int next_id = tokens[i + 1];
-        if (current_id < 0 || current_id >= vocab_size || next_id < 0 ||
-            next_id >= vocab_size) {
+      if (is_vlm) {
+        if (vlm_dataset.empty())
           continue;
+        int idx = rand() % (int)vlm_dataset.size();
+        string img_p =
+            (fs::path(corpus_path) / ("train_" + to_string(idx) + ".jpg"))
+                .string();
+        const int img_tokens = 196;
+        // 保底：VLM 分支可能不会填满整个 seq_len，必须清空未写入区域
+        std::memset(input_tensor.data, 0,
+                    input_tensor.rows * input_tensor.cols * sizeof(float));
+        process_image_to_input(img_p, vision_proj, input_tensor, d_model);
+        string ans = vlm_dataset[idx].value("answer", "");
+        auto tokens = bpe_model.encode(ans, false);
+        for (size_t i = 0; i + 1 < tokens.size() &&
+                           (i + img_tokens < (size_t)seq_len - 1);
+             i++) {
+          int current_id = tokens[i];
+          int next_id = tokens[i + 1];
+          if (current_id < 0 || current_id >= vocab_size || next_id < 0 ||
+              next_id >= vocab_size) {
+            continue;
+          }
+          float *dest = &input_tensor.data[(i + img_tokens) * d_model];
+          float *src = &embed.weights.data[current_id * d_model];
+          memcpy(dest, src, sizeof(float) * d_model);
+          step_input_ids[i + img_tokens] = current_id;
+          target_ids[i + img_tokens] = next_id;
         }
-        float *dest = &input_tensor.data[(i + img_tokens) * d_model];
-        float *src = &embed.weights.data[current_id * d_model];
-        memcpy(dest, src, sizeof(float) * d_model);
-        step_input_ids[i + img_tokens] = current_id;
-        target_ids[i + img_tokens] = next_id;
-      }
-    } else {
-      if (all_text_tokens.size() <= (size_t)seq_len + 1)
-        continue;
-      int start = rand() % (int)(all_text_tokens.size() - seq_len - 1);
-      vector<int> ids;
-      for (int i = 0; i < seq_len; i++) {
-        ids.push_back((int)all_text_tokens[start + i]);
-        target_ids[i] = (int)all_text_tokens[start + i + 1];
-        step_input_ids[i] = ids.back();
-      }
-      embed.forward_ids(ids, input_tensor);
-    }
-
-    pos_enc.forward(input_tensor);
-    memcpy(hidden.data, input_tensor.data, seq_len * d_model * sizeof(float));
-
-    for (int i = 0; i < 8; i++) {
-      blocks[i]->forward(hidden, next_h);
-      memcpy(hidden.data, next_h.data, seq_len * d_model * sizeof(float));
-    }
-    projection.forward(hidden, logits);
-
-    float total_loss = 0;
-    int count = 0;
-    memset(logits.grad, 0, seq_len * vocab_size * sizeof(float));
-
-    for (int t = 0; t < seq_len; t++) {
-      int target = target_ids[t];
-      if (target < 0 || target >= vocab_size)
-        continue;
-
-      float max_v = -1e9f;
-      float *t_logits = &logits.data[t * vocab_size];
-      for (int v = 0; v < vocab_size; v++) {
-        if (!std::isfinite(t_logits[v]))
-          t_logits[v] = 0.0f;
-        if (t_logits[v] > max_v)
-          max_v = t_logits[v];
-      }
-
-      float sum_exp = 0;
-      for (int v = 0; v < vocab_size; v++) {
-        float val = exp(t_logits[v] - max_v);
-        if (!std::isfinite(val))
-          val = 0.0f;
-        logits.grad[t * vocab_size + v] = val;
-        sum_exp += val;
-      }
-      if (!std::isfinite(sum_exp) || sum_exp <= 0.0f)
-        continue;
-
-      float prob =
-          (logits.grad[t * vocab_size + target]) / (sum_exp + 1e-10f);
-      total_loss -= log(prob + 1e-10f);
-      count++;
-
-      for (int v = 0; v < vocab_size; v++) {
-        float p = logits.grad[t * vocab_size + v] / (sum_exp + 1e-10f);
-        logits.grad[t * vocab_size + v] = p - (v == target ? 1.0f : 0.0f);
-      }
-    }
-
-    projection.backward(hidden, logits);
-    for (int i = 7; i >= 0; i--) {
-      Tensor &input_ref =
-          (i == 0) ? input_tensor : blocks[i - 1]->output_cache;
-      blocks[i]->backward(input_ref, hidden);
-      if (i > 0)
-        memcpy(hidden.grad, input_ref.grad, seq_len * d_model * sizeof(float));
-    }
-
-    if (!is_vlm) {
-      embed.backward(input_tensor, input_tensor);
-    } else {
-      // VLM: 仅对文本 token 位置把输入梯度回传到词向量。
-      for (int pos = 0; pos < seq_len; pos++) {
-        int id = step_input_ids[pos];
-        if (id < 0 || id >= vocab_size)
+      } else {
+        if (all_text_tokens.size() <= (size_t)seq_len + 1)
           continue;
-        for (int d = 0; d < d_model; d++) {
-          embed.weights.grad[id * d_model + d] +=
-              input_tensor.grad[pos * d_model + d];
+        int start = rand() % (int)(all_text_tokens.size() - seq_len - 1);
+        vector<int> ids;
+        for (int i = 0; i < seq_len; i++) {
+          ids.push_back((int)all_text_tokens[start + i]);
+          target_ids[i] = (int)all_text_tokens[start + i + 1];
+          step_input_ids[i] = ids.back();
         }
+        embed.forward_ids(ids, input_tensor);
+      }
+
+      pos_enc.forward(input_tensor);
+      memcpy(hidden.data, input_tensor.data, seq_len * d_model * sizeof(float));
+
+      for (int i = 0; i < 8; i++) {
+        blocks[i]->forward(hidden, next_h);
+        memcpy(hidden.data, next_h.data, seq_len * d_model * sizeof(float));
+      }
+      projection.forward(hidden, logits);
+
+      float total_loss = 0;
+      int count = 0;
+      memset(logits.grad, 0, seq_len * vocab_size * sizeof(float));
+
+      for (int t = 0; t < seq_len; t++) {
+        int target = target_ids[t];
+        if (target < 0 || target >= vocab_size)
+          continue;
+
+        float max_v = -1e9f;
+        float *t_logits = &logits.data[t * vocab_size];
+        for (int v = 0; v < vocab_size; v++) {
+          if (!std::isfinite(t_logits[v]))
+            t_logits[v] = 0.0f;
+          if (t_logits[v] > max_v)
+            max_v = t_logits[v];
+        }
+
+        float sum_exp = 0;
+        for (int v = 0; v < vocab_size; v++) {
+          float val = exp(t_logits[v] - max_v);
+          if (!std::isfinite(val))
+            val = 0.0f;
+          logits.grad[t * vocab_size + v] = val;
+          sum_exp += val;
+        }
+        if (!std::isfinite(sum_exp) || sum_exp <= 0.0f)
+          continue;
+
+        float prob =
+            (logits.grad[t * vocab_size + target]) / (sum_exp + 1e-10f);
+        total_loss -= log(prob + 1e-10f);
+        count++;
+
+        for (int v = 0; v < vocab_size; v++) {
+          float p = logits.grad[t * vocab_size + v] / (sum_exp + 1e-10f);
+          logits.grad[t * vocab_size + v] = p - (v == target ? 1.0f : 0.0f);
+        }
+      }
+
+      projection.backward(hidden, logits);
+      for (int i = 7; i >= 0; i--) {
+        Tensor &input_ref =
+            (i == 0) ? input_tensor : blocks[i - 1]->output_cache;
+        blocks[i]->backward(input_ref, hidden);
+        if (i > 0)
+          memcpy(hidden.grad, input_ref.grad, seq_len * d_model * sizeof(float));
+      }
+
+      if (!is_vlm) {
+        embed.backward(input_tensor, input_tensor);
+      } else {
+        // VLM: 仅对文本 token 位置把输入梯度回传到词向量。
+        for (int pos = 0; pos < seq_len; pos++) {
+          int id = step_input_ids[pos];
+          if (id < 0 || id >= vocab_size)
+            continue;
+          for (int d = 0; d < d_model; d++) {
+            embed.weights.grad[id * d_model + d] +=
+                input_tensor.grad[pos * d_model + d];
+          }
+        }
+      }
+
+      accumulated_loss += total_loss;
+      accumulated_count += count;
+    }
+    
+    // 平均梯度
+    if (batch_size > 1) {
+      auto scale_grads = [&](Tensor *t) {
+        for (int i = 0; i < t->rows * t->cols; i++) {
+          t->grad[i] /= batch_size;
+        }
+      };
+      scale_grads(projection.W);
+      scale_grads(&embed.weights);
+      if (is_vlm)
+        scale_grads(vision_proj.W);
+      for (auto b : blocks) {
+        scale_grads(b->ffn1.W);
+        scale_grads(b->ffn2.W);
+        scale_grads(b->attn.W_q.W);
+        scale_grads(b->attn.W_k.W);
+        scale_grads(b->attn.W_v.W);
       }
     }
 
@@ -1103,7 +1133,9 @@ int main() {
       vision_proj.update(current_lr);
     embed.update(current_lr);
 
-    float avg_loss = (count > 0 ? total_loss / count : 0.0f);
+    // 使用累积的 loss 计算平均 loss
+    float avg_loss = (accumulated_count > 0 ? accumulated_loss / accumulated_count : 0.0f);
+    int count = accumulated_count;
     if (count > 0 && std::isfinite(avg_loss)) {
       if (loss_ema < 0.0f)
         loss_ema = avg_loss;
