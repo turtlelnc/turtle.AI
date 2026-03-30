@@ -169,11 +169,16 @@ class LinearLayer : public Layer {
 public:
   Tensor *W, *b;
   int in_dim, out_dim;
+  float *x_tp_buffer;
+  float *w_tp_buffer;
+  int max_batch_size;
 
   LinearLayer(int in_dim, int out_dim) : in_dim(in_dim), out_dim(out_dim) {
-    // 正确的堆内存分配方式
     W = new Tensor(in_dim, out_dim);
     b = new Tensor(1, out_dim);
+    max_batch_size = 2048;
+    x_tp_buffer = new float[max_batch_size * in_dim]();
+    w_tp_buffer = new float[in_dim * out_dim]();
 
     float scale = sqrt(2.0f / in_dim);
     for (int i = 0; i < W->rows * W->cols; i++) {
@@ -183,14 +188,14 @@ public:
       b->data[i] = 0.0f;
   }
 
-  // 必须加上析构函数，否则会内存泄漏
   ~LinearLayer() {
     delete W;
     delete b;
+    delete[] x_tp_buffer;
+    delete[] w_tp_buffer;
   }
 
   void forward(Tensor &input, Tensor &output) override {
-    // 注意：W 现在是指针，要用 W->data
     matmul(input.data, W->data, output.data, input.rows, input.cols, W->cols);
 
 #if !USE_ACCELERATE
@@ -208,13 +213,13 @@ public:
     int K = input.cols;
     int N = output.cols;
 
-    float *x_tp_data = new (std::nothrow) float[M * K];
-    float *w_tp_data = new (std::nothrow) float[K * N];
-
-    if (!x_tp_data || !w_tp_data) {
-      printf("[Error] Memory allocation failed in backward!\n");
+    if (M > max_batch_size) {
+      printf("[Error] Batch size %d exceeds max %d\n", M, max_batch_size);
       return;
     }
+
+    float *x_tp_data = x_tp_buffer;
+    float *w_tp_data = w_tp_buffer;
 
     transpose(input.data, x_tp_data, M, K);
     matmul(x_tp_data, output.grad, W->grad, K, M, N);
@@ -222,25 +227,21 @@ public:
     transpose(W->data, w_tp_data, K, N);
     matmul(output.grad, w_tp_data, input.grad, M, N, K);
 
-    // Bias 梯度更新
     for (int i = 0; i < M; i++) {
       for (int j = 0; j < N; j++) {
         b->grad[j] += output.grad[i * N + j];
       }
     }
-
-    delete[] x_tp_data;
-    delete[] w_tp_data;
   }
 
   void save(std::ofstream &out) {
     W->save(out);
-    b->save(out); // 别忘了存 bias
+    b->save(out);
   }
 
   void load(std::ifstream &in) {
     W->load(in);
-    b->load(in); // 别忘了读 bias
+    b->load(in);
   }
 
   void update(float lr) override {
