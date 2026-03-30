@@ -316,12 +316,13 @@ public:
   Tensor K_tp, V_tp;
   Tensor scores, scores_softmax;
   Tensor d_scores_softmax, d_scores_raw, d_scores_raw_tp;
+  Tensor scores_softmax_tp;
 
   AttentionLayer(int s, int m, int h)
       : W_q(m, h), W_k(m, h), W_v(m, h), seq_len(s), d_model(m), d_head(h),
         Q(s, h), K(s, h), V(s, h), K_tp(h, s), V_tp(h, s), scores(s, s),
         scores_softmax(s, s), d_scores_softmax(s, s), d_scores_raw(s, s),
-        d_scores_raw_tp(s, s) {}
+        d_scores_raw_tp(s, s), scores_softmax_tp(s, s) {}
 
   void forward(Tensor &input, Tensor &output) override {
     W_q.forward(input, Q);
@@ -349,11 +350,13 @@ public:
   void backward(Tensor &input, Tensor &output) override {
     int L = seq_len;
     int D = d_head;
-    static Tensor scores_softmax_tp(L, L);
+
     transpose(scores_softmax.data, scores_softmax_tp.data, L, L);
     matmul(scores_softmax_tp.data, output.grad, V.grad, L, L, D);
+    
     transpose(V.data, V_tp.data, L, D);
     matmul(output.grad, V_tp.data, d_scores_softmax.data, L, D, L);
+    
     float scale = 1.0f / sqrt((float)D);
     for (int i = 0; i < L; i++) {
       float dot_sum = 0;
@@ -373,6 +376,7 @@ public:
     matmul(d_scores_raw.data, K.data, Q.grad, L, L, D);
     transpose(d_scores_raw.data, d_scores_raw_tp.data, L, L);
     matmul(d_scores_raw_tp.data, Q.data, K.grad, L, L, D);
+    
     W_q.backward(input, Q);
     W_k.backward(input, K);
     W_v.backward(input, V);
