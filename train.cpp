@@ -1165,7 +1165,7 @@ int main() {
       }
     }
 
-    if (epoch % 10 == 0) {
+    if (epoch % 1 == 0) {
       printf("Epoch %d | Loss: %.4f | EMA: %.4f | LR: %.6f | Scale: %.3f\n",
              epoch, avg_loss, (loss_ema > 0 ? loss_ema : avg_loss), current_lr,
              lr_scale);
