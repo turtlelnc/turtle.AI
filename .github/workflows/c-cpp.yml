@@ -30,21 +30,20 @@ jobs:
     - name: Compile train.cpp and BPE sources
       shell: msys2 {0}
       run: |
-            g++ -O3 -std=c++17 \
-              train.cpp BPE.cpp \
-              -o train.exe \
-              -I. \
-              -fopenmp \
-              -static-libgcc \
-              -static-libstdc++ \
-              -Wl,-Bstatic -lgomp -Wl,-Bdynamic
+        g++ -O3 -std=c++17 \
+          train.cpp BPE.cpp \
+          -o train.exe \
+          -I. \
+          -fopenmp \
+          -static-libgcc \
+          -static-libstdc++ \
+          -Wl,-Bstatic -lgomp -lwinpthread -Wl,-Bdynamic
 
     - name: Verify Output
       shell: msys2 {0}
       run: |
         ls -lh train.exe
         file train.exe
-
 
     - name: Upload Windows Artifact
       uses: actions/upload-artifact@v4
