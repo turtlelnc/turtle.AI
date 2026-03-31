@@ -91,16 +91,16 @@ void matmul(float *a, float *b, float *c, int m, int k, int n) {
   cblas_sgemm(CblasRowMajor, CblasNoTrans, CblasNoTrans, m, n, k, 1.0f, a, k, b,
               n, 0.0f, c, n);
 #else
+memset(c, 0, m * n * sizeof(float));
 #pragma omp parallel for collapse(2)
-  for (int i = 0; i < m; i++) {
+for (int i = 0; i < m; i++) {
+  for (int f = 0; f < k; f++) {
+    float a_if = a[i * k + f];
     for (int j = 0; j < n; j++) {
-      float sum = 0.0f;
-      for (int f = 0; f < k; f++) {
-        sum += a[i * k + f] * b[f * n + j];
-      }
-      c[i * n + j] = sum;
+      c[i * n + j] += a_if * b[f * n + j]; // 内存连续访问！
     }
   }
+}
 #endif
 }
 void linear_forward(Tensor &X, Tensor &W, Tensor &Y) {
@@ -324,29 +324,53 @@ public:
         scores_softmax(s, s), d_scores_softmax(s, s), d_scores_raw(s, s),
         d_scores_raw_tp(s, s), scores_softmax_tp(s, s) {}
 
-  void forward(Tensor &input, Tensor &output) override {
-    W_q.forward(input, Q);
-    W_k.forward(input, K);
-    W_v.forward(input, V);
-    transpose(K.data, K_tp.data, K.rows, K.cols);
-    matmul(Q.data, K_tp.data, scores.data, seq_len, d_head, seq_len);
-
-    float scale = 1.0f / sqrt((float)d_head);
-    for (int i = 0; i < seq_len; i++) {
-      for (int j = 0; j < seq_len; j++) {
-        if (j > i) {
-          scores.data[i * seq_len + j] = -1e9f;
-        } else {
-          scores.data[i * seq_len + j] *= scale;
-        }
+  void forward(Tensor &input, Tensor &output, int batch_size) override {
+      // 1. 线性层：由于 input 现在的 rows 是 batch_size * seq_len
+      // W_q, W_k, W_v 的 forward 会自动一次性算出整个 Batch 的所有 Token 的 QKV
+      // 这一步利用了大矩阵乘法，性能极高
+      W_q.forward(input, Q); // Q 维度: [batch_size * seq_len, d_head]
+      W_k.forward(input, K);
+      W_v.forward(input, V);
+  
+      // 2. 注意力计算：这一步必须通过循环来隔离不同的 Batch
+      #pragma omp parallel for schedule(dynamic)
+      for (int b = 0; b < batch_size; b++) {
+          // 计算每个 Batch 在连续内存中的起始指针偏移
+          int qkv_offset = b * seq_len * d_head;
+          int score_offset = b * seq_len * seq_len;
+  
+          float* b_Q = &Q.data[qkv_offset];
+          float* b_K = &K.data[qkv_offset];
+          float* b_V = &V.data[qkv_offset];
+          float* b_scores = &scores.data[score_offset];
+          float* b_scores_sm = &scores_softmax.data[score_offset];
+          float* b_output = &output.data[qkv_offset];
+  
+          // 临时转置矩阵需要是 thread_local 或者每个 Batch 独立，防止冲突
+          // 建议在 AttentionLayer 里预分配 K_tp 为 [batch_size * d_head * seq_len]
+          float* b_K_tp = &K_tp.data[b * d_head * seq_len];
+  
+          // --- 以下是原有的单样本逻辑，搬进循环里 ---
+          transpose(b_K, b_K_tp, seq_len, d_head);
+          matmul(b_Q, b_K_tp, b_scores, seq_len, d_head, seq_len);
+  
+          float scale = 1.0f / sqrt((float)d_head);
+          for (int i = 0; i < seq_len; i++) {
+              for (int j = 0; j < seq_len; j++) {
+                  if (j > i) {
+                      b_scores[i * seq_len + j] = -1e9f; // Mask
+                  } else {
+                      b_scores[i * seq_len + j] *= scale;
+                  }
+              }
+              softmax(&b_scores[i * seq_len], seq_len);
+              memcpy(&b_scores_sm[i * seq_len], &b_scores[i * seq_len], sizeof(float) * seq_len);
+          }
+          
+          // Output = Score * V
+          matmul(b_scores_sm, b_V, b_output, seq_len, seq_len, d_head);
       }
-      softmax(&scores.data[i * seq_len], seq_len);
-      memcpy(&scores_softmax.data[i * seq_len], &scores.data[i * seq_len],
-             sizeof(float) * seq_len);
-    }
-    matmul(scores_softmax.data, V.data, output.data, seq_len, seq_len, d_head);
   }
-
   void backward(Tensor &input, Tensor &output) override {
     int L = seq_len;
     int D = d_head;
@@ -806,10 +830,11 @@ void process_image_to_input(const string &path, LinearLayer &vis_proj,
   }
   stbi_image_free(data);
 }
-
+  struct VLMSample {
+      std::vector<float> img_features;
+      std::vector<int> answer_tokens; 
+  };
 int main() {
-
-
   srand(static_cast<unsigned int>(time(NULL)));
   ifstream cfg_file("config.json");
   if (!cfg_file.is_open()) {
@@ -906,22 +931,42 @@ int main() {
   }
   json vlm_dataset;
   vector<bpe::TokenId> all_text_tokens;
-  if (is_vlm) {
-    ifstream j_in(fs::path(corpus_path) / "train.json");
-    if (j_in.is_open())
-      j_in >> vlm_dataset;
-  } else {
-    ifstream t_in(corpus_path);
-    string line;
-    while (getline(t_in, line)) {
-      auto lt = bpe_model.encode(line, false);
-      all_text_tokens.insert(all_text_tokens.end(), lt.begin(), lt.end());
-    }
+  if (!is_vlm) {
+      string bin_path = corpus_path + ".tokens.bin";
+      ifstream bin_in(bin_path, ios::binary);
+      if (bin_in.is_open()) {
+          cout << "[System] Loading pre-tokenized binary file..." << endl;
+          bin_in.seekg(0, ios::end);
+          size_t size = bin_in.tellg();
+          bin_in.seekg(0, ios::beg);
+          
+          all_text_tokens.resize(size / sizeof(bpe::TokenId));
+          bin_in.read(reinterpret_cast<char*>(all_text_tokens.data()), size);
+          bin_in.close();
+      } else {
+          // 没有二进制文件，老老实实分词，然后保存下来
+          cout << "[System] Tokenizing corpus (this will take a while) calculation..." << endl;
+          ifstream t_in(corpus_path);
+          string line;
+          while (getline(t_in, line)) {
+              auto lt = bpe_model.encode(line, false);
+              all_text_tokens.insert(all_text_tokens.end(), lt.begin(), lt.end());
+          }
+          
+          // 保存为二进制文件，下次就快了
+          ofstream bin_out(bin_path, ios::binary);
+          bin_out.write(reinterpret_cast<const char*>(all_text_tokens.data()), 
+                        all_text_tokens.size() * sizeof(bpe::TokenId));
+          bin_out.close();
+          cout << "[System] Saved tokenized binary to " << bin_path << endl;
+      }
   }
-  Tensor input_tensor(seq_len, d_model);
-  Tensor hidden(seq_len, d_model);
-  Tensor next_h(seq_len, d_model);
-  Tensor logits(seq_len, vocab_size);
+  // 假设你定义了一个 int batch_size = 32;
+  int batch_rows = batch_size * seq_len;
+  Tensor input_tensor(batch_rows, d_model);  // 现在的维度是 [Batch*Seq, D_Model]
+  Tensor hidden(batch_rows, d_model);        // 每一层 Block 的输入/输出
+  Tensor next_h(batch_rows, d_model);        // 残差连接或中间缓存
+  Tensor logits(batch_rows, vocab_size);     // 最后的分类层输出 [Batch*Seq, Vocab]
 
   cout << "[System] Starting " << (is_vlm ? "VLM" : "Text")
        << " training loop..." << endl;
@@ -936,8 +981,28 @@ int main() {
   const float lr_scale_max = 2.0f;
   const int plateau_patience = 150;  // 从 80 增加到 150，避免过早降 LR
   const int cooldown_steps = 60;
-  const float rel_improve_eps = 0.002f; // 从 0.003 降到 0.002，更容易触发改进判定
-
+  const float rel_improve_eps = 0.002f; // 从 0.003 降到 0.002，更容易触发改进判
+  std::vector<VLMSample> vlm_cache;
+  // 2. 在进入 Epoch 循环前，进行一次性处理
+  if (is_vlm && !vlm_dataset.empty()) {
+      cout << "[System] Pre-processing VLM dataset..." << endl;
+      for (auto& item : vlm_dataset) {
+          VLMSample sample;
+          
+          // 处理图片 (同你之前的逻辑)
+          string img_p = (fs::path(corpus_path) / item.value("image", "")).string();
+          Tensor temp_img(seq_len, d_model); 
+          process_image_to_input(img_p, vision_proj, temp_img, d_model);
+          
+          sample.img_features.assign(temp_img.data, temp_img.data + 196 * d_model);
+          
+          // 关键：在这里就完成 BPE Encode！
+          string ans = item.value("answer", "");
+          sample.answer_tokens = bpe_model.encode(ans, false);
+          
+          vlm_cache.push_back(std::move(sample));
+      }
+  }
   for (int epoch = 0; epoch < epochs; epoch++) {
     auto reset_gradients = [&]() {
       embed.clear_grad();
@@ -952,64 +1017,61 @@ int main() {
         b->clear_grad();
     };
     reset_gradients();
-
-    // 累积梯度用于模拟更大的 batch size
     float accumulated_loss = 0.0f;
     int accumulated_count = 0;
     
-    for (int batch_idx = 0; batch_idx < batch_size; batch_idx++) {
-      // -1 表示该位置不参与监督；0 是合法 token id，不能再用 0 代表 ignore
-      vector<int> target_ids(seq_len, -1);
-      vector<int> step_input_ids(seq_len, -1);
+    memset(input_tensor.data, 0, input_tensor.rows * input_tensor.cols * sizeof(float));
+    // 记录整个 Batch 的 Target，长度为 batch_size * seq_len
+    vector<int> all_target_ids(batch_size * seq_len, -1);
 
-      if (is_vlm) {
-        if (vlm_dataset.empty())
-          continue;
-        int idx = rand() % (int)vlm_dataset.size();
-        string img_p =
-            (fs::path(corpus_path) / ("train_" + to_string(idx) + ".jpg"))
-                .string();
-        const int img_tokens = 196;
-        // 保底：VLM 分支可能不会填满整个 seq_len，必须清空未写入区域
-        std::memset(input_tensor.data, 0,
-                    input_tensor.rows * input_tensor.cols * sizeof(float));
-        process_image_to_input(img_p, vision_proj, input_tensor, d_model);
-        string ans = vlm_dataset[idx].value("answer", "");
-        auto tokens = bpe_model.encode(ans, false);
-        for (size_t i = 0; i + 1 < tokens.size() &&
-                           (i + img_tokens < (size_t)seq_len - 1);
-             i++) {
-          int current_id = tokens[i];
-          int next_id = tokens[i + 1];
-          if (current_id < 0 || current_id >= vocab_size || next_id < 0 ||
-              next_id >= vocab_size) {
-            continue;
-          }
-          float *dest = &input_tensor.data[(i + img_tokens) * d_model];
-          float *src = &embed.weights.data[current_id * d_model];
-          memcpy(dest, src, sizeof(float) * d_model);
-          step_input_ids[i + img_tokens] = current_id;
-          target_ids[i + img_tokens] = next_id;
+    // --- 开始数据装载循环 ---
+    for (int b = 0; b < batch_size; b++) {
+        int row_offset = b * seq_len; // 当前样本在大矩阵中的起始行偏移
+
+        if (is_vlm) {
+            // 随机选一个预缓存的 VLM 样本
+            int idx = rand() % (int)vlm_cache.size();
+            const auto& sample = vlm_cache[idx];
+
+            // 1. 拷贝图片特征 (196 patches)
+            memcpy(&input_tensor.data[row_offset * d_model], 
+                   sample.img_features.data(), 
+                   196 * d_model * sizeof(float));
+
+            // 2. 填充文本 Token
+            for (size_t i = 0; i + 1 < sample.answer_tokens.size() && 
+                               (i + img_tokens < (size_t)seq_len - 1); i++) {
+                int current_id = sample.answer_tokens[i];
+                int next_id = sample.answer_tokens[i+1];
+
+                // 计算在大矩阵中的具体行指针
+                float *dest = &input_tensor.data[(row_offset + i + img_tokens) * d_model];
+                float *src = &embed.weights.data[current_id * d_model];
+                
+                memcpy(dest, src, sizeof(float) * d_model);
+                all_target_ids[row_offset + i + img_tokens] = next_id;
+            }
+        } else {
+            // 文本模式：随机切片
+            int start = rand() % (int)(all_text_tokens.size() - seq_len - 1);
+            for (int i = 0; i < seq_len; i++) {
+                int current_id = (int)all_text_tokens[start + i];
+                int next_id = (int)all_text_tokens[start + i + 1];
+
+                float *dest = &input_tensor.data[(row_offset + i) * d_model];
+                float *src = &embed.weights.data[current_id * d_model];
+                
+                memcpy(dest, src, sizeof(float) * d_model);
+                all_target_ids[row_offset + i] = next_id;
+            }
         }
-      } else {
-        if (all_text_tokens.size() <= (size_t)seq_len + 1)
-          continue;
-        int start = rand() % (int)(all_text_tokens.size() - seq_len - 1);
-        vector<int> ids;
-        for (int i = 0; i < seq_len; i++) {
-          ids.push_back((int)all_text_tokens[start + i]);
-          target_ids[i] = (int)all_text_tokens[start + i + 1];
-          step_input_ids[i] = ids.back();
-        }
-        embed.forward_ids(ids, input_tensor);
-      }
+    }
 
       pos_enc.forward(input_tensor);
-      memcpy(hidden.data, input_tensor.data, seq_len * d_model * sizeof(float));
-
-      for (int i = 0; i < 8; i++) {
-        blocks[i]->forward(hidden, next_h);
-        memcpy(hidden.data, next_h.data, seq_len * d_model * sizeof(float));
+      memcpy(hidden.data, input_tensor.data, input_tensor.rows * d_model * sizeof(float));
+      for (auto b_layer : blocks) {
+          b_layer->forward(hidden, next_h, batch_size); 
+          memcpy(hidden.data, next_h.data, hidden.rows * d_model * sizeof(float));
       }
       projection.forward(hidden, logits);
 
