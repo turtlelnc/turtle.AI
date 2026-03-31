@@ -720,7 +720,7 @@ public:
     this->seq_len = seq_len;
   }
 
-  void forward(Tensor &input, Tensor &output) {
+  void forward(Tensor &input, Tensor &output,int batch_size) {
     norm1.forward(input, attn_norm_cache);
     attn.forward(attn_norm_cache, attn_out_cache);
     for (int i = 0; i < seq_len * d_model; ++i) {
@@ -740,7 +740,7 @@ public:
     memcpy(output_cache.data, output.data, seq_len * d_model * sizeof(float));
   }
 
-  void backward(Tensor &input, Tensor &output_grad) {
+  void backward(Tensor &input, Tensor &output_grad,int batch_size) {
     ffn2.backward(ffn_mid_cache, output_grad);
     for (int i = 0; i < seq_len * d_model * 4; i++) {
       if (ffn_mid_cache.data[i] <= 0)
