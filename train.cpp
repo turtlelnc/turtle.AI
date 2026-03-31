@@ -172,8 +172,10 @@ public:
   float *x_tp_buffer;
   float *w_tp_buffer;
   int max_batch_size;
+  float* input_grad;
 
   LinearLayer(int in_dim, int out_dim) : in_dim(in_dim), out_dim(out_dim) {
+    input_grad = nullptr;
     W = new Tensor(in_dim, out_dim);
     b = new Tensor(1, out_dim);
     max_batch_size = 2048;
