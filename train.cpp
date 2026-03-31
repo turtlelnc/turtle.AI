@@ -160,8 +160,8 @@ void embedding_backward(int *input_ids, Tensor &weight, Tensor &grad_output,
 class Layer {
 public:
   virtual ~Layer() {}
-  virtual void forward(Tensor &input, Tensor &output) = 0;
-  virtual void backward(Tensor &input, Tensor &output) = 0;
+  virtual void forward(Tensor &input, Tensor &output,int batch_size = 1) = 0;
+  virtual void backward(Tensor &input, Tensor &output,int batch_size = 1) = 0;
   virtual void update(float lr) {}
   virtual void clear_grad() {}
 };
@@ -195,7 +195,7 @@ public:
     delete[] w_tp_buffer;
   }
 
-  void forward(Tensor &input, Tensor &output) override {
+  void forward(Tensor &input, Tensor &output,int batch_size = 1) override {
     matmul(input.data, W->data, output.data, input.rows, input.cols, W->cols);
 
 #if !USE_ACCELERATE
@@ -208,7 +208,7 @@ public:
     }
   }
 
-  void backward(Tensor &input, Tensor &output) override {
+  void backward(Tensor &input, Tensor &output,int batch_size = 1) override {
     int M = input.rows;
     int K = input.cols;
     int N = output.cols;
@@ -292,12 +292,12 @@ public:
 };
 class ReLULayer : public Layer {
 public:
-  void forward(Tensor &input, Tensor &output) override {
+  void forward(Tensor &input, Tensor &output,int batch_size = 1) override {
     for (int i = 0; i < input.rows * input.cols; i++) {
       output.data[i] = std::max(input.data[i], 0.0f);
     }
   }
-  void backward(Tensor &input, Tensor &output) override {
+  void backward(Tensor &input, Tensor &output,int batch_size = 1) override {
     for (int i = 0; i < input.rows * input.cols; i++) {
       input.grad[i] = (input.data[i] > 0) ? output.grad[i] : 0.0f;
     }
@@ -324,7 +324,7 @@ public:
         scores_softmax(s, s), d_scores_softmax(s, s), d_scores_raw(s, s),
         d_scores_raw_tp(s, s), scores_softmax_tp(s, s) {}
 
-  void forward(Tensor &input, Tensor &output, int batch_size) override {
+  void forward(Tensor &input, Tensor &output, int batch_size,int batch_size = 1) override {
       // 1. 线性层：由于 input 现在的 rows 是 batch_size * seq_len
       // W_q, W_k, W_v 的 forward 会自动一次性算出整个 Batch 的所有 Token 的 QKV
       // 这一步利用了大矩阵乘法，性能极高
@@ -371,7 +371,7 @@ public:
           matmul(b_scores_sm, b_V, b_output, seq_len, seq_len, d_head);
       }
   }
-  void backward(Tensor &input, Tensor &output) override {
+  void backward(Tensor &input, Tensor &output,int batch_size = 1) override {
     int L = seq_len;
     int D = d_head;
 
@@ -447,7 +447,7 @@ public:
       weights.data[i] = ((rand() / (float)RAND_MAX) - 0.5f) * scale;
     }
   }
-  void forward(Tensor &input, Tensor &output) override {
+  void forward(Tensor &input, Tensor &output,int batch_size = 1) override {
     std::vector<int> ids;
     for (int i = 0; i < input.rows; i++) {
       ids.push_back((int)input.data[i * input.cols]);
@@ -464,7 +464,7 @@ public:
              sizeof(float) * d_model);
     }
   }
-  void backward(Tensor &input, Tensor &output) override {
+  void backward(Tensor &input, Tensor &output,int batch_size = 1) override {
     for (int i = 0; i < (int)last_input_ids.size(); i++) {
       int id = last_input_ids[i];
       for (int d = 0; d < d_model; d++) {
@@ -499,7 +499,7 @@ public:
     delete[] cache_std_inv;
   }
 
-  void forward(Tensor &input, Tensor &output) override {
+  void forward(Tensor &input, Tensor &output,int batch_size = 1) override {
     int L = input.rows;
     int D = input.cols;
 
@@ -526,7 +526,7 @@ public:
     }
   }
 
-  void backward(Tensor &input, Tensor &output) override {
+  void backward(Tensor &input, Tensor &output,int batch_size = 1) override {
     int L = input.rows;
     int D = input.cols;
 
