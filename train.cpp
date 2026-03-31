@@ -326,7 +326,7 @@ public:
         scores_softmax(s, s), d_scores_softmax(s, s), d_scores_raw(s, s),
         d_scores_raw_tp(s, s), scores_softmax_tp(s, s) {}
 
-  void forward(Tensor &input, Tensor &output, int batch_size,int batch_size = 1) override {
+  void forward(Tensor &input, Tensor &output,int batch_size = 1) override {
       // 1. 线性层：由于 input 现在的 rows 是 batch_size * seq_len
       // W_q, W_k, W_v 的 forward 会自动一次性算出整个 Batch 的所有 Token 的 QKV
       // 这一步利用了大矩阵乘法，性能极高
