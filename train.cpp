@@ -481,19 +481,22 @@ public:
 class LayerNorm : public Layer {
 public:
   int d_model;
-  int max_seq_len;
+  int max_seq_len; // 我们继续使用这个变量名，但实际上存的是 batch_size * seq_len
   std::vector<float> gamma, beta;
   std::vector<float> g_grad, b_grad;
   float *cache_x_hat;
   float *cache_std_inv;
 
+  // 这里的 s_len 在传入时将被放大为 batch_size * seq_len
   LayerNorm(int d_mod, int s_len) : d_model(d_mod), max_seq_len(s_len) {
     gamma.assign(d_model, 1.0f);
     beta.assign(d_model, 0.0f);
     g_grad.assign(d_model, 0.0f);
     b_grad.assign(d_model, 0.0f);
-    cache_x_hat = new float[max_rows * d_model]();
-    cache_std_inv = new float[max_rows]();
+    
+    // 分配能够容纳整个 Batch 的缓存
+    cache_x_hat = new float[max_seq_len * d_model]();
+    cache_std_inv = new float[max_seq_len]();
   }
 
   ~LayerNorm() {
@@ -501,7 +504,7 @@ public:
     delete[] cache_std_inv;
   }
 
-  void forward(Tensor &input, Tensor &output,int batch_size = 1) override {
+  void forward(Tensor &input, Tensor &output, int batch_size = 1) override {
     int L = input.rows;
     int D = input.cols;
 
@@ -528,7 +531,7 @@ public:
     }
   }
 
-  void backward(Tensor &input, Tensor &output,int batch_size = 1) override {
+  void backward(Tensor &input, Tensor &output, int batch_size = 1) override {
     int L = input.rows;
     int D = input.cols;
 
