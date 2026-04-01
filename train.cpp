@@ -322,8 +322,8 @@ public:
 
   AttentionLayer(int s, int m, int h)
       : W_q(m, h), W_k(m, h), W_v(m, h), seq_len(s), d_model(m), d_head(h),
-        Q(s, h), K(s, h), V(s, h), K_tp(h, s), V_tp(h, s), scores(s, s),
-        scores_softmax(s, s), d_scores_softmax(s, s), d_scores_raw(s, s),
+        Q(s, h), K(s, h), V(s, h), K_tp(h, s), V_tp(h, s), scores(max_rows, s), 
+        scores_softmax(max_rows, s), d_scores_softmax(s, s), d_scores_raw(s, s),
         d_scores_raw_tp(s, s), scores_softmax_tp(s, s) {}
 
   void forward(Tensor &input, Tensor &output,int batch_size = 1) override {
@@ -338,9 +338,8 @@ public:
       #pragma omp parallel for schedule(dynamic)
       for (int b = 0; b < batch_size; b++) {
           // 计算每个 Batch 在连续内存中的起始指针偏移
-          int qkv_offset = b * seq_len * d_head;
-          int score_offset = b * seq_len * seq_len;
-  
+          int qkv_offset = b * actual_seq_len * d_head;
+          int score_offset = b * actual_seq_len * actual_seq_len;
           float* b_Q = &Q.data[qkv_offset];
           float* b_K = &K.data[qkv_offset];
           float* b_V = &V.data[qkv_offset];
