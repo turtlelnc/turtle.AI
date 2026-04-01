@@ -492,8 +492,8 @@ public:
     beta.assign(d_model, 0.0f);
     g_grad.assign(d_model, 0.0f);
     b_grad.assign(d_model, 0.0f);
-    cache_x_hat = new float[max_seq_len * d_model]();
-    cache_std_inv = new float[max_seq_len]();
+    cache_x_hat = new float[max_rows * d_model]();
+    cache_std_inv = new float[max_rows]();
   }
 
   ~LayerNorm() {
