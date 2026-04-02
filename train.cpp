@@ -329,11 +329,13 @@ public:
   Tensor d_scores_softmax, d_scores_raw, d_scores_raw_tp;
   Tensor scores_softmax_tp;
 
-  AttentionLayer(int s, int m, int h)
-      : W_q(m, h), W_k(m, h), W_v(m, h), seq_len(s), d_model(m), d_head(h),
-        Q(s, h), K(s, h), V(s, h), K_tp(h, s), V_tp(h, s), scores(max_rows, s), actual_seq_len(s),
-        scores_softmax(max_rows, s), d_scores_softmax(s, s), d_scores_raw(s, s),
-        d_scores_raw_tp(s, s), scores_softmax_tp(s, s) {}
+AttentionLayer(int s, int m, int h, int max_rows)
+      : W_q(m, h), W_k(m, h), W_v(m, h), seq_len(s), d_model(m), d_head(h), actual_seq_len(s),
+        Q(max_rows, h), K(max_rows, h), V(max_rows, h), 
+        K_tp(h, max_rows), V_tp(h, max_rows), 
+        scores(max_rows, s), scores_softmax(max_rows, s), 
+        d_scores_softmax(max_rows, s), d_scores_raw(max_rows, s),
+        d_scores_raw_tp(max_rows, s), scores_softmax_tp(max_rows, s) {}
 
   void forward(Tensor &input, Tensor &output,int batch_size = 1) override {
       // 1. 线性层：由于 input 现在的 rows 是 batch_size * seq_len
@@ -720,13 +722,20 @@ public:
   Tensor output_cache;
   Tensor grad_cache;
 
-  TransformerBlock(int seq_len, int d_model, int d_head)
-      : norm1(d_model, seq_len), attn(s, m, h, s * batch_size),
-        norm2(d_model, seq_len), ffn1(d_model, d_model * 4),
-        ffn2(d_model * 4, d_model), attn_norm_cache(seq_len, d_model),
-        attn_out_cache(seq_len, d_model), ffn_norm_cache(seq_len, d_model),
-        ffn_mid_cache(seq_len, d_model * 4), ffn_out_cache(seq_len, d_model),
-        output_cache(seq_len, d_model), grad_cache(seq_len, d_model) {
+// 修改：统一参数名为 seq_len, d_model, d_head，并增加 batch_size
+  TransformerBlock(int seq_len, int d_model, int d_head, int batch_size)
+      : norm1(d_model, seq_len * batch_size), 
+        attn(seq_len, d_model, d_head, seq_len * batch_size),
+        norm2(d_model, seq_len * batch_size), 
+        ffn1(d_model, d_model * 4),
+        ffn2(d_model * 4, d_model), 
+        attn_norm_cache(seq_len * batch_size, d_model),
+        attn_out_cache(seq_len * batch_size, d_model), 
+        ffn_norm_cache(seq_len * batch_size, d_model),
+        ffn_mid_cache(seq_len * batch_size, d_model * 4), 
+        ffn_out_cache(seq_len * batch_size, d_model),
+        output_cache(seq_len * batch_size, d_model), 
+        grad_cache(seq_len * batch_size, d_model) {
     this->d_model = d_model;
     this->seq_len = seq_len;
   }
