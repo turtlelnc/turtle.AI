@@ -81,7 +81,9 @@ jobs:
               -L${OPENBLAS_PATH}/lib \
               -Xpreprocessor -fopenmp \
               -lomp -lopenblas \
-              -DACCELERATE_NEW_LAPACK \
+              -DACCELERATE_NEW_LAPACK \          
+              -static-libgcc \
+              -static-libstdc++ \
               -framework Accelerate
 
     # --- 验证与上传 ---
