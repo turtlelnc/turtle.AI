@@ -1,20 +1,35 @@
-name: Build Windows EXE
+name: Build Multi-Platform EXE
 
 on:
   push:
     branches: [ "main", "master" ]
   pull_request:
     branches: [ "main", "master" ]
+  workflow_dispatch:
 
 jobs:
-  build-windows:
-    runs-on: windows-latest
+  build:
+    name: Build on ${{ matrix.os }}
+    runs-on: ${{ matrix.os }}
+    strategy:
+      fail-fast: false
+      matrix:
+        # 定义操作系统矩阵
+        include:
+          - os: windows-latest
+            artifact_name: train-windows-exe
+            executable: train.exe
+          - os: macos-latest
+            artifact_name: train-macos-binary
+            executable: train
 
     steps:
     - name: Checkout code
       uses: actions/checkout@v4
 
-    - name: Setup MinGW (GCC for Windows)
+    # --- Windows 专用设置 ---
+    - name: Setup MinGW (Windows only)
+      if: matrix.os == 'windows-latest'
       uses: msys2/setup-msys2@v2
       with:
         msystem: MINGW64
@@ -26,27 +41,60 @@ jobs:
           make
           git
 
-    - name: Compile train.cpp and BPE sources
+    # --- macOS 专用设置 (安装 OpenMP) ---
+    - name: Install dependencies (macOS only)
+      if: matrix.os == 'macos-latest'
+      run: |
+        brew install libomp openblas
+
+    # --- 编译步骤 (根据系统切换 Shell 和指令) ---
+    - name: Compile (Windows)
+      if: matrix.os == 'windows-latest'
       shell: msys2 {0}
       run: |
-            g++ -O3 -std=c++17 \
-              train.cpp BPE.cpp \
-              -o train.exe \
-              -I. \
-              -fopenmp \
-              -static-libgcc \
-              -static-libstdc++ \
-              -Wl,-Bstatic -lgomp -Wl,-Bdynamic
+        g++ -O3 -std=c++17 \
+          train.cpp BPE.cpp \
+          -o ${{ matrix.executable }} \
+          -I. \
+          -fopenmp \
+          -static-libgcc \
+          -static-libstdc++ \
+          -Wl,-Bstatic -lgomp -lwinpthread -Wl,-Bdynamic
+          
+    - name: Compile (macOS)
+      if: matrix.os == 'macos-latest'
+      run: |
+        # 1. 确保安装了依赖（GitHub Actions 环境可能未预装某些库）
+        brew install libomp openblas
 
+        # 2. 获取路径并存入环境变量
+        LIBOMP_PATH=$(brew --prefix libomp)
+        OPENBLAS_PATH=$(brew --prefix openblas)
+        
+        # 3. 执行编译（注意：删除了每一行末尾可能存在的空格）
+        clang++ -O3 -std=c++17 \
+          train.cpp BPE.cpp \
+          -o "${{ matrix.executable }}" \
+          -I. \
+          -I"${LIBOMP_PATH}/include" \
+          -I"${OPENBLAS_PATH}/include" \
+          -L"${LIBOMP_PATH}/lib" \
+          -L"${OPENBLAS_PATH}/lib" \
+          -Xpreprocessor -fopenmp \
+          -lomp -lopenblas \
+          -DACCELERATE_NEW_LAPACK \
+          -framework Accelerate
+
+    # --- 验证与上传 ---
     - name: Verify Output
-      shell: msys2 {0}
+      shell: bash
       run: |
-        ls -lh train.exe
-        file train.exe
+        ls -lh ${{ matrix.executable }}
+        file ${{ matrix.executable }}
 
-    - name: Upload Windows Artifact
+    - name: Upload Artifact
       uses: actions/upload-artifact@v4
       with:
-        name: train-windows-exe
-        path: train.exe
+        name: ${{ matrix.artifact_name }}
+        path: ${{ matrix.executable }}
         retention-days: 5

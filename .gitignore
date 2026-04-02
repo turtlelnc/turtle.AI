@@ -1,34 +1,17 @@
 ```
-# Compiled and binary files
+# Compiled and build artifacts
+*.bin
 *.o
 *.obj
 *.out
-*.exe
-*.dll
-*.so
-*.a
 
 # Dependencies
-node_modules/
-venv/
-.venv/
+*.pyc
 __pycache__/
-.mypy_cache/
-.pytest_cache/
-dist/
-build/
-target/
-.gradle/
 
-# Editors/IDE
-.vscode/
-.idea/
-*.swp
-*.swo
-*.tmp
-
-# Logs
+# Logs and temp files
 *.log
+*.tmp
 
 # Environment
 .env
@@ -36,11 +19,12 @@ target/
 *.env.*
 
 # Coverage
+.coverage
 coverage/
 htmlcov/
-.coverage
 
-# System
-.DS_Store
-Thumbs.db
+# Build directories
+dist/
+build/
+target/
 ```

@@ -1,0 +1,10 @@
+The quick brown fox jumps over the lazy dog.
+This is a test sentence for training.
+Hello world this is sample data.
+Machine learning is fascinating.
+Natural language processing with transformers.
+Deep learning models are powerful.
+Training neural networks requires data.
+Python programming is popular.
+Artificial intelligence is transforming industries.
+Data science combines statistics and programming.
