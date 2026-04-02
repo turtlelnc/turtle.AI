@@ -86,21 +86,29 @@ void softmax(float *x, int n) {
   for (int i = 0; i < n; i++)
     x[i] /= sum;
 }
-void matmul(float *a, float *b, float *c, int m, int k, int n) {
+void matmul(float *a, float *b, float *c, int m, int n, int k, bool trans_a = false, bool trans_b = false) {
 #if USE_ACCELERATE
-  cblas_sgemm(CblasRowMajor, CblasNoTrans, CblasNoTrans, m, n, k, 1.0f, a, k, b,
-              n, 0.0f, c, n);
+    cblas_sgemm(CblasRowMajor, 
+                trans_a ? CblasTrans : CblasNoTrans, 
+                trans_b ? CblasTrans : CblasNoTrans, 
+                m, n, k, 1.0f, 
+                a, trans_a ? m : k, 
+                b, trans_b ? k : n, 
+                0.0f, c, n);
 #else
-memset(c, 0, m * n * sizeof(float));
-#pragma omp parallel for collapse(2)
-for (int i = 0; i < m; i++) {
-  for (int f = 0; f < k; f++) {
-    float a_if = a[i * k + f];
-    for (int j = 0; j < n; j++) {
-      c[i * n + j] += a_if * b[f * n + j]; // 内存连续访问！
+    memset(c, 0, m * n * sizeof(float));
+    #pragma omp parallel for collapse(2)
+    for (int i = 0; i < m; i++) {
+        for (int j = 0; j < n; j++) {
+            float sum = 0;
+            for (int f = 0; f < k; f++) {
+                float val_a = trans_a ? a[f * m + i] : a[i * k + f];
+                float val_b = trans_b ? b[j * k + f] : b[f * n + j];
+                sum += val_a * val_b;
+            }
+            c[i * n + j] = sum;
+        }
     }
-  }
-}
 #endif
 }
 void linear_forward(Tensor &X, Tensor &W, Tensor &Y) {
@@ -354,7 +362,7 @@ public:
   
           // --- 以下是原有的单样本逻辑，搬进循环里 ---
           transpose(b_K, b_K_tp, seq_len, d_head);
-          matmul(b_Q, b_K_tp, b_scores, seq_len, d_head, seq_len);
+          matmul(b_Q, b_K, b_scores, actual_seq_len, d_head, actual_seq_len, false, true);
   
           float scale = 1.0f / sqrt((float)d_head);
           for (int i = 0; i < seq_len; i++) {
@@ -713,7 +721,7 @@ public:
   Tensor grad_cache;
 
   TransformerBlock(int seq_len, int d_model, int d_head)
-      : norm1(d_model, seq_len), attn(seq_len, d_model, d_head),
+      : norm1(d_model, seq_len), attn(s, m, h, s * batch_size),
         norm2(d_model, seq_len), ffn1(d_model, d_model * 4),
         ffn2(d_model * 4, d_model), attn_norm_cache(seq_len, d_model),
         attn_out_cache(seq_len, d_model), ffn_norm_cache(seq_len, d_model),
@@ -886,7 +894,7 @@ int main() {
     vector<TransformerBlock *> blocks;
     for (int i = 0; i < 8; i++) {
         // 注意：Block 内部缓存需要容纳 BatchSize * SeqLen
-        blocks.push_back(new TransformerBlock(batch_size * seq_len, d_model, d_model));
+        blocks.push_back(new TransformerBlock(seq_len, d_model, d_model, batch_size));
     }
 
     // --- 权重加载与检查逻辑 ---
