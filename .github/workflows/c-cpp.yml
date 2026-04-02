@@ -64,27 +64,26 @@ jobs:
     - name: Compile (macOS)
       if: matrix.os == 'macos-latest'
       run: |
-            # 1. 动态获取 libomp 和 openblas 的安装路径
-            LIBOMP_PATH=$(brew --prefix libomp)
-            OPENBLAS_PATH=$(brew --prefix openblas)
-            
-            # 2. 执行编译
-            # -DACCELERATE_NEW_LAPACK 解决 cblas_sgemm 弃用警告
-            # 使用动态路径包含头文件和库文件
-            clang++ -O3 -std=c++17 \
-              train.cpp BPE.cpp \
-              -o ${{ matrix.executable }} \
-              -I. \
-              -I${LIBOMP_PATH}/include \
-              -I${OPENBLAS_PATH}/include \
-              -L${LIBOMP_PATH}/lib \
-              -L${OPENBLAS_PATH}/lib \
-              -Xpreprocessor -fopenmp \
-              -lomp -lopenblas \
-              -DACCELERATE_NEW_LAPACK \          
-              -static-libgcc \
-              -static-libstdc++ \
-              -framework Accelerate
+        # 1. 确保安装了依赖（GitHub Actions 环境可能未预装某些库）
+        brew install libomp openblas
+
+        # 2. 获取路径并存入环境变量
+        LIBOMP_PATH=$(brew --prefix libomp)
+        OPENBLAS_PATH=$(brew --prefix openblas)
+        
+        # 3. 执行编译（注意：删除了每一行末尾可能存在的空格）
+        clang++ -O3 -std=c++17 \
+          train.cpp BPE.cpp \
+          -o "${{ matrix.executable }}" \
+          -I. \
+          -I"${LIBOMP_PATH}/include" \
+          -I"${OPENBLAS_PATH}/include" \
+          -L"${LIBOMP_PATH}/lib" \
+          -L"${OPENBLAS_PATH}/lib" \
+          -Xpreprocessor -fopenmp \
+          -lomp -lopenblas \
+          -DACCELERATE_NEW_LAPACK \
+          -framework Accelerate
 
     # --- 验证与上传 ---
     - name: Verify Output
