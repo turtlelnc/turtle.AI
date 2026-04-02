@@ -314,6 +314,7 @@ public:
   int seq_len;
   int d_model;
   int d_head;
+  int actual_seq_len;
   Tensor Q, K, V;
   Tensor K_tp, V_tp;
   Tensor scores, scores_softmax;
@@ -322,7 +323,7 @@ public:
 
   AttentionLayer(int s, int m, int h)
       : W_q(m, h), W_k(m, h), W_v(m, h), seq_len(s), d_model(m), d_head(h),
-        Q(s, h), K(s, h), V(s, h), K_tp(h, s), V_tp(h, s), scores(max_rows, s), 
+        Q(s, h), K(s, h), V(s, h), K_tp(h, s), V_tp(h, s), scores(max_rows, s), actual_seq_len(s),
         scores_softmax(max_rows, s), d_scores_softmax(s, s), d_scores_raw(s, s),
         d_scores_raw_tp(s, s), scores_softmax_tp(s, s) {}
 
