@@ -24,7 +24,7 @@ with tempfile.TemporaryDirectory(prefix="turtle-mlx-smoke-") as temp:
 
     def run(mode="train", expected=0, message="", **changes):
         options = dict(defaults, **changes)
-        args = [str(binary)] + (["gen", "int main"] if mode == "gen" else [])
+        args = [str(binary)] + (["gen", "int main"] if mode == "gen" else ["eval"] if mode == "eval" else [])
         for key, value in options.items():
             args += ["--" + key, str(value)]
         result = subprocess.run(args, cwd=root, text=True, encoding="utf-8", errors="replace",
@@ -50,6 +50,21 @@ with tempfile.TemporaryDirectory(prefix="turtle-mlx-smoke-") as temp:
     run(message="成功恢复状态", steps=3)
     run("gen", message="END", model="ar.ckpt", tokenizer="tokenizer.bpe", **{"max-tokens": 2})
     run("gen", message="END", model="ar.ckpt", tokenizer="tokenizer.bpe", **{"max-tokens": 2, "kv-cache": 0})
+    # Evaluation uses pure CE and fixed windows; it must leave the model untouched.
+    before_eval = (root / "ar.ckpt").read_bytes()
+    eval_options = {"model": "ar.ckpt", "tokenizer": "tokenizer.bpe",
+                    "eval-data": "data", "eval-samples": 2}
+    evaluation = run("eval", message="EVAL ", **eval_options)
+    metrics = json.loads(evaluation.split("EVAL ", 1)[1])
+    repeated = run("eval", message="EVAL ", **eval_options)
+    if metrics != json.loads(repeated.split("EVAL ", 1)[1]) or metrics["tokens"] <= 0:
+        raise RuntimeError("Evaluation windows or metrics are not deterministic")
+    run("eval", message='"weights":"random_initialization"',
+        **dict(eval_options, **{"eval-untrained": 1}))
+    run("eval", 1, "positive --eval-samples", **dict(eval_options, **{"eval-samples": 0}))
+    run("eval", 1, "supports AR models only", **dict(eval_options, **{"model-mode": "elf"}))
+    if (root / "ar.ckpt").read_bytes() != before_eval:
+        raise RuntimeError("Read-only evaluation changed the checkpoint")
     run("gen", 1, "Model checkpoint not found", model="missing.ckpt")
     run(expected=1, message="Invalid model dimensions", dim=15)
     run(expected=1, message="Invalid GaLore configuration", **{"galore-rank": 0})
@@ -63,6 +78,8 @@ with tempfile.TemporaryDirectory(prefix="turtle-mlx-smoke-") as temp:
     # Compiled graph and gradient accumulation exercise separate execution paths.
     run(message="Final checkpoint", **{"model-out": "compiled.ckpt", "compile-train-graph": 1, "steps": 1})
     run(message="Final checkpoint", **{"model-out": "micro.ckpt", "packed-batch": 0, "steps": 1})
+    run(message="嵌入输入路由探针", **{"model-out": "monitor.ckpt",
+        "expert-monitor-interval": 1, "steps": 11})
     # Projected optimizer state, forced refresh and SSD state serialization.
     run(message="Final checkpoint", **{"model-out": "galore.ckpt", "galore-off": 0,
         "galore-rank": 2, "galore-min-size": 64, "galore-refresh": 1,

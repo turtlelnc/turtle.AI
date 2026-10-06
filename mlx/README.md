@@ -61,6 +61,8 @@ mkdir -p build-mlx/run
 `--dim` 必须是 16 的倍数。恢复/生成时模型尺寸和模式必须与检查点一致。
 输出目录需事先创建。`--steps` 是目标总步数，恢复到第 20 步后传入 30 会继续
 训练 10 步。默认保存最终模型，`--save-final 0` 可关闭。
+AR 生成在提示词前添加训练时使用的文件起始 Token，不在提示词末尾添加 EOS；
+采到 EOS 或文件结束 Token 时停止。
 
 `--data-dir` 接受目录或单文件。单文件按 2000 字节分块、保留 400 字节重叠；
 短文件和尾部保留原始换行。分词器保存数据集标识；更换数据后，使用新的分词器
@@ -111,3 +113,39 @@ version=1、词表大小、潜变量维度，随后是 FP16 矩阵。必须使�
 真实 T5/ELF 的生成质量。
 
 后续工作与验证范围见 [ALIGNMENT.md](ALIGNMENT.md)。
+
+## 维基百科实训与验证
+
+已完成的 CPU 实训指标和限制见 [实验报告](experiments/README.md)。
+
+可直接下载约 1,000 篇英文维基百科文章并运行小模型实验：
+
+```sh
+python3 mlx/tools/download_wikipedia.py
+python3 mlx/tools/train_wikipedia.py
+```
+
+下载工具只需要 Python 标准库，按文章将每第 10 篇留作验证，记录文章 ID、来源、
+许可证和文件 SHA-256。默认选择 `wikimedia/wikipedia` 的 `20231101.en` 配置中
+第 1000–1999 行，是连续子集，不能视为整个维基百科的代表性抽样。
+数据保存在 `build-mlx/wikipedia/`，模型、完整日志和 `summary.json` 保存在
+`build-mlx/wiki-small/`。已有输出目录会被拒绝，避免混用旧实验；再次运行需指定
+新的 `--output`。训练脚本默认运行 600 步，再恢复 20 步，测试多个提示词和
+关闭 KV cache 的生成，并比较随机初始化与训练后模型的留出集损失。
+
+也可对现有 AR 检查点单独执行只读验证，在与训练相同的模型尺寸参数后增加：
+
+```sh
+./build-mlx/turtle-mlx eval --device cpu \
+  --dim 64 --seq-len 128 --max-loop 2 --wide-blocks 1 \
+  --experts 4 --moe-topk 2 --window-size 64 --global-topk 8 \
+  --model build-mlx/wiki-small/model.ckpt \
+  --tokenizer build-mlx/wiki-small/tokenizer.bpe \
+  --eval-data build-mlx/wikipedia/validation.txt --eval-samples 64 --seed 7
+```
+
+`EVAL` 行输出 JSON：Token 加权交叉熵、困惑度、有效 Token 数和样本数。
+验证使用固定种子选择文本块与窗口，不更新参数，关闭路由噪声，去掉训练中的
+confidence penalty 与 MoE 辅助损失。`--eval-untrained 1` 使用相同尺寸和词表的
+随机初始化模型作为基线，仍检查检查点元数据。两个结果应使用同一数据、种子
+和上下文长度。当前仅支持 AR；不能据此评价 ELF/T5。

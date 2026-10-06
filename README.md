@@ -4,6 +4,8 @@ Two independent backends are available: the original CPU trainer described below
 and the [MLX / OpenMythos backend](mlx/README.md) imported from the local version.
 See its [alignment report and next steps](mlx/ALIGNMENT.md) for differences and
 validation scope. Their tokenizers and model checkpoints are not interchangeable.
+See the [Wikipedia CPU training experiment](mlx/experiments/README.md) for a
+completed small-model run, held-out metrics, and reproducible commands.
 
 Try to do something.  
   

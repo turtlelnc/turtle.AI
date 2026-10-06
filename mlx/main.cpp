@@ -2292,12 +2292,13 @@ static float parse_finite_float(const std::string &text) {
 int main(int argc, char* argv[]) {
   try {
     for (int i = 1; i < argc; ++i) if (std::string(argv[i]) == "--help") {
-        std::cout << "turtle-mlx [gen PROMPT] [options]\n"
+        std::cout << "turtle-mlx [gen PROMPT | eval] [options]\n"
                      "--device auto|cpu|gpu  --data-dir PATH  --steps N  --model-mode ar|elf\n"
                      "--dim N (multiple of 16) --seq-len N --max-loop N --wide-blocks N\n"
                      "--experts N --moe-topk N --window-size N --global-topk N\n"
                      "--model-out PATH --tokenizer-out PATH (training)\n"
                      "--model PATH --tokenizer PATH --max-tokens N (generation)\n"
+                     "--eval-data PATH --eval-samples N --eval-untrained 0|1 (AR evaluation)\n"
                      "--optimizer-memory auto|resident|swap --swap-dir PATH --galore-off 0|1\n"
                      "See mlx/README.md for ELF/T5, GaLore and optimization flags.\n";
         return 0;
@@ -2465,8 +2466,12 @@ int main(int argc, char* argv[]) {
         mp.galore_min_size    = (size_t)galore_minsz_cli;
     };
 
-    // ---------- 推理生成模式 (动态抗复读版) ----------
-    if (argc >= 3 && std::string(argv[1]) == "gen") {
+    // Generation and read-only AR evaluation share validated model loading.
+    const bool evaluate = argc >= 2 && std::string(argv[1]) == "eval";
+    const bool evaluate_untrained = evaluate && get_int_arg("--eval-untrained", 0) != 0;
+    if (evaluate && elf_mode)
+        throw std::invalid_argument("eval currently supports AR models only");
+    if (evaluate || (argc >= 3 && std::string(argv[1]) == "gen")) {
         std::string model_path = get_arg(
             "--model", elf_mode ? "openmythos_elf7.ckpt" : "openmythos_mlx.ckpt");
         std::string tok_path   = get_arg("--tokenizer", "tokenizer.bpe");
@@ -2528,17 +2533,71 @@ int main(int argc, char* argv[]) {
                         return 1;
                     }
                 }
-                if (!model.mp.load(is)) {
+                if (!evaluate_untrained && !model.mp.load(is)) {
                     std::cerr << "ERROR: checkpoint parameter layout mismatch\n";
                     return 1;
                 }
             }
         }
 
+        if (evaluate) {
+            const std::string eval_path = get_arg("--eval-data", "");
+            const int requested_samples = get_int_arg("--eval-samples", 64);
+            if (eval_path.empty() || requested_samples <= 0)
+                throw std::invalid_argument("eval requires --eval-data and positive --eval-samples");
+            TrainingCorpus validation = read_training_corpus(eval_path);
+            std::vector<size_t> indices(validation.texts.size());
+            std::iota(indices.begin(), indices.end(), 0);
+            std::shuffle(indices.begin(), indices.end(), rng);
+            packed_batch_size = 1;
+            double negative_log_likelihood = 0.0;
+            size_t token_count = 0;
+            int samples = 0;
+            for (size_t index : indices) {
+                auto tokens = tokenizer.encode(validation.texts[index]);
+                if (tokens.empty()) continue;
+                tokens.insert(tokens.begin(), FILE_START_TOKEN_ID);
+                tokens.push_back(FILE_END_TOKEN_ID);
+                const size_t length = std::min(tokens.size() - 1, static_cast<size_t>(seq_len));
+                const size_t max_start = tokens.size() - length - 1;
+                const size_t start = std::uniform_int_distribution<size_t>(0, max_start)(rng);
+                std::vector<int> input(tokens.begin() + start, tokens.begin() + start + length);
+                std::vector<int> target(tokens.begin() + start + 1, tokens.begin() + start + length + 1);
+                const size_t valid_tokens = std::count_if(target.begin(), target.end(),
+                    [](int token) { return token != PAD_TOKEN_ID; });
+                if (!valid_tokens) continue;
+                array logits = model(array(input.data(), {static_cast<int>(length)}, int32));
+                array targets = array(target.data(), {static_cast<int>(length)}, int32);
+                // Pure CE: omit the training confidence penalty and MoE auxiliary loss.
+                const float ce = cross_entropy_loss(logits, targets, PAD_TOKEN_ID, 0.0f).item<float>();
+                if (!std::isfinite(ce)) throw std::runtime_error("Nonfinite evaluation loss");
+                negative_log_likelihood += static_cast<double>(ce) * valid_tokens;
+                token_count += valid_tokens;
+                if (++samples >= requested_samples) break;
+            }
+            if (!token_count) throw std::invalid_argument("No usable evaluation tokens");
+            const double ce = negative_log_likelihood / token_count;
+            const double perplexity = std::exp(ce);
+            if (!std::isfinite(perplexity)) throw std::runtime_error("Evaluation perplexity overflow");
+            nlohmann::json metrics{{"cross_entropy", ce}, {"perplexity", perplexity},
+                {"tokens", token_count}, {"samples", samples}, {"seed", get_int_arg("--seed", 42)},
+                {"weights", evaluate_untrained ? "random_initialization" : "checkpoint"},
+                {"dataset_identity", validation.identity}, {"context_length", seq_len}};
+            std::cout << "EVAL " << metrics.dump() << std::endl;
+            return 0;
+        }
+
         std::string prompt = argv[2];
         std::vector<TokenId> ids;
-        if (!t5_latent_generation)
-            ids = tokenizer.encode(prompt, true);
+        if (!t5_latent_generation) {
+            if (elf_mode) ids = tokenizer.encode(prompt, true);
+            else {
+                // AR training uses file boundaries. A generation prompt is an
+                // unfinished prefix, so do not append EOS before its continuation.
+                ids = tokenizer.encode(prompt);
+                ids.insert(ids.begin(), FILE_START_TOKEN_ID);
+            }
+        }
         std::cout << "READY\n" << std::flush;
 
         if (elf_mode) {
@@ -2782,7 +2841,7 @@ int main(int argc, char* argv[]) {
             if (repeat_count > 1) dynamic_temp = temp * 1.5f;
 
             int next = sample_from_probs(last_logit, dynamic_temp);
-            if (next == bpe::EOS_TOKEN_ID) break;
+            if (next == bpe::EOS_TOKEN_ID || next == FILE_END_TOKEN_ID) break;
 
             if (next == last_token) repeat_count++;
             else { last_token = next; repeat_count = 0; }
@@ -3631,6 +3690,7 @@ int main(int argc, char* argv[]) {
             }
             array batch_input = array(packed_input.data(), {accum * seq_len}, int32);
             array batch_target = array(packed_target.data(), {accum * seq_len}, int32);
+            inp = batch_input;  // Keep the real batch for the routing monitor.
             auto result = run_training_graph(batch_input, batch_target);
             step_loss_arr = multiply(result.loss, array((float)accum, float32));
 #ifdef USE_CAPACITY_MOE
@@ -3648,6 +3708,7 @@ int main(int argc, char* argv[]) {
                 auto [input, target] = sample_window();
                 array micro_input = array(input.data(), {seq_len}, int32);
                 array micro_target = array(target.data(), {seq_len}, int32);
+                inp = micro_input;
                 auto result = run_training_graph(micro_input, micro_target);
                 step_loss_arr = add(step_loss_arr, result.loss);
 #ifdef USE_CAPACITY_MOE
@@ -3707,16 +3768,16 @@ int main(int argc, char* argv[]) {
             // "\033[2J\033[H" 是标准ANSI转义码：\033[2J 清空整屏，\033[H 把光标移到左上角。
             //
             // 注意：自从加入负载均衡辅助损失后，grad_fn 反向传播实际优化的是
-            // "总Loss"(任务loss + aux_loss_weight*aux_loss)，但你真正关心模型
-            // 学得好不好，看的应该是"任务Loss"（纯交叉熵）。这里把两者拆开显示，
-            // 避免辅助损失的波动被误读成任务本身学习效果变差。
+            // "总Loss"(任务loss + aux_loss_weight*aux_loss)。任务损失仍包含
+            // cross_entropy_loss 的 confidence penalty；只读 eval 则报告纯交叉熵。
+            // 分开展示，避免辅助损失的波动掩盖任务损失的变化。
             std::cout << "\033[2J\033[H";
             std::cout << "┌─ Step " << s << " ──────────────────────────────────\n";
 #ifdef USE_CAPACITY_MOE
             float task_loss = avg_loss - aux_loss_weight * avg_aux;
             std::cout << "│ 总Loss(近60步) " << render_sparkline(loss_history.to_vector())
                       << "  " << std::fixed << std::setprecision(4) << avg_loss << "\n";
-            std::cout << "│ 任务Loss(纯交叉熵)  " << std::fixed << std::setprecision(4) << task_loss << "\n";
+            std::cout << "│ 任务Loss(含置信度惩罚)  " << std::fixed << std::setprecision(4) << task_loss << "\n";
             std::cout << "│ Aux   " << render_sparkline(aux_history.to_vector())
                       << "  " << std::fixed << std::setprecision(4) << avg_aux
                       << " (权重=" << aux_loss_weight << ")\n";
@@ -3750,11 +3811,9 @@ int main(int argc, char* argv[]) {
         }
 
 #ifdef USE_CAPACITY_MOE
-        // 🔬 专家负载监控：低频率抽样（每200步一次），用横向柱状图直观看出
-        // 路由学习是否导致负载分布明显偏离随机初始化时的均衡状态——如果某一行
-        // 柱子明显比其他行长很多，是专家坍缩的早期信号，考虑调高capacity_factor
-        // 或加负载均衡损失。结果存入 last_expert_panel，随主面板一起常驻显示，
-        // 而不是单独打印一截很快被清屏冲掉的内容。
+        // Low-frequency routing probe using the actual sampled batch. This
+        // probes embeddings, not attention/loop hidden states, so its capacity
+        // counts must not be presented as measured dispatch in the full model.
         //
         // 修复记录：初版这里直接把 inp（[seq_len] 的1D token id整数数组）传给
         // CapacityMoE::debug_fill_count，但该函数内部的 router 期望
@@ -3777,11 +3836,11 @@ int main(int argc, char* argv[]) {
             imbalance_ratio_history.push_back(imbalance_ratio);
 
             std::ostringstream panel;
-            panel << "🧮 专家负载分布 (每样本capacity=" << model.recurrent.moe.capacity << ")\n";
+            panel << "🧮 嵌入输入路由探针 (每样本capacity=" << model.recurrent.moe.capacity << ")\n";
             panel << render_horizontal_bars(fill_counts, 30);
             if (max_sequence_load > model.recurrent.moe.capacity) {
-                panel << "    ⚠️  单样本最高负载(" << max_sequence_load
-                      << ")已超过capacity，发生溢出丢弃\n";
+                panel << "    探针单样本最高负载(" << max_sequence_load
+                      << ")超过capacity；完整隐层路由需另行统计\n";
             }
             // 不均衡趋势：每次采样只是一个瞬时快照，容易受随机噪声影响，
             // 看不出负载均衡损失是否真的在缓慢改善。这条线展示所有采样点
