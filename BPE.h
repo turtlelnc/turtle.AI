@@ -52,6 +52,7 @@ public:
     
     size_t vocab_size() const { return vocab_.size(); }
     std::string id_to_token(TokenId id) const;
+    std::string fingerprint() const;
     void clear();
 
 private:

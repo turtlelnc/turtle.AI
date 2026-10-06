@@ -1,0 +1,20 @@
+{
+  "model": {
+    "seq_len": 16,
+    "d_model": 16,
+    "vocab_size": 300
+  },
+  "training": {
+    "corpus_path": "examples/train.txt",
+    "epochs": 20,
+    "seed": 7,
+    "learning_rate": 0.0001,
+    "clip_threshold": 1.0,
+    "save_point": 10,
+    "save_path": "build/model.bin",
+    "load_path": ""
+  },
+  "bpe": {
+    "bpe_model_path": "build/bpe_model.bin"
+  }
+}

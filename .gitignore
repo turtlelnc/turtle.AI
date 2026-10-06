@@ -39,3 +39,14 @@
 
 # debug information files
 *.dwo
+
+# Local builds, training configuration and generated models
+build/
+build-sanitize/
+config.json
+*.bin
+build-mlx*/
+*.bpe
+*.ckpt
+*.ckpt.*
+ssd_swap/

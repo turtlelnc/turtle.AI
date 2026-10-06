@@ -1,0 +1,71 @@
+#ifndef TURTLE_MLX_BPE_H
+#define TURTLE_MLX_BPE_H
+#include <cstdint>
+#include <fstream>
+#include <map>
+#include <memory>
+#include <regex>
+#include <string>
+#include <unordered_map>
+#include <vector>
+
+namespace bpe {
+using TokenId = int32_t;
+constexpr TokenId UNK_TOKEN_ID = 0;
+constexpr TokenId BOS_TOKEN_ID = 1;
+constexpr TokenId EOS_TOKEN_ID = 2;
+constexpr TokenId PAD_TOKEN_ID = 3;
+constexpr TokenId FILE_START_TOKEN_ID = 4;
+constexpr TokenId FILE_END_TOKEN_ID = 5;
+constexpr TokenId BASE_BYTE_OFFSET = 6;
+struct MergeRule {
+    std::string first, second, merged;
+    TokenId token_id;
+};
+struct BPEConfig {
+    size_t vocab_size = 2000;
+    size_t min_frequency = 1;
+    std::string unk_token = "<unk>", bos_token = "<s>", eos_token = "</s>", pad_token = "<pad>";
+    // Kept for source compatibility; the code lexer below is byte preserving.
+    std::regex pattern{R"(\r?\n|[ \t]+|[a-zA-Z_][a-zA-Z0-9_]*|[0-9]+|[^\s\w])"};
+};
+class BPETrainer {
+public:
+    BPETrainer();
+    explicit BPETrainer(const BPEConfig& config);
+    bool train_from_file(const std::string& path);
+    bool train_from_texts(const std::vector<std::string>& texts);
+    std::vector<TokenId> encode_fast(const std::string& text, bool add_special = false) const;
+    std::vector<TokenId> encode(const std::string& text, bool add_special = false) const;
+    std::string decode(const std::vector<TokenId>& ids, bool skip_special = false) const;
+    bool save(const std::string& path, const std::string& dataset_id = "") const;
+    bool load(const std::string& path, const std::string& expected_dataset_id = "");
+    void add_special_token(const std::string& token, TokenId forced_id = -1);
+    std::string dataset_id() const { return dataset_id_; }
+    std::string fingerprint() const;
+    void set_cached_tokens(const std::vector<TokenId>& tokens);
+    const std::vector<TokenId>& cached_tokens() const { return cached_tokens_; }
+    bool has_cached_tokens() const { return !cached_tokens_.empty(); }
+    size_t vocab_size() const { return vocab_.size(); }
+    std::string id_to_token(TokenId id) const;
+    void clear();
+private:
+    void build_initial_vocab();
+    void rebuild_lookup();
+    std::vector<std::string> split(const std::string& text) const;
+    std::vector<std::string> apply_merges(const std::string& word) const;
+    bool legacy_lexer_ = false;
+    BPEConfig config_;
+    std::unordered_map<std::string, TokenId> vocab_;
+    std::unordered_map<TokenId, std::string> id_to_vocab_;
+    std::vector<MergeRule> merge_rules_;
+    std::map<std::pair<std::string, std::string>, size_t> merge_ranks_;
+    std::unordered_map<std::string, std::vector<TokenId>> fast_vocab_;
+    std::vector<std::string> additional_tokens_, special_tokens_;
+    std::string dataset_id_;
+    std::vector<TokenId> cached_tokens_;
+    // Copies share one immutable revision; each mutation creates a new identity.
+    std::shared_ptr<const char> cache_key_ = std::make_shared<const char>(0);
+};
+}
+#endif

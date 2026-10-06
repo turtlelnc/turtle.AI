@@ -1,10 +1,15 @@
 #include "BPE.h"
 #include "json.hpp"
+#include "checkpoint.h"
 #include <algorithm>
 #include <cmath>
 #include <cstdio>
 #include <cstdlib>
 #include <ctime>
+#include <cstring>
+#include <memory>
+#include <limits>
+#include <stdexcept>
 #include <filesystem>
 #include <fstream>
 #include <iostream>
@@ -17,7 +22,6 @@
 #include <Accelerate/Accelerate.h>
 #define USE_ACCELERATE 1
 #else
-#include <omp.h>
 #define USE_ACCELERATE 0
 #endif
 using namespace std;
@@ -29,13 +33,18 @@ struct Tensor {
   int rows;
   int cols;
   Tensor(int r, int c) : rows(r), cols(c) {
-    data = new float[r * c];
-    grad = new float[r * c];
+    if (r < 0 || c < 0 || static_cast<long long>(r) * c > std::numeric_limits<int>::max())
+      throw std::invalid_argument("Tensor dimensions exceed supported range");
+    const size_t count = static_cast<size_t>(r) * c;
+    auto values = std::make_unique<float[]>(count);
+    auto gradients = std::make_unique<float[]>(count);
+    data = values.release();
+    grad = gradients.release();
   }
   Tensor(const Tensor &) = delete;
   Tensor &operator=(const Tensor &) = delete;
   Tensor(Tensor &&other) noexcept
-      : rows(other.rows), cols(other.cols), data(other.data), grad(other.grad) {
+      : grad(other.grad), data(other.data), rows(other.rows), cols(other.cols) {
     other.data = nullptr;
     other.grad = nullptr;
   }
@@ -91,14 +100,16 @@ void matmul(float *a, float *b, float *c, int m, int k, int n) {
   cblas_sgemm(CblasRowMajor, CblasNoTrans, CblasNoTrans, m, n, k, 1.0f, a, k, b,
               n, 0.0f, c, n);
 #else
-#pragma omp parallel for collapse(2)
+#pragma omp parallel for if(static_cast<long long>(m) * k * n >= 32768)
   for (int i = 0; i < m; i++) {
-    for (int j = 0; j < n; j++) {
-      float sum = 0.0f;
-      for (int f = 0; f < k; f++) {
-        sum += a[i * k + f] * b[f * n + j];
-      }
-      c[i * n + j] = sum;
+    float *row = c + i * n;
+    std::fill(row, row + n, 0.0f);
+    for (int f = 0; f < k; f++) {
+      const float value = a[i * k + f];
+      const float *b_row = b + f * n;
+#pragma omp simd
+      for (int j = 0; j < n; j++)
+        row[j] += value * b_row[j];
     }
   }
 #endif
@@ -107,12 +118,12 @@ void linear_forward(Tensor &X, Tensor &W, Tensor &Y) {
   matmul(X.data, W.data, Y.data, X.rows, X.cols, W.cols);
 }
 void linear_backward(Tensor &X, Tensor &W, Tensor &Y) {
-  Tensor x_tp(X.rows, X.cols);
+  Tensor x_tp(X.cols, X.rows);
   transpose(X.data, x_tp.data, X.rows, X.cols);
-  matmul(x_tp.data, Y.grad, W.grad, x_tp.rows, x_tp.cols, Y.cols);
-  Tensor w_tp(X.rows, X.cols);
-  transpose(X.data, w_tp.data, W.rows, W.cols);
-  matmul(w_tp.data, Y.grad, W.grad, Y.rows, Y.cols, w_tp.cols);
+  matmul(x_tp.data, Y.grad, W.grad, X.cols, X.rows, Y.cols);
+  Tensor w_tp(W.cols, W.rows);
+  transpose(W.data, w_tp.data, W.rows, W.cols);
+  matmul(Y.grad, w_tp.data, X.grad, Y.rows, Y.cols, W.rows);
 }
 float mse_loss(Tensor &Y_pred, Tensor &Y_target) {
   float tot_loss = 0.0f;
@@ -125,7 +136,8 @@ float mse_loss(Tensor &Y_pred, Tensor &Y_target) {
 }
 void mse_loss_backward(Tensor &Y_pred, Tensor &Y_target) {
   for (int i = 0; i < Y_pred.rows * Y_pred.cols; i++) {
-    Y_pred.grad[i] = Y_pred.data[i] - Y_target.data[i];
+    Y_pred.grad[i] = (Y_pred.data[i] - Y_target.data[i]) /
+                     (Y_pred.rows * Y_pred.cols);
   }
 }
 void relu_forward(Tensor &X, Tensor &Y) {
@@ -169,11 +181,14 @@ class LinearLayer : public Layer {
 public:
   Tensor *W, *b;
   int in_dim, out_dim;
+  std::vector<float> x_transpose, w_transpose, input_gradient;
 
   LinearLayer(int in_dim, int out_dim) : in_dim(in_dim), out_dim(out_dim) {
+    x_transpose.reserve(in_dim);
     // 正确的堆内存分配方式
     W = new Tensor(in_dim, out_dim);
     b = new Tensor(1, out_dim);
+    w_transpose.resize(in_dim * out_dim);
 
     float scale = sqrt(2.0f / in_dim);
     for (int i = 0; i < W->rows * W->cols; i++) {
@@ -194,7 +209,7 @@ public:
     matmul(input.data, W->data, output.data, input.rows, input.cols, W->cols);
 
 #if !USE_ACCELERATE
-#pragma omp parallel for
+#pragma omp parallel for if(output.rows * output.cols >= 32768)
 #endif
     for (int i = 0; i < output.rows; i++) {
       for (int j = 0; j < output.cols; j++) {
@@ -208,19 +223,14 @@ public:
     int K = input.cols;
     int N = output.cols;
 
-    float *x_tp_data = new (std::nothrow) float[M * K];
-    float *w_tp_data = new (std::nothrow) float[K * N];
-
-    if (!x_tp_data || !w_tp_data) {
-      printf("[Error] Memory allocation failed in backward!\n");
-      return;
-    }
-
-    transpose(input.data, x_tp_data, M, K);
-    matmul(x_tp_data, output.grad, W->grad, K, M, N);
-
-    transpose(W->data, w_tp_data, K, N);
-    matmul(output.grad, w_tp_data, input.grad, M, N, K);
+    // Reuse buffers across steps and keep each projection's input gradient.
+    x_transpose.resize(M * K);
+    input_gradient.resize(M * K);
+    transpose(input.data, x_transpose.data(), M, K);
+    matmul(x_transpose.data(), output.grad, W->grad, K, M, N);
+    transpose(W->data, w_transpose.data(), K, N);
+    matmul(output.grad, w_transpose.data(), input_gradient.data(), M, N, K);
+    std::copy(input_gradient.begin(), input_gradient.end(), input.grad);
 
     // Bias 梯度更新
     for (int i = 0; i < M; i++) {
@@ -229,8 +239,7 @@ public:
       }
     }
 
-    delete[] x_tp_data;
-    delete[] w_tp_data;
+
   }
 
   void save(std::ofstream &out) {
@@ -312,13 +321,13 @@ public:
   int d_model;
   int d_head;
   Tensor Q, K, V;
-  Tensor K_tp, V_tp;
+  Tensor K_tp, V_tp, scores_softmax_tp;
   Tensor scores, scores_softmax;
   Tensor d_scores_softmax, d_scores_raw, d_scores_raw_tp;
 
   AttentionLayer(int s, int m, int h)
       : W_q(m, h), W_k(m, h), W_v(m, h), seq_len(s), d_model(m), d_head(h),
-        Q(s, h), K(s, h), V(s, h), K_tp(h, s), V_tp(h, s), scores(s, s),
+        Q(s, h), K(s, h), V(s, h), K_tp(h, s), V_tp(h, s), scores_softmax_tp(s, s), scores(s, s),
         scores_softmax(s, s), d_scores_softmax(s, s), d_scores_raw(s, s),
         d_scores_raw_tp(s, s) {}
 
@@ -348,7 +357,6 @@ public:
   void backward(Tensor &input, Tensor &output) override {
     int L = seq_len;
     int D = d_head;
-    static Tensor scores_softmax_tp(L, L);
     transpose(scores_softmax.data, scores_softmax_tp.data, L, L);
     matmul(scores_softmax_tp.data, output.grad, V.grad, L, L, D);
     transpose(V.data, V_tp.data, L, D);
@@ -375,6 +383,11 @@ public:
     W_q.backward(input, Q);
     W_k.backward(input, K);
     W_v.backward(input, V);
+    // Q, K and V all depend on the same input; sum their contributions.
+    for (int i = 0; i < input.rows * input.cols; ++i) {
+      input.grad[i] = W_q.input_gradient[i] + W_k.input_gradient[i] +
+                      W_v.input_gradient[i];
+    }
   }
 
   void update(float lr) override {
@@ -426,11 +439,15 @@ public:
     forward_ids(ids, output);
   }
   void forward_ids(const std::vector<int> &token_ids, Tensor &output) {
+    if (token_ids.size() > static_cast<size_t>(output.rows) || output.cols != d_model)
+      throw std::invalid_argument("Embedding output shape does not match token IDs");
     last_input_ids = token_ids;
+    std::fill(output.data, output.data + output.rows * output.cols, 0.0f);
     for (int i = 0; i < (int)token_ids.size(); i++) {
       int id = token_ids[i];
-      if (id >= vocab_size)
+      if (id < 0 || id >= vocab_size)
         id = 0;
+      last_input_ids[i] = id;
       memcpy(&output.data[i * d_model], &weights.data[id * d_model],
              sizeof(float) * d_model);
     }
@@ -594,70 +611,51 @@ void load_weights(std::ifstream &in, Tensor &W) {
   in.read(reinterpret_cast<char *>(W.data), W.rows * W.cols * sizeof(float));
 }
 
-Tensor image_to_patches(const string &img_path, int d_model,
-                        int patch_size = 16, int image_size = 224) {
-  int w, h, c;
-  unsigned char *data = stbi_load(img_path.c_str(), &w, &h, &c, 3);
-  if (!data) {
-    printf("[Vision] Failed to load image: %s\n", img_path.c_str());
-    return Tensor(0, d_model);
-  }
-  int target_h = image_size, target_w = image_size;
-  vector<float> resized(target_h * target_w * 3);
-
-  for (int y = 0; y < target_h; y++) {
-    for (int x = 0; x < target_w; x++) {
-      float src_x = (float)x * w / target_w;
-      float src_y = (float)y * h / target_h;
-      int x0 = min((int)src_x, w - 2), y0 = min((int)src_y, h - 2);
-      float dx = src_x - x0, dy = src_y - y0;
-
-      for (int ch = 0; ch < 3; ch++) {
-        float v00 = data[(y0 * w + x0) * 3 + ch];
-        float v01 = data[(y0 * w + x0 + 1) * 3 + ch];
-        float v10 = data[((y0 + 1) * w + x0) * 3 + ch];
-        float v11 = data[((y0 + 1) * w + x0 + 1) * 3 + ch];
-        float val = v00 * (1 - dx) * (1 - dy) + v01 * dx * (1 - dy) +
-                    v10 * (1 - dx) * dy + v11 * dx * dy;
-        resized[(y * target_w + x) * 3 + ch] = val / 255.0f;
-      }
-    }
-  }
-  stbi_image_free(data);
-
-  int num_patches = (image_size / patch_size) * (image_size / patch_size);
-  int patch_dim = patch_size * patch_size * 3;
-
-  Tensor patch_embed(num_patches, d_model);
-  vector<float> proj(patch_dim * d_model);
-  for (auto &v : proj)
-    v = ((float)rand() / RAND_MAX - 0.5f) * 0.02f;
-
-  for (int p = 0; p < num_patches; p++) {
-    int py = (p / (image_size / patch_size)) * patch_size;
-    int px = (p % (image_size / patch_size)) * patch_size;
-
-    vector<float> patch_vec(patch_dim);
-    for (int ky = 0; ky < patch_size; ky++) {
-      for (int kx = 0; kx < patch_size; kx++) {
-        for (int ch = 0; ch < 3; ch++) {
-          int idx = ((py + ky) * target_w + (px + kx)) * 3 + ch;
-          patch_vec[(ky * patch_size + kx) * 3 + ch] = resized[idx];
+void extract_image_patches(const string &path, Tensor &patches,
+                           int patch_size = 16, int image_size = 224) {
+  if (patch_size <= 0 || image_size <= 0 || image_size % patch_size != 0 ||
+      patches.rows != (image_size / patch_size) * (image_size / patch_size) ||
+      patches.cols != patch_size * patch_size * 3)
+    throw std::invalid_argument("Image patch dimensions are invalid");
+  int w, h, channels;
+  std::unique_ptr<unsigned char, decltype(&stbi_image_free)> pixels(
+      stbi_load(path.c_str(), &w, &h, &channels, 3), stbi_image_free);
+  if (!pixels) throw std::runtime_error("Cannot load image: " + path);
+  const int side = image_size / patch_size;
+  for (int patch = 0; patch < patches.rows; ++patch) {
+    for (int y = 0; y < patch_size; ++y) {
+      for (int x = 0; x < patch_size; ++x) {
+        const float sx = static_cast<float>((patch % side) * patch_size + x) * w / image_size;
+        const float sy = static_cast<float>((patch / side) * patch_size + y) * h / image_size;
+        const int x0 = std::min(static_cast<int>(sx), w - 1);
+        const int y0 = std::min(static_cast<int>(sy), h - 1);
+        const int x1 = std::min(x0 + 1, w - 1), y1 = std::min(y0 + 1, h - 1);
+        const float dx = sx - x0, dy = sy - y0;
+        for (int c = 0; c < 3; ++c) {
+          const auto *data = pixels.get();
+          const float value =
+              data[(y0 * w + x0) * 3 + c] * (1 - dx) * (1 - dy) +
+              data[(y0 * w + x1) * 3 + c] * dx * (1 - dy) +
+              data[(y1 * w + x0) * 3 + c] * (1 - dx) * dy +
+              data[(y1 * w + x1) * 3 + c] * dx * dy;
+          patches.data[patch * patches.cols + (y * patch_size + x) * 3 + c] = value / 255.0f;
         }
       }
     }
-    for (int d = 0; d < d_model; d++) {
-      float sum = 0;
-      for (int i = 0; i < patch_dim; i++) {
-        sum += patch_vec[i] * proj[i * d_model + d];
-      }
-      patch_embed.data[p * d_model + d] = sum;
-    }
   }
+}
 
-  printf("[Vision] Image %s -> %d patches (%d-dim)\n", img_path.c_str(),
-         num_patches, d_model);
-  return patch_embed;
+Tensor image_to_patches(const string &path, int d_model,
+                        int patch_size = 16, int image_size = 224) {
+  if (patch_size <= 0 || image_size <= 0 || image_size % patch_size != 0)
+    throw std::invalid_argument("Image patch dimensions are invalid");
+  int side = image_size / patch_size;
+  Tensor patches(side * side, patch_size * patch_size * 3);
+  extract_image_patches(path, patches, patch_size, image_size);
+  LinearLayer projection(patches.cols, d_model);
+  Tensor output(patches.rows, d_model);
+  projection.forward(patches, output);
+  return output;
 }
 class TransformerBlock {
 public:
@@ -729,6 +727,8 @@ public:
     }
   }
   void update(float lr) {
+    norm1.update(lr);
+    norm2.update(lr);
     attn.update(lr);
     ffn1.update(lr);
     ffn2.update(lr);
@@ -767,52 +767,64 @@ void global_clip(TransformerBlock *b, float limit) {
   clip_grad(b->attn.W_k.W, limit);
   clip_grad(b->attn.W_v.W, limit);
 }
-#include <cstring>
-void process_image_to_input(const string &path, LinearLayer &vis_proj,
-                            Tensor &input_tensor, int d_model) {
-  int w, h, c;
-  unsigned char *data = stbi_load(path.c_str(), &w, &h, &c, 3);
-  if (!data)
-  {
-    // 保底：避免未初始化 data 进入后续计算导致 NaN
-    std::memset(input_tensor.data, 0,
-                input_tensor.rows * input_tensor.cols * sizeof(float));
-    return;
-  }
-
-  int patch_size = 16;
-  int num_patches_side = 14;
-  int patch_dim = 768;
-
-  for (int i = 0; i < num_patches_side * num_patches_side; i++) {
-    if (i >= input_tensor.rows)
-      break;
-    float patch_raw[768];
-    for (int j = 0; j < 768; j++) {
-      patch_raw[j] = (float)data[(i * 768 + j) % (w * h * c)] / 255.0f;
-    }
-    for (int d = 0; d < d_model; d++) {
-      float sum = 0;
-      for (int p = 0; p < patch_dim; p++) {
-        sum += patch_raw[p] * vis_proj.W->data[p * d_model + d];
-      }
-      input_tensor.data[i * d_model + d] = sum + vis_proj.b->data[d];
-    }
-  }
-  stbi_image_free(data);
+void process_image_to_input(const string &path, LinearLayer &projection,
+                            Tensor &input, Tensor &patches, Tensor &image_embeddings) {
+  if (input.rows < image_embeddings.rows || input.cols != image_embeddings.cols)
+    throw std::invalid_argument("Image embeddings do not fit the input tensor");
+  extract_image_patches(path, patches);
+  projection.forward(patches, image_embeddings);
+  std::copy_n(image_embeddings.data, image_embeddings.rows * image_embeddings.cols, input.data);
 }
 
-int main() {
+checkpoint::State model_state(EmbeddingLayer &embed, LinearLayer &vision,
+                              vector<std::unique_ptr<TransformerBlock>> &blocks,
+                              LinearLayer &projection, int seq_len,
+                              const bpe::BPETrainer &tokenizer) {
+  static_assert(sizeof(float) == 4 && std::numeric_limits<float>::is_iec559,
+                "Checkpoints require IEEE-754 32-bit floats");
+  checkpoint::State state;
+  state.metadata = {{"format_version", 1}, {"seq_len", seq_len},
+                    {"d_model", embed.d_model}, {"vocab_size", embed.vocab_size},
+                    {"block_count", blocks.size()}, {"scalar_format", "ieee754-f32"},
+                    {"byte_order", checkpoint::byte_order()},
+                    {"tokenizer_fingerprint", tokenizer.fingerprint()},
+                    {"vision_layout", "rgb-bilinear-224-p16"}};
+  auto tensor = [&](Tensor &value) {
+    state.parameters.emplace_back(value.data, static_cast<size_t>(value.rows) * value.cols);
+  };
+  auto linear = [&](LinearLayer &layer) { tensor(*layer.W); tensor(*layer.b); };
+  tensor(embed.weights);
+  linear(vision);
+  for (auto &block : blocks) {
+    linear(block->attn.W_q);
+    linear(block->attn.W_k);
+    linear(block->attn.W_v);
+    linear(block->ffn1);
+    linear(block->ffn2);
+  }
+  linear(projection);
+  state.legacy_blocks = state.parameters.size();
+  for (auto &block : blocks)
+    for (auto *norm : {&block->norm1, &block->norm2}) {
+      state.parameters.emplace_back(norm->gamma.data(), norm->gamma.size());
+      state.parameters.emplace_back(norm->beta.data(), norm->beta.size());
+    }
+  return state;
+}
+
+int main(int argc, char **argv) {
+  try {
 
 
-  srand(static_cast<unsigned int>(time(NULL)));
-  ifstream cfg_file("config.json");
+  const string config_path = argc > 1 ? argv[1] : "config.json";
+  ifstream cfg_file(config_path);
   if (!cfg_file.is_open()) {
-    cout << "Error: config.json not found!" << endl;
+    cout << "Error: configuration not found: " << config_path << endl;
     return -1;
   }
   json cfg;
   cfg_file >> cfg;
+  srand(cfg["training"].value("seed", static_cast<unsigned int>(time(nullptr))));
   string corpus_path = cfg["training"].value("corpus_path", "train.txt");
   int seq_len = cfg["model"].value("seq_len", 128);
   int d_model = cfg["model"].value("d_model", 128);
@@ -822,89 +834,66 @@ int main() {
   int save_point = cfg["training"].value("save_point", 100);
   string weight_path = cfg["training"].value("save_path", "model.bin");
   string load_path = cfg["training"].value("load_path", "");
+  if (seq_len <= 0 || d_model <= 0 ||
+      d_model > std::numeric_limits<int>::max() / 4 || epochs <= 0 ||
+      !std::isfinite(lr) || lr <= 0 || !std::isfinite(clip_threshold) ||
+      clip_threshold <= 0 || save_point < 0)
+    throw std::invalid_argument("Model dimensions, epochs, learning rate and clip threshold must be positive; save_point must be nonnegative");
+  if (!fs::exists(corpus_path))
+    throw std::invalid_argument("Corpus does not exist: " + corpus_path);
   bool is_vlm = fs::is_directory(corpus_path);
+  if (is_vlm && seq_len <= 196)
+    throw std::invalid_argument("VLM seq_len must exceed the 196 image tokens");
+  json vlm_dataset;
+  if (is_vlm) {
+    ifstream dataset_file(fs::path(corpus_path) / "train.json");
+    if (!dataset_file) throw std::runtime_error("Cannot open VLM train.json");
+    dataset_file >> vlm_dataset;
+    if (!vlm_dataset.is_array() || vlm_dataset.empty())
+      throw std::invalid_argument("VLM train.json must contain a nonempty array");
+    for (const auto &sample : vlm_dataset)
+      if (!sample.is_object() || !sample.contains("answer") ||
+          !sample["answer"].is_string() || sample["answer"].get<string>().empty())
+        throw std::invalid_argument("Each VLM sample must have a nonempty answer string");
+  }
   bpe::BPEConfig bpe_cfg;
-  bpe_cfg.vocab_size = cfg["model"].value("vocab_size", 2000);
+  const int requested_vocab_size = cfg["model"].value("vocab_size", 2000);
+  if (requested_vocab_size < 260)
+    throw std::invalid_argument("vocab_size must be at least 260 for byte-level BPE");
+  bpe_cfg.vocab_size = static_cast<size_t>(requested_vocab_size);
   bpe::BPETrainer bpe_model(bpe_cfg);
-  string bpe_path = cfg["bpe"].value("bpe_model_path", "bpe_model.bin");
+  string bpe_path = cfg.value("bpe", json::object()).value("bpe_model_path", "bpe_model.bin");
   if (!bpe_model.load(bpe_path)) {
-    string src =
-        is_vlm ? (fs::path(corpus_path) / "train.json").string() : corpus_path;
-    bpe_model.train_from_file(src);
-    bpe_model.save(bpe_path);
+    if (is_vlm) {
+      vector<string> answers;
+      for (const auto &sample : vlm_dataset) answers.push_back(sample["answer"].get<string>());
+      bpe_model.train_from_texts(answers);
+    } else if (!bpe_model.train_from_file(corpus_path)) {
+      throw std::runtime_error("Cannot train BPE from: " + corpus_path);
+    }
+    if (!bpe_model.save(bpe_path))
+      throw std::runtime_error("Cannot save BPE to: " + bpe_path);
   }
   int vocab_size = bpe_model.vocab_size();
   EmbeddingLayer embed(vocab_size, d_model);
   PositionalEncoding pos_enc(seq_len, d_model);
   LinearLayer vision_proj(768, d_model);
-  vector<TransformerBlock *> blocks;
+  vector<std::unique_ptr<TransformerBlock>> blocks;
 
   for (int i = 0; i < 8; i++) {
-    blocks.push_back(new TransformerBlock(seq_len, d_model, d_model));
+    blocks.push_back(std::make_unique<TransformerBlock>(seq_len, d_model, d_model));
   }
   LinearLayer projection(d_model, vocab_size);
 
-  auto tensor_all_finite = [&](Tensor &t) {
-    for (int i = 0; i < t.rows * t.cols; i++) {
-      if (!std::isfinite(t.data[i]))
-        return false;
-    }
-    return true;
-  };
-  auto reset_tensor_rand = [&](Tensor &t, float scale) {
-    for (int i = 0; i < t.rows * t.cols; i++) {
-      t.data[i] = ((rand() / (float)RAND_MAX) - 0.5f) * scale;
-    }
-  };
-  auto reset_linear = [&](LinearLayer &l, float scale_w) {
-    reset_tensor_rand(*l.W, scale_w);
-    for (int i = 0; i < l.b->cols; i++)
-      l.b->data[i] = 0.0f;
-  };
-
-  string effective_load_path = load_path.empty() ? weight_path : load_path;
-  ifstream in_f(effective_load_path, ios::binary);
-  if (in_f.is_open()) {
+  const auto checkpoint_state = model_state(embed, vision_proj, blocks, projection, seq_len, bpe_model);
+  const string effective_load_path = load_path.empty() ? weight_path : load_path;
+  if (!load_path.empty() || fs::exists(effective_load_path)) {
     cout << "[System] Loading weights..." << endl;
-    embed.weights.load(in_f);
-    vision_proj.load(in_f);
-    for (auto b : blocks)
-      b->load(in_f);
-    projection.load(in_f);
-    in_f.close();
-
-    bool bad_weight = !tensor_all_finite(embed.weights) ||
-                      !tensor_all_finite(*vision_proj.W) ||
-                      !tensor_all_finite(*projection.W);
-    for (auto b : blocks) {
-      bad_weight = bad_weight || !tensor_all_finite(*b->ffn1.W) ||
-                   !tensor_all_finite(*b->ffn2.W) ||
-                   !tensor_all_finite(*b->attn.W_q.W) ||
-                   !tensor_all_finite(*b->attn.W_k.W) ||
-                   !tensor_all_finite(*b->attn.W_v.W);
-    }
-    if (bad_weight) {
-      cout << "[Warn] Loaded weights contain NaN/Inf, reinitializing model."
-           << endl;
-      reset_tensor_rand(embed.weights, sqrt(2.0f / d_model));
-      reset_linear(vision_proj, sqrt(2.0f / 768.0f));
-      for (auto b : blocks) {
-        reset_linear(b->ffn1, sqrt(2.0f / d_model));
-        reset_linear(b->ffn2, sqrt(2.0f / (d_model * 4.0f)));
-        reset_linear(b->attn.W_q, sqrt(2.0f / d_model));
-        reset_linear(b->attn.W_k, sqrt(2.0f / d_model));
-        reset_linear(b->attn.W_v, sqrt(2.0f / d_model));
-      }
-      reset_linear(projection, sqrt(2.0f / d_model));
-    }
+    if (checkpoint::load(effective_load_path, checkpoint_state))
+      cout << "[Warn] Legacy checkpoint: dimensions/tokenizer cannot be verified; LayerNorm starts at defaults. Next save uses format version 1." << endl;
   }
-  json vlm_dataset;
   vector<bpe::TokenId> all_text_tokens;
-  if (is_vlm) {
-    ifstream j_in(fs::path(corpus_path) / "train.json");
-    if (j_in.is_open())
-      j_in >> vlm_dataset;
-  } else {
+  if (!is_vlm) {
     ifstream t_in(corpus_path);
     string line;
     while (getline(t_in, line)) {
@@ -912,10 +901,19 @@ int main() {
       all_text_tokens.insert(all_text_tokens.end(), lt.begin(), lt.end());
     }
   }
+  if (!is_vlm && all_text_tokens.size() < static_cast<size_t>(seq_len) + 1)
+    throw std::invalid_argument("Text corpus must contain at least seq_len + 1 encoded tokens");
   Tensor input_tensor(seq_len, d_model);
   Tensor hidden(seq_len, d_model);
   Tensor next_h(seq_len, d_model);
   Tensor logits(seq_len, vocab_size);
+
+  std::unique_ptr<Tensor> image_patches, image_embeddings;
+  if (is_vlm) {
+    image_patches = std::make_unique<Tensor>(196, 768);
+    image_embeddings = std::make_unique<Tensor>(196, d_model);
+  }
+  auto save_model = [&]() { checkpoint::save(weight_path, checkpoint_state); };
 
   cout << "[System] Starting " << (is_vlm ? "VLM" : "Text")
        << " training loop..." << endl;
@@ -942,7 +940,7 @@ int main() {
       logits.clear_grad();
       if (is_vlm)
         vision_proj.clear_grad();
-      for (auto b : blocks)
+      for (auto &b : blocks)
         b->clear_grad();
     };
     reset_gradients();
@@ -952,8 +950,6 @@ int main() {
     vector<int> step_input_ids(seq_len, -1);
 
     if (is_vlm) {
-      if (vlm_dataset.empty())
-        continue;
       int idx = rand() % (int)vlm_dataset.size();
       string img_p =
           (fs::path(corpus_path) / ("train_" + to_string(idx) + ".jpg"))
@@ -962,11 +958,11 @@ int main() {
       // 保底：VLM 分支可能不会填满整个 seq_len，必须清空未写入区域
       std::memset(input_tensor.data, 0,
                   input_tensor.rows * input_tensor.cols * sizeof(float));
-      process_image_to_input(img_p, vision_proj, input_tensor, d_model);
+      process_image_to_input(img_p, vision_proj, input_tensor, *image_patches, *image_embeddings);
       string ans = vlm_dataset[idx].value("answer", "");
-      auto tokens = bpe_model.encode(ans, false);
+      auto tokens = bpe_model.encode(ans, true);
       for (size_t i = 0; i + 1 < tokens.size() &&
-                         (i + img_tokens < (size_t)seq_len - 1);
+                         (i + img_tokens < (size_t)seq_len);
            i++) {
         int current_id = tokens[i];
         int next_id = tokens[i + 1];
@@ -981,9 +977,7 @@ int main() {
         target_ids[i + img_tokens] = next_id;
       }
     } else {
-      if (all_text_tokens.size() <= (size_t)seq_len + 1)
-        continue;
-      int start = rand() % (int)(all_text_tokens.size() - seq_len - 1);
+      size_t start = static_cast<size_t>(rand()) % (all_text_tokens.size() - seq_len);
       vector<int> ids;
       for (int i = 0; i < seq_len; i++) {
         ids.push_back((int)all_text_tokens[start + i]);
@@ -1042,6 +1036,9 @@ int main() {
       }
     }
 
+    if (count == 0) continue;
+    for (int i = 0; i < seq_len * vocab_size; ++i)
+      logits.grad[i] /= static_cast<float>(count);
     projection.backward(hidden, logits);
     for (int i = 7; i >= 0; i--) {
       Tensor &input_ref =
@@ -1054,6 +1051,8 @@ int main() {
     if (!is_vlm) {
       embed.backward(input_tensor, input_tensor);
     } else {
+      std::copy_n(input_tensor.grad, 196 * d_model, image_embeddings->grad);
+      vision_proj.backward(*image_patches, *image_embeddings);
       // VLM: 仅对文本 token 位置把输入梯度回传到词向量。
       for (int pos = 0; pos < seq_len; pos++) {
         int id = step_input_ids[pos];
@@ -1076,16 +1075,27 @@ int main() {
           t->grad[i] = -clip_threshold;
       }
     };
-    strict_clip(projection.W);
+    auto clip_linear = [&](LinearLayer &layer) {
+      strict_clip(layer.W);
+      strict_clip(layer.b);
+    };
+    auto clip_norm = [&](LayerNorm &norm) {
+      for (auto *gradient : {&norm.g_grad, &norm.b_grad})
+        for (float &value : *gradient)
+          value = std::clamp(value, -clip_threshold, clip_threshold);
+    };
+    clip_linear(projection);
     strict_clip(&embed.weights);
     if (is_vlm)
-      strict_clip(vision_proj.W);
-    for (auto b : blocks) {
-      strict_clip(b->ffn1.W);
-      strict_clip(b->ffn2.W);
-      strict_clip(b->attn.W_q.W);
-      strict_clip(b->attn.W_k.W);
-      strict_clip(b->attn.W_v.W);
+      clip_linear(vision_proj);
+    for (auto &b : blocks) {
+      clip_linear(b->ffn1);
+      clip_linear(b->ffn2);
+      clip_linear(b->attn.W_q);
+      clip_linear(b->attn.W_k);
+      clip_linear(b->attn.W_v);
+      clip_norm(b->norm1);
+      clip_norm(b->norm2);
     }
 
     // 前 5% 线性 warmup，后续由自适应调度主导（避免后期 lr 过小）
@@ -1097,7 +1107,7 @@ int main() {
     float current_lr = scheduled_lr * lr_scale;
 
     projection.update(current_lr);
-    for (auto b : blocks)
+    for (auto &b : blocks)
       b->update(current_lr);
     if (is_vlm)
       vision_proj.update(current_lr);
@@ -1140,33 +1150,16 @@ int main() {
     }
 
     if (save_point > 0 && (epoch + 1) % save_point == 0) {
-      ofstream out_f(weight_path, ios::binary);
-      if (out_f.is_open()) {
-        embed.weights.save(out_f);
-        vision_proj.save(out_f);
-        for (auto b : blocks)
-          b->save(out_f);
-        projection.save(out_f);
-        out_f.close();
-        cout << "[System] Checkpoint saved (epoch " << (epoch + 1) << ")"
-             << endl;
-      }
+      save_model();
+      cout << "[System] Checkpoint saved (epoch " << (epoch + 1) << ")" << endl;
     }
   }
 
-  {
-    ofstream out_f(weight_path, ios::binary);
-    if (out_f.is_open()) {
-      embed.weights.save(out_f);
-      vision_proj.save(out_f);
-      for (auto b : blocks)
-        b->save(out_f);
-      projection.save(out_f);
-      out_f.close();
-    }
-  }
+  save_model();
   cout << "[System] Model saved" << endl;
-  for (auto b : blocks)
-    delete b;
   return 0;
+  } catch (const std::exception &error) {
+    std::cerr << "Error: " << error.what() << std::endl;
+    return 1;
+  }
 }

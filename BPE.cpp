@@ -2,6 +2,7 @@
 #include <iostream>
 #include <algorithm>
 #include <cstdint>
+#include <limits>
 
 namespace bpe {
 BPETrainer::BPETrainer() { build_initial_vocab(); }
@@ -9,6 +10,7 @@ BPETrainer::BPETrainer(const BPEConfig& config) : config_(config) { build_initia
 
 void BPETrainer::build_initial_vocab() {
     vocab_.clear(); id_to_vocab_.clear();
+    merge_rules_.clear();
     vocab_[config_.unk_token] = UNK_TOKEN_ID; id_to_vocab_[UNK_TOKEN_ID] = config_.unk_token;
     vocab_[config_.bos_token] = BOS_TOKEN_ID; id_to_vocab_[BOS_TOKEN_ID] = config_.bos_token;
     vocab_[config_.eos_token] = EOS_TOKEN_ID; id_to_vocab_[EOS_TOKEN_ID] = config_.eos_token;
@@ -42,7 +44,7 @@ bool BPETrainer::train_from_texts(const std::vector<std::string>& texts) {
     while (vocab_.size() < config_.vocab_size) {
         std::map<std::pair<std::string, std::string>, size_t> pair_freqs;
         for (auto const& [chars, freq] : splits) {
-            for (size_t i = 0; i < chars.size() - 1; ++i)
+            for (size_t i = 0; i + 1 < chars.size(); ++i)
                 pair_freqs[{chars[i], chars[i+1]}] += freq;
         }
         if (pair_freqs.empty()) break;
@@ -50,18 +52,20 @@ bool BPETrainer::train_from_texts(const std::vector<std::string>& texts) {
         if (best->second < config_.min_frequency) break;
 
         std::string f = best->first.first, s = best->first.second, m = f + s;
-        TokenId nid = (TokenId)vocab_.size();
+        auto existing = vocab_.find(m);
+        TokenId nid = existing == vocab_.end() ? (TokenId)vocab_.size() : existing->second;
         vocab_[m] = nid; id_to_vocab_[nid] = m;
         merge_rules_.push_back({f, s, m, nid});
 
         std::map<std::vector<std::string>, size_t> next_splits;
         for (auto const& [chars, freq] : splits) {
             std::vector<std::string> next_chars;
+            next_chars.reserve(chars.size());
             for (size_t i = 0; i < chars.size(); ++i) {
                 if (i < chars.size()-1 && chars[i] == f && chars[i+1] == s) { next_chars.push_back(m); i++; }
                 else next_chars.push_back(chars[i]);
             }
-            next_splits[next_chars] = freq;
+            next_splits[next_chars] += freq;
         }
         splits = std::move(next_splits);
     }
@@ -80,7 +84,10 @@ std::vector<TokenId> BPETrainer::encode(const std::string& text, bool add_specia
     if (add_special) ids.push_back(BOS_TOKEN_ID);
     auto it = std::sregex_iterator(text.begin(), text.end(), config_.pattern);
     for (; it != std::sregex_iterator(); ++it) {
-        for (const auto& t : apply_merges(it->str())) ids.push_back(vocab_.count(t) ? vocab_.at(t) : UNK_TOKEN_ID);
+        for (const auto& t : apply_merges(it->str())) {
+            auto found = vocab_.find(t);
+            ids.push_back(found != vocab_.end() ? found->second : UNK_TOKEN_ID);
+        }
     }
     if (add_special) ids.push_back(EOS_TOKEN_ID);
     return ids;
@@ -88,9 +95,12 @@ std::vector<TokenId> BPETrainer::encode(const std::string& text, bool add_specia
 
 std::vector<std::string> BPETrainer::apply_merges(const std::string& word) const {
     std::vector<std::string> tokens;
+    tokens.reserve(word.size());
     for (unsigned char c : word) tokens.push_back(std::string(1, c));
     for (const auto& r : merge_rules_) {
+        if (tokens.size() < 2) break;
         std::vector<std::string> next;
+        next.reserve(tokens.size());
         for (size_t i = 0; i < tokens.size(); ++i) {
             if (i < tokens.size()-1 && tokens[i] == r.first && tokens[i+1] == r.second) { next.push_back(r.merged); i++; }
             else next.push_back(tokens[i]);
@@ -113,6 +123,33 @@ std::string BPETrainer::id_to_token(TokenId id) const {
     return id_to_vocab_.count(id) ? id_to_vocab_.at(id) : config_.unk_token;
 }
 
+std::string BPETrainer::fingerprint() const {
+    uint64_t hash = 14695981039346656037ULL;
+    auto add_integer = [&](uint64_t value) {
+        for (int i = 0; i < 8; ++i) {
+            hash ^= (value >> (8 * i)) & 255;
+            hash *= 1099511628211ULL;
+        }
+    };
+    auto add_string = [&](const std::string& token) {
+        add_integer(token.size());
+        for (unsigned char byte : token) {
+            hash ^= byte;
+            hash *= 1099511628211ULL;
+        }
+    };
+    add_integer(vocab_.size());
+    for (TokenId id = 0; static_cast<size_t>(id) < vocab_.size(); ++id)
+        add_string(id_to_token(id));
+    add_integer(merge_rules_.size());
+    for (const auto& rule : merge_rules_) {
+        add_string(rule.first);
+        add_string(rule.second);
+        add_integer(rule.token_id);
+    }
+    return std::to_string(hash);
+}
+
 bool BPETrainer::save(const std::string& path) const {
     std::ofstream out(path, std::ios::binary); if(!out) return false;
     size_t sz = merge_rules_.size(); out.write((char*)&sz, sizeof(sz));
@@ -123,20 +160,56 @@ bool BPETrainer::save(const std::string& path) const {
         out.write((char*)&s3, sizeof(s3)); out.write(r.merged.data(), s3);
         out.write((char*)&r.token_id, sizeof(r.token_id));
     }
-    return true;
+    out.flush();
+    return static_cast<bool>(out);
 }
 
 bool BPETrainer::load(const std::string& path) {
-    std::ifstream in(path, std::ios::binary); if(!in) return false;
-    build_initial_vocab(); size_t sz; in.read((char*)&sz, sizeof(sz));
-    for(size_t i=0; i<sz; ++i) {
-        size_t s1, s2, s3; 
-        in.read((char*)&s1, sizeof(s1)); std::string f(s1, ' '); in.read(&f[0], s1);
-        in.read((char*)&s2, sizeof(s2)); std::string s(s2, ' '); in.read(&s[0], s2);
-        in.read((char*)&s3, sizeof(s3)); std::string m(s3, ' '); in.read(&m[0], s3);
-        TokenId id; in.read((char*)&id, sizeof(id));
-        merge_rules_.push_back({f, s, m, id}); vocab_[m] = id; id_to_vocab_[id] = m;
+    std::ifstream in(path, std::ios::binary | std::ios::ate);
+    if (!in) return false;
+    const auto end = in.tellg();
+    if (end < static_cast<std::streamoff>(sizeof(size_t))) return false;
+    size_t remaining = static_cast<size_t>(end);
+    in.seekg(0);
+    auto read = [&](void* data, size_t size) {
+        if (size > remaining) return false;
+        if (!in.read(static_cast<char*>(data), size)) return false;
+        remaining -= size;
+        return true;
+    };
+    size_t count = 0;
+    if (!read(&count, sizeof(count)) ||
+        count > remaining / (3 * sizeof(size_t) + sizeof(TokenId) + 4) ||
+        count > static_cast<size_t>(std::numeric_limits<TokenId>::max()) - 260)
+        return false;
+
+    // Parse into a temporary trainer so failed loads preserve the current model.
+    BPETrainer candidate(config_);
+    auto read_string = [&](std::string& value) {
+        size_t size = 0;
+        if (!read(&size, sizeof(size)) || size == 0 || size > remaining) return false;
+        value.resize(size);
+        return read(value.data(), size);
+    };
+    for (size_t i = 0; i < count; ++i) {
+        std::string first, second, merged;
+        TokenId id = 0;
+        if (!read_string(first) || !read_string(second) || !read_string(merged) ||
+            !read(&id, sizeof(id)) || merged != first + second ||
+            !candidate.vocab_.count(first) || !candidate.vocab_.count(second))
+            return false;
+        auto existing = candidate.vocab_.find(merged);
+        const TokenId expected = existing == candidate.vocab_.end()
+            ? static_cast<TokenId>(candidate.vocab_.size()) : existing->second;
+        if (id != expected) return false;
+        candidate.merge_rules_.push_back({first, second, merged, id});
+        candidate.vocab_[merged] = id;
+        candidate.id_to_vocab_[id] = merged;
     }
+    if (remaining != 0) return false;
+    vocab_.swap(candidate.vocab_);
+    id_to_vocab_.swap(candidate.id_to_vocab_);
+    merge_rules_.swap(candidate.merge_rules_);
     return true;
 }
 
