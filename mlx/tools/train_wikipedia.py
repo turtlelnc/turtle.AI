@@ -52,9 +52,12 @@ def main():
     parser.add_argument("--output", type=Path, default=Path("build-mlx/wiki-small"))
     parser.add_argument("--steps", type=int, default=600)
     parser.add_argument("--resume-steps", type=int, default=20)
+    parser.add_argument("--resume-from", type=Path,
+                        help="Copy model.ckpt and tokenizer.bpe from this run into a fresh output")
+    parser.add_argument("--eval-samples", type=int, default=64)
     args = parser.parse_args()
-    if args.steps <= 200 or args.resume_steps <= 0:
-        parser.error("steps must exceed the 200-step warmup and resume-steps must be positive")
+    if args.steps <= 200 or args.resume_steps < 0 or args.eval_samples <= 0:
+        parser.error("steps must exceed 200, resume-steps must be nonnegative, eval-samples must be positive")
     binary = args.binary.resolve()
     data = args.data.resolve()
     output = args.output.resolve()
@@ -65,6 +68,14 @@ def main():
         digest = hashlib.sha256((data / (split + ".txt")).read_bytes()).hexdigest()
         if digest != manifest["files"][split]["sha256"]:
             raise RuntimeError(f"Dataset checksum mismatch: {split}")
+    source_checkpoint = None
+    if args.resume_from:
+        source = args.resume_from.resolve()
+        source_checkpoint = checkpoint_info(source / "model.ckpt")
+        if args.steps <= source_checkpoint["completed_step"]:
+            parser.error("steps must exceed the source checkpoint's completed step")
+        if not (source / "tokenizer.bpe").is_file():
+            parser.error("resume source is missing tokenizer.bpe")
     output.mkdir(parents=True)
     checkpoint = output / "model.ckpt"
     tokenizer = output / "tokenizer.bpe"
@@ -77,6 +88,9 @@ def main():
     }
     environment = dict(os.environ, OMP_NUM_THREADS="2", OPENBLAS_NUM_THREADS="1")
     stages = []
+    if args.resume_from:
+        shutil.copyfile(source / "model.ckpt", checkpoint)
+        shutil.copyfile(source / "tokenizer.bpe", tokenizer)
 
     def run(name, mode=None, **changes):
         command = [str(binary)] + (mode or [])
@@ -101,10 +115,18 @@ def main():
 
     common = {"data-dir": data / "train.txt", "model-out": checkpoint,
               "tokenizer-out": tokenizer}
+    before_metrics = None
+    if source_checkpoint:
+        text, stage = run("eval-before", ["eval"], model=checkpoint, tokenizer=tokenizer,
+                          **{"eval-data": data / "validation.txt", "eval-samples": args.eval_samples})
+        before_metrics = stage["metrics"] = json.loads(text.split("EVAL ", 1)[1])
     text, stage = run("train", **common, steps=args.steps)
     first = checkpoint_info(checkpoint)
     if first["completed_step"] != args.steps:
         raise RuntimeError("Initial checkpoint step mismatch")
+    if source_checkpoint and ("成功恢复状态" not in text or
+            first["weights_sha256"] == source_checkpoint["weights_sha256"]):
+        raise RuntimeError("Continuation did not restore and update the source model")
     shutil.copyfile(checkpoint, output / "before-resume.ckpt")
     losses = [float(x) for x in re.findall(r"任务Loss\([^)]*\)\s+([\d.eE+-]+)", text)]
     if not losses:
@@ -112,12 +134,14 @@ def main():
     stage["sampled_task_losses"] = losses
     stage["first_5_mean"] = sum(losses[:5]) / len(losses[:5])
     stage["last_5_mean"] = sum(losses[-5:]) / len(losses[-5:])
-    text, _ = run("resume", **common, steps=args.steps + args.resume_steps)
-    final = checkpoint_info(checkpoint)
-    if "成功恢复状态" not in text or final["completed_step"] != args.steps + args.resume_steps:
-        raise RuntimeError("Checkpoint resume did not advance the completed step")
-    if final["weights_sha256"] == first["weights_sha256"]:
-        raise RuntimeError("Model weights unchanged after further training")
+    final = first
+    if args.resume_steps:
+        text, _ = run("resume", **common, steps=args.steps + args.resume_steps)
+        final = checkpoint_info(checkpoint)
+        if "成功恢复状态" not in text or final["completed_step"] != args.steps + args.resume_steps:
+            raise RuntimeError("Checkpoint resume did not advance the completed step")
+        if final["weights_sha256"] == first["weights_sha256"]:
+            raise RuntimeError("Model weights unchanged after further training")
     for index, prompt in enumerate(("The history of mathematics", "A city is", "The Solar System")):
         text, stage = run(f"generate-{index + 1}", ["gen", prompt],
                           model=checkpoint, tokenizer=tokenizer, **{"max-tokens": 80, "temp": 0.7})
@@ -134,17 +158,22 @@ def main():
                   **{"max-tokens": 80, "temp": 0.7, "kv-cache": 0})
     if "END\n" not in text:
         raise RuntimeError("Generation without KV cache did not complete")
-    evaluations = {}
+    evaluations = {"eval-before": before_metrics} if before_metrics else {}
     for name, untrained in (("eval-baseline", 1), ("eval-trained", 0)):
         text, stage = run(name, ["eval"], model=checkpoint, tokenizer=tokenizer,
-                          **{"eval-data": data / "validation.txt", "eval-samples": 64,
+                          **{"eval-data": data / "validation.txt", "eval-samples": args.eval_samples,
                              "eval-untrained": untrained})
         stage["metrics"] = json.loads(text.split("EVAL ", 1)[1])
         evaluations[name] = stage["metrics"]
+    if before_metrics:
+        for key in ("dataset_identity", "seed", "tokens", "samples", "context_length"):
+            if before_metrics[key] != evaluations["eval-trained"][key]:
+                raise RuntimeError(f"Before/after evaluation mismatch: {key}")
     summary = {
         "dataset": {key: value for key, value in manifest.items() if key != "articles"},
         "model_options": options, "stages": stages,
         "initial_checkpoint": first, "final_checkpoint": final,
+        "source_checkpoint": source_checkpoint,
         "validation": evaluations,
         "resume": "Verifies continued updates; changing --steps changes the LR schedule, and RNG state is not restored",
     }

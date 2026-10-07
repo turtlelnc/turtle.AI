@@ -133,6 +133,18 @@ python3 mlx/tools/train_wikipedia.py
 新的 `--output`。训练脚本默认运行 600 步，再恢复 20 步，测试多个提示词和
 关闭 KV cache 的生成，并比较随机初始化与训练后模型的留出集损失。
 
+从已有实验安全地继续训练，使用新的输出目录：
+
+```sh
+python3 mlx/tools/train_wikipedia.py --resume-from build-mlx/wiki-small \
+  --output build-mlx/wiki-continued --steps 2000 --resume-steps 0 --eval-samples 256
+```
+
+`--resume-from` 复制检查点和词表，保留原实验；`--steps` 是目标总步数，必须
+超过源模型已完成步数。续训前后使用相同的固定验证窗口。`--resume-steps 0`
+关闭训练结束后的额外恢复测试；默认仍额外恢复 20 步。调整目标步数会改变余弦
+学习率计划，RNG 状态也尚未恢复，因此不能视为连续训练的严格复现。
+
 也可对现有 AR 检查点单独执行只读验证，在与训练相同的模型尺寸参数后增加：
 
 ```sh
