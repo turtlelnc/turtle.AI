@@ -1,0 +1,293 @@
+{
+  "date": "2026-10-07",
+  "backend": "MLX 0.31.2 CPU, Linux x86_64, GCC 14.2",
+  "baseline_commit": "6bc13ff",
+  "tolerance": {
+    "absolute": 0.002,
+    "relative": 0.001,
+    "rule": "abs(actual-reference) <= absolute + relative*abs(reference)"
+  },
+  "trained_checkpoint_weights_sha256": "5ad57e51193ffc6e6c50c30a4a206d140d1747bd0fef7ad371618fb954cb2a75",
+  "seed": 7,
+  "results": {
+    "before-random": [
+      {
+        "check": "causality",
+        "metrics": {
+          "max_abs": 0.0,
+          "reference_max": 0.2529296875,
+          "rms": 0.0
+        },
+        "repeat": false
+      },
+      {
+        "check": "kv_full_prefix",
+        "metrics": {
+          "max_abs": 0.02734375,
+          "reference_max": 0.26220703125,
+          "rms": 0.00427820673212409
+        },
+        "repeat": false
+      },
+      {
+        "check": "causality",
+        "metrics": {
+          "max_abs": 0.0,
+          "reference_max": 0.1971435546875,
+          "rms": 0.0
+        },
+        "repeat": true
+      },
+      {
+        "check": "kv_full_prefix",
+        "metrics": {
+          "max_abs": 0.0347900390625,
+          "reference_max": 0.1971435546875,
+          "rms": 0.0070657506585121155
+        },
+        "repeat": true
+      }
+    ],
+    "before-trained": [
+      {
+        "check": "causality",
+        "metrics": {
+          "max_abs": 0.0,
+          "reference_max": 9.625,
+          "rms": 0.0
+        },
+        "repeat": false
+      },
+      {
+        "check": "kv_full_prefix",
+        "metrics": {
+          "max_abs": 4.9287109375,
+          "reference_max": 10.265625,
+          "rms": 0.33596810698509216
+        },
+        "repeat": false
+      },
+      {
+        "check": "causality",
+        "metrics": {
+          "max_abs": 0.0,
+          "reference_max": 5.0,
+          "rms": 0.0
+        },
+        "repeat": true
+      },
+      {
+        "check": "kv_full_prefix",
+        "metrics": {
+          "max_abs": 3.201171875,
+          "reference_max": 5.0,
+          "rms": 0.5513821840286255
+        },
+        "repeat": true
+      }
+    ],
+    "final-trained-default": [
+      {
+        "check": "causality",
+        "metrics": {
+          "max_abs": 0.0,
+          "normalized_error": 0.0,
+          "passed": true,
+          "reference_max": 9.625,
+          "rms": 0.0
+        },
+        "repeat": false
+      },
+      {
+        "check": "kv_full_prefix",
+        "metrics": {
+          "max_abs": 0.0,
+          "normalized_error": 0.0,
+          "passed": true,
+          "reference_max": 10.265625,
+          "rms": 0.0
+        },
+        "repeat": false
+      },
+      {
+        "check": "kv_rolling_context",
+        "metrics": {
+          "max_abs": 0.0,
+          "normalized_error": 0.0,
+          "passed": true
+        },
+        "repeat": false
+      },
+      {
+        "check": "causality",
+        "metrics": {
+          "max_abs": 0.0,
+          "normalized_error": 0.0,
+          "passed": true,
+          "reference_max": 5.0,
+          "rms": 0.0
+        },
+        "repeat": true
+      },
+      {
+        "check": "kv_full_prefix",
+        "metrics": {
+          "max_abs": 0.0,
+          "normalized_error": 0.0,
+          "passed": true,
+          "reference_max": 5.0,
+          "rms": 0.0
+        },
+        "repeat": true
+      },
+      {
+        "check": "kv_rolling_context",
+        "metrics": {
+          "max_abs": 0.0,
+          "normalized_error": 0.0,
+          "passed": true
+        },
+        "repeat": true
+      },
+      {
+        "check": "sparse_attention_ties",
+        "metrics": {
+          "max_abs": 0.0,
+          "normalized_error": 0.0,
+          "passed": true,
+          "reference_max": 0.429931640625,
+          "rms": 0.0
+        }
+      },
+      {
+        "check": "packed_sequence_isolation",
+        "metrics": {
+          "max_abs": 0.0,
+          "normalized_error": 0.0,
+          "passed": true,
+          "reference_max": 9.4609375,
+          "rms": 0.0
+        }
+      },
+      {
+        "check": "packed_cross_sequence_causality",
+        "metrics": {
+          "max_abs": 0.0,
+          "normalized_error": 0.0,
+          "passed": true,
+          "reference_max": 9.421875,
+          "rms": 0.0
+        }
+      }
+    ],
+    "final-trained-fast": [
+      {
+        "check": "causality",
+        "metrics": {
+          "max_abs": 0.0,
+          "normalized_error": 0.0,
+          "passed": true,
+          "reference_max": 9.625,
+          "rms": 0.0
+        },
+        "repeat": false
+      },
+      {
+        "check": "kv_full_prefix",
+        "metrics": {
+          "max_abs": 0.00390625,
+          "normalized_error": 0.6277463436126709,
+          "passed": true,
+          "reference_max": 10.265625,
+          "rms": 1.8479220670997165e-05
+        },
+        "repeat": false
+      },
+      {
+        "check": "kv_rolling_context",
+        "metrics": {
+          "max_abs": 0.0,
+          "normalized_error": 0.0,
+          "passed": true
+        },
+        "repeat": false
+      },
+      {
+        "check": "causality",
+        "metrics": {
+          "max_abs": 0.0,
+          "normalized_error": 0.0,
+          "passed": true,
+          "reference_max": 5.0,
+          "rms": 0.0
+        },
+        "repeat": true
+      },
+      {
+        "check": "kv_full_prefix",
+        "metrics": {
+          "max_abs": 0.0,
+          "normalized_error": 0.0,
+          "passed": true,
+          "reference_max": 5.0,
+          "rms": 0.0
+        },
+        "repeat": true
+      },
+      {
+        "check": "kv_rolling_context",
+        "metrics": {
+          "max_abs": 0.0,
+          "normalized_error": 0.0,
+          "passed": true
+        },
+        "repeat": true
+      },
+      {
+        "check": "sparse_attention_ties",
+        "metrics": {
+          "max_abs": 0.0,
+          "normalized_error": 0.0,
+          "passed": true,
+          "reference_max": 0.1552734375,
+          "rms": 0.0
+        }
+      },
+      {
+        "check": "packed_sequence_isolation",
+        "metrics": {
+          "max_abs": 0.0,
+          "normalized_error": 0.0,
+          "passed": true,
+          "reference_max": 9.4609375,
+          "rms": 0.0
+        }
+      },
+      {
+        "check": "packed_cross_sequence_causality",
+        "metrics": {
+          "max_abs": 0.0,
+          "normalized_error": 0.0,
+          "passed": true,
+          "reference_max": 9.421875,
+          "rms": 0.0
+        }
+      }
+    ]
+  },
+  "default_validation_after": {
+    "context_length": 128,
+    "cross_entropy": 3.58953492436558,
+    "dataset_identity": "9336211357631255656",
+    "perplexity": 36.21722825865091,
+    "samples": 256,
+    "seed": 7,
+    "tokens": 32768,
+    "weights": "checkpoint"
+  },
+  "limitations": [
+    "CPU only; Metal not tested.",
+    "Rolling context falls back to a full forward after eviction.",
+    "Tested inputs and tolerance do not establish equivalence for every model and input."
+  ]
+}

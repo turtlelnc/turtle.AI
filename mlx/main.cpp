@@ -78,7 +78,6 @@ static bool fused_moe_aux = true;
 static bool fast_rmsnorm = true;
 static bool batch_galore_probes = true;
 static bool partition_moe_topk = true;
-static bool incremental_decode_active = false;
 static bool gather_sparse_attention = false;
 static bool fused_qkv_projection = true;
 static bool fast_decode_sdpa = false;
@@ -1141,7 +1140,9 @@ struct SlidingWindowAttention {
             }
             scores = where(mask, scores, array(-1e4f, scores.dtype()));
             array probs = astype(softmax(astype(scores, float32), -1), float16);
-            array out = matmul(probs, v);
+            array out = fast_decode_sdpa
+                ? fast::scaled_dot_product_attention(q, k, v, scale, "", mask)
+                : matmul(probs, v);
             out = reshape(transpose(out, {0, 2, 1, 3}),
                           {L, n_heads * head_dim});
             return Wo(out);
@@ -1173,7 +1174,10 @@ struct SlidingWindowAttention {
         
         scores = where(mask, scores, array(-1e4f, scores.dtype()));
         array probs = astype(softmax(astype(scores, float32), -1), float16);
-        array out = matmul(probs, v);
+        array out = fast_decode_sdpa
+            ? squeeze(fast::scaled_dot_product_attention(
+                expand_dims(q,0), expand_dims(k,0), expand_dims(v,0), scale, "", mask),0)
+            : matmul(probs, v);
         
         out = reshape(transpose(out, {1, 0, 2}), {L, n_heads * head_dim});
         return Wo(out);
@@ -1225,6 +1229,24 @@ struct SlidingWindowAttention {
     }
 };
 
+static array exact_sparse_keep(const array& scores, int k) {
+    array threshold = min(topk(scores, k, -1), -1, true);
+    array higher = greater(scores, threshold);
+    array tied = equal(scores, threshold);
+    array remaining = subtract(array(k, int32), sum(astype(higher,int32),-1,true));
+    // Prefer earlier keys for equal scores; the choice is prefix-stable.
+    return logical_or(higher, logical_and(tied,
+        less_equal(cumsum(astype(tied,int32),-1), remaining)));
+}
+static array exact_sparse_indices(const array& scores, int k) {
+    int length = scores.shape(-1);
+    Shape start=scores.shape(), end=scores.shape();
+    std::fill(start.begin(),start.end(),0);
+    start.back()=length-k;
+    return stop_gradient(astype(slice(argpartition(
+        astype(exact_sparse_keep(scores,k),int32),length-k,-1),start,end),int32));
+}
+
 struct SparseGlobalAttention {
     QKVLinear Wqkv;
     Linear Wo;
@@ -1259,7 +1281,8 @@ struct SparseGlobalAttention {
             }
             int k_actual = std::min(topk_n, S);
             array threshold = min(topk(scores, k_actual, -1), -1, true);
-            array keep = greater_equal(scores, threshold);
+            array keep = gather_sparse_attention
+                ? exact_sparse_keep(scores,k_actual) : greater_equal(scores, threshold);
             if (rope_empty_prefix_tokens > 0) {
                 array condition_keys = reshape(
                     less(idx, array(rope_empty_prefix_tokens)), {1, 1, 1, S});
@@ -1293,9 +1316,7 @@ struct SparseGlobalAttention {
 
         int k_actual = std::min(topk_n, L);
         if (gather_sparse_attention) {
-            array selected = stop_gradient(astype(slice(
-                argpartition(scores, L - k_actual, -1),
-                {0, 0, L - k_actual}, {n_heads, L, L}), int32));
+            array selected = exact_sparse_indices(scores,k_actual);
             array selected_scores = take_along_axis(scores, selected, -1);
             array selected_probs = astype(
                 softmax(astype(selected_scores, float32), -1), float16);
@@ -1310,7 +1331,8 @@ struct SparseGlobalAttention {
                                          {L, k_actual, head_dim});
                 array prob_h = reshape(slice(selected_probs, {h, 0, 0},
                                              {h + 1, L, k_actual}), {L, k_actual, 1});
-                head_outputs.push_back(sum(multiply(gathered, prob_h), 1));
+                head_outputs.push_back(sum(multiply(astype(gathered,float32),
+                                                   astype(prob_h,float32)),1));
             }
             array out = reshape(transpose(stack(head_outputs, 0), {1, 0, 2}),
                                 {L, n_heads * head_dim});
@@ -1360,9 +1382,18 @@ struct SparseGlobalAttention {
         array scores = multiply(matmul(q, transpose(keys, {0, 2, 1})),
                                 array(scale, q.dtype()));
         int k_actual = std::min(topk_n, length);
-        array selected = argpartition(scores, length - k_actual, -1);
-        selected = astype(slice(selected, {0, 0, length - k_actual},
-                                {n_heads, 1, length}), int32);
+        if (!gather_sparse_attention) {
+            // The full forward retains every key tied at the kth score.
+            // An exact-k gather can silently discard tied keys at decode time.
+            array threshold = min(topk(scores, k_actual, -1), -1, true);
+            scores = where(greater_equal(scores, threshold), scores,
+                           array(-1e4f, scores.dtype()));
+            array probs = astype(softmax(astype(scores, float32), -1), float16);
+            array out = matmul(probs, values);
+            out = reshape(transpose(out, {1, 0, 2}), {1, n_heads * head_dim});
+            return Wo(out);
+        }
+        array selected = exact_sparse_indices(scores,k_actual);
         array selected_scores = take_along_axis(scores, selected, -1);
         array probs = astype(softmax(astype(selected_scores, float32), -1), float16);
 
@@ -1375,7 +1406,8 @@ struct SparseGlobalAttention {
                 {n_heads, k_actual, head_dim});
             array selected_values = take_along_axis(values, gather_idx, 1);
             array weights = transpose(probs, {0, 2, 1});
-            out = reshape(sum(multiply(selected_values, weights), 1),
+            out = reshape(sum(multiply(astype(selected_values,float32),
+                                       astype(weights,float32)),1),
                           {1, n_heads * head_dim});
         } else {
             std::vector<array> head_outputs;
@@ -1389,7 +1421,8 @@ struct SparseGlobalAttention {
                 array prob_h = reshape(slice(probs, {h, 0, 0},
                                              {h + 1, 1, k_actual}), {k_actual, 1});
                 head_outputs.push_back(sum(
-                    multiply(take(value_h, idx_h, 0), prob_h), 0));
+                    multiply(astype(take(value_h,idx_h,0),float32),
+                             astype(prob_h,float32)),0));
             }
             out = reshape(stack(head_outputs, 0), {1, n_heads * head_dim});
         }
@@ -1504,14 +1537,14 @@ struct CapacityMoE {
         mp.register_param(W_down);
     }
 
-    std::pair<array, array> forward_with_aux(const array& x) const {
+    std::pair<array, array> forward_with_aux(
+        const array& x, std::optional<array>* previous_dispatch = nullptr) const {
         int L = x.shape(0);
         int route_batches = packed_batch_size > 1 ? packed_batch_size : 1;
         int route_sequence_length = L / route_batches;
-        int route_capacity = (!is_training && incremental_decode_active)
-            ? std::max(1, std::min(capacity, static_cast<int>(std::ceil(
-                  (float)L * top_k / n_experts * capacity_factor))))
-            : capacity;
+        const int route_capacity = capacity;
+        if (previous_dispatch && (route_batches != 1 || L != 1))
+            throw std::invalid_argument("Cached MoE expects a single token");
 
         array l = router(x);
         array probs = astype(softmax(astype(l, float32), -1), float32);
@@ -1567,6 +1600,12 @@ struct CapacityMoE {
                 expand_dims(token_batch, 1), {L, top_k}), {N});
         } else {
             cum_count = subtract(cumsum(one_hot, 0), array(1.0f, float32));
+        }
+        if (previous_dispatch) {
+            array counts = previous_dispatch->has_value()
+                ? previous_dispatch->value() : zeros({n_experts}, float32);
+            cum_count = add(cum_count, expand_dims(counts, 0));
+            *previous_dispatch = stop_gradient(add(counts, sum(one_hot, 0)));
         }
         array slot_per_item = sum(multiply(cum_count, one_hot), -1);
         array slot_int = astype(slot_per_item, int32);
@@ -1665,6 +1704,9 @@ struct CapacityMoE {
     }
 
     array operator()(const array& x) const { return forward_with_aux(x).first; }
+    array decode(const array& x, std::optional<array>& dispatch) const {
+        return forward_with_aux(x, &dispatch).first;
+    }
 
     // 调试辅助：返回每个专家实际分配的token数，便于训练时监控是否频繁溢出
     array debug_fill_count(const array& x) const {
@@ -1774,17 +1816,27 @@ struct TransformerBlock {
         return add(mid, moe(moe_in));
     }
 
-    array decode(const array& x, AttentionKVCache& cache) const {
+    array decode(const array& x, AttentionKVCache& cache,
+                 std::optional<array>& dispatch) const {
         array mid = add(x, attn_sw.decode(n_attn(x), cache));
+#ifdef USE_CAPACITY_MOE
+        return add(mid, moe.decode(n_moe(mid), dispatch));
+#else
         return add(mid, moe(n_moe(mid)));
+#endif
     }
 };
 
 struct RecurrentKVCache {
     std::vector<AttentionKVCache> wide;
     std::vector<AttentionKVCache> loops;
+    std::vector<std::optional<array>> wide_dispatch;
+    std::vector<std::optional<array>> loop_dispatch;
+    std::vector<int> token_history;
+    int context_limit = 0;
     explicit RecurrentKVCache(size_t wide_count = 0, size_t loop_count = 0)
-        : wide(wide_count), loops(loop_count) {}
+        : wide(wide_count), loops(loop_count),
+          wide_dispatch(wide_count), loop_dispatch(loop_count) {}
 };
 
 struct RecurrentBlock {
@@ -1860,8 +1912,10 @@ struct RecurrentBlock {
             cache.wide.resize(wide_blocks.size());
         if (cache.loops.size() != static_cast<size_t>(act.max_loops))
             cache.loops.resize(act.max_loops);
+        cache.wide_dispatch.resize(wide_blocks.size());
+        cache.loop_dispatch.resize(act.max_loops);
         for (size_t i = 0; i < wide_blocks.size(); ++i)
-            x = wide_blocks[i]->decode(x, cache.wide[i]);
+            x = wide_blocks[i]->decode(x, cache.wide[i], cache.wide_dispatch[i]);
 
         std::vector<array> hs;
         hs.reserve(act.max_loops);
@@ -1873,7 +1927,11 @@ struct RecurrentBlock {
                 ? attn_sw.decode(n_a, cache.loops[t])
                 : attn_global.decode(n_a, cache.loops[t], max_context);
             array mid = add(x, a_out);
+#ifdef USE_CAPACITY_MOE
+            x = add(mid, moe.decode(n_moe(mid), cache.loop_dispatch[t]));
+#else
             x = add(mid, moe(n_moe(mid)));
+#endif
             memory = add(multiply(array(memory_alpha, float16), memory),
                          multiply(array(1.0f - memory_alpha, float16), x));
             hs.push_back(x);
@@ -2077,12 +2135,29 @@ struct OpenMythos {
     }
 
     array decode(const array& id, RecurrentKVCache& cache, int max_context) const {
+        if (id.size() != 1 || max_context <= 0)
+            throw std::invalid_argument("Decode requires one token and a positive context");
+        if (cache.context_limit && cache.context_limit != max_context)
+            throw std::invalid_argument("Reset the decode cache before changing context length");
+        cache.context_limit = max_context;
+        const int token = id.item<int>();
+        cache.token_history.push_back(token);
+        if (cache.token_history.size() > static_cast<size_t>(max_context)) {
+            // Rolling full forwards recompute retained hidden states and reset
+            // positions/dispatch counts. Once eviction starts, use that exact
+            // forward rather than stale KV states influenced by the old prefix.
+            std::vector<int> retained(cache.token_history.end() - max_context,
+                                      cache.token_history.end());
+            cache = RecurrentKVCache(recurrent.wide_blocks.size(), recurrent.act.max_loops);
+            cache.context_limit = max_context;
+            cache.token_history = std::move(retained);
+            array input = array(cache.token_history.data(), {max_context}, int32);
+            array logits = (*this)(input);
+            return slice(logits, {max_context - 1, 0}, {max_context, logits.shape(1)});
+        }
         array embed = transpose(lm_head.W, {1, 0});
         array x = take(embed, id, 0);
-        bool previous_decode_state = incremental_decode_active;
-        incremental_decode_active = true;
         array h = recurrent.decode(x, cache, max_context);
-        incremental_decode_active = previous_decode_state;
         return lm_head(final_norm(h));
     }
 

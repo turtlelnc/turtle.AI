@@ -78,6 +78,10 @@ with tempfile.TemporaryDirectory(prefix="turtle-mlx-smoke-") as temp:
     # Compiled graph and gradient accumulation exercise separate execution paths.
     run(message="Final checkpoint", **{"model-out": "compiled.ckpt", "compile-train-graph": 1, "steps": 1})
     run(message="Final checkpoint", **{"model-out": "micro.ckpt", "packed-batch": 0, "steps": 1})
+    for packed in (0, 1):
+        run(message="Final checkpoint", **{"model-out": f"fast-{packed}.ckpt",
+            "packed-batch": packed, "fast-decode-sdpa": 1,
+            "gather-sparse-attention": 1, "steps": 1})
     run(message="嵌入输入路由探针", **{"model-out": "monitor.ckpt",
         "expert-monitor-interval": 1, "steps": 11})
     # Projected optimizer state, forced refresh and SSD state serialization.

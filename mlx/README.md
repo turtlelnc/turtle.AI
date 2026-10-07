@@ -114,6 +114,25 @@ version=1、词表大小、潜变量维度，随后是 FP16 矩阵。必须使�
 
 后续工作与验证范围见 [ALIGNMENT.md](ALIGNMENT.md)。
 
+## 因果性和缓存数值回归
+
+默认 CMake 测试包含 `mlx-model-checks`，比较因果性、缓存/完整前向、滚动上下文、
+稀疏分数并列和 packed 隔离。可对现有 AR 检查点执行：
+
+```sh
+./build-mlx/mlx-model-checks build-mlx/wiki-continued/model.ckpt
+```
+
+程序固定使用 CPU，超出 `0.002 + 0.001 * abs(reference)` 的逐元素误差会返回非零。
+检查点必须与构建时的 CapacityMoE 开关一致。现有权重的实测对照和限制见
+[数值检查报告](experiments/kv_causality_2026-10-07.md)。
+
+缓存解码现在累计每个层/循环的专家分派次数，与完整前向的容量丢弃行为一致。
+缓存达到上下文长度后回退到保留窗口的完整前向；这一阶段不再获得增量缓存的
+速度收益。更改上下文长度前须重置 cache。`--fast-decode-sdpa 1` 同时为完整
+前向与解码选择 SDPA。开启 sparse gather 时，边界并列分数统一优先更早的键，
+权重乘积使用 FP32 累加。
+
 ## 维基百科实训与验证
 
 已完成的 CPU 实训指标和限制见 [实验报告](experiments/README.md)。
