@@ -22,6 +22,7 @@ class Config:
     readout_fusion: bool = False
     page_score_weight: float = 0.0
     page_score_detach: bool = False
+    relation_reader: bool = False
 
     def __post_init__(self):
         if min(self.vocab_size, self.width, self.layers, self.block_size,
@@ -112,7 +113,7 @@ class MemoryAttention(nn.Module):
         return mask, local
 
     def forward(self, x, positions, blocks, gist, memory=None, disk_backed=False,
-                routing_targets=None, quantize_cold=True, oracle_routes=False, supervision_policy=None, oracle_page_only=False):
+                routing_targets=None, quantize_cold=True, oracle_routes=False, supervision_policy=None, oracle_page_only=False, collect_page_kv=False):
         q, k, v = self.qkv(x).chunk(3, dim=-1)
         if memory is not None:
             from .memory_policy import bounded_routes, working_round
@@ -147,7 +148,9 @@ class MemoryAttention(nn.Module):
             out = out + weights.diagonal(dim1=-2, dim2=-1)[..., None] * gist[None, :, None] * (v - warm_v)
             self.last_mask, self.last_retrieved = mask.detach(), chosen.detach()
             return self.output(out.to(x.dtype)), {'precision': q.sum() * 0,
-                                                  'routing': route_loss, 'routing_count': count}
+                                                  'routing': route_loss, 'routing_count': count,
+                                                  'page_kv': torch.cat((torch.where(((positions<memory.sink_tokens)|gist)[None,:,None],warm_k,cold_k),
+                                                                        torch.where(((positions<memory.sink_tokens)|gist)[None,:,None],warm_v,cold_v)),-1) if collect_page_kv else None}
         if self.cfg.readout_fusion or self.cfg.page_score_weight:
             raise ValueError('selective readout requires an explicit memory policy')
         self.last_retrieved = None
@@ -210,6 +213,8 @@ class ResonantLM(nn.Module):
         self.norm = nn.LayerNorm(cfg.width)
         self.head = nn.Linear(cfg.width, cfg.vocab_size)
         self.reconstruct = nn.Linear(cfg.width, cfg.width)
+        if cfg.relation_reader:
+            self.relation_reader = nn.Sequential(nn.Linear(cfg.block_size*cfg.width*2,128),nn.GELU(),nn.Linear(128,cfg.vocab_size))
 
     def expand(self, ids):
         if ids.ndim != 2 or ids.shape[1] < 1 or ids.shape[1] > self.cfg.max_tokens:
@@ -242,7 +247,8 @@ class ResonantLM(nn.Module):
     def forward(self, ids, targets=None, margin=0.2, margin_weight=0.1,
                 reconstruction_weight=0.1, precision_weight=0.01, memory=None,
                 disk_backed=False, routing_targets=None, routing_weight=0.0,
-                quantize_cold=True, oracle_routes=False, supervision_policy=None, oracle_page_only=False):
+                quantize_cold=True, oracle_routes=False, supervision_policy=None, oracle_page_only=False,
+                relation_targets=None, relation_weight=0.0):
         x, original, ordinary, gist, owners, positions = self.expand(ids)
         x = x + self.position(torch.arange(x.shape[1], device=ids.device))[None]
         if memory is not None and memory.block_size != self.cfg.block_size:
@@ -255,14 +261,19 @@ class ResonantLM(nn.Module):
             if routing_targets.shape != ids.shape: raise ValueError('routing target shape mismatch')
             expanded_targets = torch.full(x.shape[:2], -100, dtype=torch.long, device=ids.device)
             expanded_targets[:, ordinary] = routing_targets
+        if relation_targets is not None and (memory is None or not self.cfg.relation_reader):
+            raise ValueError('relation supervision requires a configured reader and memory policy')
         costs, routing_losses, routing_counts = [], [], []
+        last_page_kv = None
         for layer_id, block in enumerate(self.blocks):
             # First-layer Gist keys have not yet seen block contents; supervise later layers.
             x, cost = block(x, positions, owners, gist, memory=memory, disk_backed=disk_backed,
                             routing_targets=expanded_targets if (layer_id > 0 or oracle_routes or oracle_page_only) else None,
                             quantize_cold=quantize_cold, oracle_routes=oracle_routes,
-                            supervision_policy=supervision_policy, oracle_page_only=oracle_page_only)
+                            supervision_policy=supervision_policy, oracle_page_only=oracle_page_only,
+                            collect_page_kv=relation_targets is not None and layer_id==len(self.blocks)-1)
             costs.append(cost['precision'])
+            if cost.get('page_kv') is not None:last_page_kv=cost['page_kv']
             if cost['routing_count']:
                 routing_losses.append(cost['routing'])
                 routing_counts.append(cost['routing_count'])
@@ -275,9 +286,19 @@ class ResonantLM(nn.Module):
             target = original[:, :n].detach().reshape(ids.shape[0], -1, self.cfg.block_size,
                                                        self.cfg.width).mean(2)
             reconstruction = F.mse_loss(self.reconstruct(gist_hidden), target)
+        relation_loss=x.sum()*0
+        relation_logits=None
+        if relation_targets is not None:
+            pages=ids.shape[1]//self.cfg.block_size
+            if relation_targets.shape!=(ids.shape[0],pages):raise ValueError('relation target shape mismatch')
+            indices=(torch.arange(pages,device=ids.device)[:,None]*(self.cfg.block_size+1)+torch.arange(self.cfg.block_size,device=ids.device)).flatten()
+            page_input=last_page_kv[:,indices].reshape(ids.shape[0],pages,-1)
+            relation_logits=self.relation_reader(page_input).float()
+            valid=relation_targets!=-100
+            if valid.any():relation_loss=F.cross_entropy(relation_logits[valid],relation_targets[valid])
         route_loss = torch.stack(routing_losses).mean() if routing_losses else x.sum() * 0
         losses = {'reconstruction': reconstruction, 'precision': torch.stack(costs).mean(),
-                  'routing': route_loss, 'routing_examples': sum(routing_counts)}
+                  'routing': route_loss, 'routing_examples': sum(routing_counts),'relation':relation_loss}
         if targets is not None:
             if targets.shape != ids.shape: raise ValueError('target shape mismatch')
             valid = targets != -100
@@ -290,8 +311,8 @@ class ResonantLM(nn.Module):
             losses.update(ce=ce, margin=margin_loss)
             losses['total'] = (ce + margin_weight * margin_loss +
                                reconstruction_weight * reconstruction + precision_weight * losses['precision'] +
-                               routing_weight * route_loss)
-        return {'logits': logits, 'losses': losses}
+                               routing_weight * route_loss + relation_weight * relation_loss)
+        return {'logits': logits, 'losses': losses, 'relation_logits':relation_logits}
 
     @torch.no_grad()
     def generate(self, ids, max_new_tokens=32, epsilon=0.2, max_pauses=3):

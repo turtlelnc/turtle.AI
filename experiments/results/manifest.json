@@ -147,6 +147,26 @@
       "sha256": "9bf5ebb50038cd5eb3e9e15eb6874005adb66e878acd0a8b1aebc71d232a61f3"
     },
     {
+      "path": "relation-auxiliary-order-pilot/analysis.json",
+      "bytes": 33181,
+      "sha256": "a0fc9b3a134ebfc1874f582d6da664e9174ff64c59b4ab03dd2995a8b6ce7bfe"
+    },
+    {
+      "path": "relation-auxiliary-order-pilot/results.json",
+      "bytes": 25411,
+      "sha256": "885c3ca5905f12ef3feca4cdd4ac55bf81c0d37c879b7cb168c3eeccddaed0d1"
+    },
+    {
+      "path": "relation-auxiliary-screen/analysis.json",
+      "bytes": 93001,
+      "sha256": "70f3205a3f3c03dd8e99210df56da9ed42f0dab1929085d346944b767576d7c8"
+    },
+    {
+      "path": "relation-auxiliary-screen/results.json",
+      "bytes": 75413,
+      "sha256": "a180fdcd239eb44deeabd4a4ad486c956dc3cff24699329e264eaa1c5aebc7c9"
+    },
+    {
       "path": "resonant-screening.json",
       "bytes": 5422,
       "sha256": "41802930c60b5d3065fba68e012459b35f10f6e593378eeb9f21e9adf0288c5b"

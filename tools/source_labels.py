@@ -60,3 +60,13 @@ def generate_examples(tokens, source_id, block_size=8, query_gap=2, max_queries=
         yield {'source_id': source_id, 'input_ids': list(tokens) + [QUERY, fact.key],
                'answer': fact.value, 'source_page': fact.page,
                'source_span': [fact.token_start, fact.token_end]}
+
+
+def derive_relation_targets(ids, block_size=8):
+    pages=ids.shape[1]//block_size
+    targets=torch.full((len(ids),pages),-100,dtype=torch.long,device=ids.device)
+    for row,tokens in enumerate(ids[:,:pages*block_size].tolist()):
+        for fact in extract_facts(tokens,block_size).values():
+            if targets[row,fact.page]!=-100:raise ValueError('multiple facts require a structured relation target')
+            targets[row,fact.page]=fact.value
+    return targets

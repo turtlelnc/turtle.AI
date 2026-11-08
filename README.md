@@ -1078,3 +1078,94 @@ Probe heads from the direct-value and all-value diagnostic runs are saved with
 feature/candidate normalization metadata; they are diagnostic heads, not native
 LM checkpoints. All 36 regression tests pass, including source-semantic controls,
 historical-page selection and actual-cache feature checks.
+
+## Native per-page relation reconstruction supervision
+
+`Config(relation_reader=True)` adds an auxiliary page reader over the final
+attention layer's ordered K/V projections. The feature uses the same simulated
+INT4 cold storage and protected-anchor precision for both bounded and full models.
+`relation_targets` contains one source-derived value-token ID per completed page;
+`relation_weight` adds its cross entropy to training. The main LM logits do not
+consume labels or the auxiliary head's predictions. At inference without relation
+labels, the page-reader computation is skipped; this is a training-objective
+experiment, not an oracle answer replacement.
+
+`tools/train_relation_auxiliary.py` compares full attention and bounded retrieval,
+each with relation loss 0 or 0.1, under the same page classification supervision,
+initial backbone/optimizer, replay batches and adaptation-data seeds. All four
+conditions instantiate the same auxiliary head; it has zero loss weight in the
+control. Head parameters have a new optimizer group; original optimizer moments
+are preserved. The extra loss may affect clipping/optimization, so an improvement
+would not by itself isolate a single mechanism.
+
+```sh
+python -m tools.train_relation_auxiliary \
+  work/binding-continuation/retrieval-1.pt \
+  --output work/relation-auxiliary-screen
+```
+
+The default uses three adaptation-data seeds, 600 fixed updates, effective batch
+16 (8 old + 8 new), and fresh validation/test seeds. Both architectures start from
+a checkpoint originally trained with bounded memory; this is a paired adaptation
+comparison, not training two architectures from scratch. No best-checkpoint
+selection is used. Page labels come only from explicit source records. A regression
+test verifies that auxiliary labels leave answer forward logits unchanged and
+that the relation loss reaches both the reader and backbone KV projections.
+
+### Relation-supervision screening results
+
+The fixed-order screen used three adaptation-data seeds (one shared pretrained
+backbone). Mean native answer accuracy on five-page documents was 66.15% without
+the auxiliary loss versus 64.84% with it for full attention, and 66.41% versus
+65.62% for bounded retrieval. The trained auxiliary heads scored 100% on the
+known correct page in the original layout, but only 0--1.30% after swapping the
+whole PAIR and IGNORE records within every page. Native answers also collapsed
+on that swap. Fixed-layout success therefore included a positional shortcut;
+this screen does not veto relation supervision or establish semantic reading.
+
+The smallest follow-up randomized whole-record order independently per training
+page in **all four conditions**, keeping source-derived answers and page labels
+unchanged. It used one adaptation seed, the same 600 updates, and a new held-out
+test seed family. Fixed, mixed (independent per-page swaps), and all-swapped test
+views share the same source documents within this pilot.
+
+```sh
+python -m tools.train_relation_auxiliary \
+  work/binding-continuation/retrieval-1.pt --shuffle-roles --seeds 1 \
+  --test-base 47300000 --validation-base 46300000 \
+  --output work/relation-auxiliary-order-pilot
+python -m tools.analyze_relation_auxiliary work/relation-auxiliary-order-pilot
+```
+
+| Random-order training, five-page test | Fixed native | Mixed native | Swapped native | Mixed auxiliary head on true page |
+|---|---:|---:|---:|---:|
+| Full, loss 0 | 64.84% | 67.19% | 65.62% | Untrained |
+| Full, loss 0.1 | 66.41% | 63.28% | 55.47% | 97.66% |
+| Retrieval, loss 0 | 65.62% | 67.97% | 66.41% | Untrained |
+| Retrieval, loss 0.1 | 65.62% | 66.41% | 66.41% | 91.41% |
+
+The randomized auxiliary readers can recover the relation across record order,
+but the native LM has no demonstrated benefit from this auxiliary loss. The full
+model also regressed on the four-page retention task (95.31% to 85.16% in the
+fixed test view). Randomized training alone removed the catastrophic order-swap
+failure in the zero-loss controls. The pilot changes the training distribution
+and is only one seed; comparisons against the preceding fixed-order screen do
+not isolate the effect of the auxiliary loss. Correct-page head diagnostics use
+known provenance and are **not** native end-to-end retrieval accuracy.
+
+The next uncertainty is whether a learned page reader can transfer useful
+information into the native answer path, rather than merely support an auxiliary
+classifier. A matched random-order, multi-seed experiment should test that
+connection before scaling the architecture. Relation supervision remains off by
+default. All 32 trained streaming checks across these two screens matched dense
+Top-1 predictions. The 38 regression tests include source-target invariance under
+record swaps, unchanged answer logits when auxiliary labels are supplied, and
+auxiliary gradients reaching the backbone.
+
+Machine-readable metrics are archived under `experiments/results/`, including
+both `relation-auxiliary-screen/` and `relation-auxiliary-order-pilot/`. The
+manifest lists file sizes and SHA-256 hashes. Environment dependencies, page
+stores and binary checkpoints remain outside Git; the continuation commands
+require the named parent checkpoint in the local work directory. These synthetic
+screens do not establish real-document quality, numerical Top-1 stability, or
+hardware latency/memory gains.
