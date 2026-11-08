@@ -1,0 +1,851 @@
+{
+  "arguments": {
+    "checkpoint": "/workspace/work/paired-replay-binding/replay-0/checkpoint.pt",
+    "output": "/workspace/work/direct-page-value-probes",
+    "steps": 600,
+    "seeds": 3
+  },
+  "encoder_unchanged": true,
+  "results": [
+    {
+      "feature": "gist_kv_2",
+      "kind": "linear",
+      "seed": 0,
+      "train": {
+        "accuracy": 0.2823333442211151,
+        "loss": 1.9142009019851685
+      },
+      "val": {
+        "accuracy": 0.2734375,
+        "loss": 1.9200763702392578
+      },
+      "tests": {
+        "mixed": {
+          "accuracy": 0.29296875,
+          "loss": 1.897007942199707
+        },
+        "fixed": {
+          "accuracy": 0.447265625,
+          "loss": 1.4684419631958008
+        },
+        "swapped": {
+          "accuracy": 0.2786458432674408,
+          "loss": 1.9400110244750977
+        }
+      },
+      "paired_correct": 0.0397135429084301
+    },
+    {
+      "feature": "gist_kv_2",
+      "kind": "linear",
+      "seed": 1,
+      "train": {
+        "accuracy": 0.33133333921432495,
+        "loss": 1.9056758880615234
+      },
+      "val": {
+        "accuracy": 0.3203125,
+        "loss": 1.9066568613052368
+      },
+      "tests": {
+        "mixed": {
+          "accuracy": 0.3365885317325592,
+          "loss": 1.901457667350769
+        },
+        "fixed": {
+          "accuracy": 0.5162760615348816,
+          "loss": 1.5269365310668945
+        },
+        "swapped": {
+          "accuracy": 0.310546875,
+          "loss": 1.925193190574646
+        }
+      },
+      "paired_correct": 0.0592447929084301
+    },
+    {
+      "feature": "gist_kv_2",
+      "kind": "linear",
+      "seed": 2,
+      "train": {
+        "accuracy": 0.2996666729450226,
+        "loss": 1.898158073425293
+      },
+      "val": {
+        "accuracy": 0.2916666567325592,
+        "loss": 1.9126992225646973
+      },
+      "tests": {
+        "mixed": {
+          "accuracy": 0.2962239682674408,
+          "loss": 1.8825596570968628
+        },
+        "fixed": {
+          "accuracy": 0.5013020634651184,
+          "loss": 1.50166654586792
+        },
+        "swapped": {
+          "accuracy": 0.2877604067325592,
+          "loss": 1.930267333984375
+        }
+      },
+      "paired_correct": 0.02213541604578495
+    },
+    {
+      "feature": "gist_kv_2",
+      "kind": "mlp",
+      "seed": 0,
+      "train": {
+        "accuracy": 0.5070000290870667,
+        "loss": 1.5054175853729248
+      },
+      "val": {
+        "accuracy": 0.48046875,
+        "loss": 1.5699210166931152
+      },
+      "tests": {
+        "mixed": {
+          "accuracy": 0.505859375,
+          "loss": 1.5406652688980103
+        },
+        "fixed": {
+          "accuracy": 0.712890625,
+          "loss": 0.9960391521453857
+        },
+        "swapped": {
+          "accuracy": 0.4811197817325592,
+          "loss": 1.6378651857376099
+        }
+      },
+      "paired_correct": 0.173828125
+    },
+    {
+      "feature": "gist_kv_2",
+      "kind": "mlp",
+      "seed": 1,
+      "train": {
+        "accuracy": 0.5121666789054871,
+        "loss": 1.4947509765625
+      },
+      "val": {
+        "accuracy": 0.4713541567325592,
+        "loss": 1.562445044517517
+      },
+      "tests": {
+        "mixed": {
+          "accuracy": 0.513671875,
+          "loss": 1.5565825700759888
+        },
+        "fixed": {
+          "accuracy": 0.7317708134651184,
+          "loss": 0.9912530779838562
+        },
+        "swapped": {
+          "accuracy": 0.478515625,
+          "loss": 1.6344350576400757
+        }
+      },
+      "paired_correct": 0.185546875
+    },
+    {
+      "feature": "gist_kv_2",
+      "kind": "mlp",
+      "seed": 2,
+      "train": {
+        "accuracy": 0.4971666634082794,
+        "loss": 1.5234509706497192
+      },
+      "val": {
+        "accuracy": 0.484375,
+        "loss": 1.5570985078811646
+      },
+      "tests": {
+        "mixed": {
+          "accuracy": 0.4908854067325592,
+          "loss": 1.5867055654525757
+        },
+        "fixed": {
+          "accuracy": 0.7057291865348816,
+          "loss": 1.043178677558899
+        },
+        "swapped": {
+          "accuracy": 0.4615885317325592,
+          "loss": 1.649611473083496
+        }
+      },
+      "paired_correct": 0.166015625
+    },
+    {
+      "feature": "body_kv_2",
+      "kind": "linear",
+      "seed": 0,
+      "train": {
+        "accuracy": 0.7453333139419556,
+        "loss": 0.6928345561027527
+      },
+      "val": {
+        "accuracy": 0.7005208134651184,
+        "loss": 0.7676796317100525
+      },
+      "tests": {
+        "mixed": {
+          "accuracy": 0.71484375,
+          "loss": 0.796802282333374
+        },
+        "fixed": {
+          "accuracy": 0.73828125,
+          "loss": 0.7356759905815125
+        },
+        "swapped": {
+          "accuracy": 0.6770833134651184,
+          "loss": 0.859958827495575
+        }
+      },
+      "paired_correct": 0.5305989384651184
+    },
+    {
+      "feature": "body_kv_2",
+      "kind": "linear",
+      "seed": 1,
+      "train": {
+        "accuracy": 0.7386666536331177,
+        "loss": 0.6917276382446289
+      },
+      "val": {
+        "accuracy": 0.69921875,
+        "loss": 0.8074162006378174
+      },
+      "tests": {
+        "mixed": {
+          "accuracy": 0.7174479365348816,
+          "loss": 0.7774791717529297
+        },
+        "fixed": {
+          "accuracy": 0.6979166865348816,
+          "loss": 0.7834575772285461
+        },
+        "swapped": {
+          "accuracy": 0.6796875,
+          "loss": 0.8410171866416931
+        }
+      },
+      "paired_correct": 0.5481770634651184
+    },
+    {
+      "feature": "body_kv_2",
+      "kind": "linear",
+      "seed": 2,
+      "train": {
+        "accuracy": 0.7351666688919067,
+        "loss": 0.7110595703125
+      },
+      "val": {
+        "accuracy": 0.6888020634651184,
+        "loss": 0.7980266213417053
+      },
+      "tests": {
+        "mixed": {
+          "accuracy": 0.7194010615348816,
+          "loss": 0.7973606586456299
+        },
+        "fixed": {
+          "accuracy": 0.7252604365348816,
+          "loss": 0.746986448764801
+        },
+        "swapped": {
+          "accuracy": 0.6731770634651184,
+          "loss": 0.878643810749054
+        }
+      },
+      "paired_correct": 0.53125
+    },
+    {
+      "feature": "body_kv_2",
+      "kind": "mlp",
+      "seed": 0,
+      "train": {
+        "accuracy": 0.9988333582878113,
+        "loss": 0.013706914149224758
+      },
+      "val": {
+        "accuracy": 0.9544270634651184,
+        "loss": 0.1774403303861618
+      },
+      "tests": {
+        "mixed": {
+          "accuracy": 0.9537760615348816,
+          "loss": 0.18662308156490326
+        },
+        "fixed": {
+          "accuracy": 0.9778645634651184,
+          "loss": 0.09099224209785461
+        },
+        "swapped": {
+          "accuracy": 0.947265625,
+          "loss": 0.1763373464345932
+        }
+      },
+      "paired_correct": 0.9088541865348816
+    },
+    {
+      "feature": "body_kv_2",
+      "kind": "mlp",
+      "seed": 1,
+      "train": {
+        "accuracy": 0.9986666440963745,
+        "loss": 0.01670607179403305
+      },
+      "val": {
+        "accuracy": 0.9479166865348816,
+        "loss": 0.1675163060426712
+      },
+      "tests": {
+        "mixed": {
+          "accuracy": 0.9440104365348816,
+          "loss": 0.2158064991235733
+        },
+        "fixed": {
+          "accuracy": 0.9700520634651184,
+          "loss": 0.09391345828771591
+        },
+        "swapped": {
+          "accuracy": 0.9518229365348816,
+          "loss": 0.1908838003873825
+        }
+      },
+      "paired_correct": 0.9029948115348816
+    },
+    {
+      "feature": "body_kv_2",
+      "kind": "mlp",
+      "seed": 2,
+      "train": {
+        "accuracy": 0.999833345413208,
+        "loss": 0.01190784852951765
+      },
+      "val": {
+        "accuracy": 0.95703125,
+        "loss": 0.16558516025543213
+      },
+      "tests": {
+        "mixed": {
+          "accuracy": 0.9459635615348816,
+          "loss": 0.19279193878173828
+        },
+        "fixed": {
+          "accuracy": 0.9733073115348816,
+          "loss": 0.10032841563224792
+        },
+        "swapped": {
+          "accuracy": 0.9505208134651184,
+          "loss": 0.1891627311706543
+        }
+      },
+      "paired_correct": 0.9036458134651184
+    },
+    {
+      "feature": "body_int4_kv_2",
+      "kind": "linear",
+      "seed": 0,
+      "train": {
+        "accuracy": 0.8073333501815796,
+        "loss": 0.5576775074005127
+      },
+      "val": {
+        "accuracy": 0.7161458134651184,
+        "loss": 0.8408467173576355
+      },
+      "tests": {
+        "mixed": {
+          "accuracy": 0.705078125,
+          "loss": 0.8763967156410217
+        },
+        "fixed": {
+          "accuracy": 0.7662760615348816,
+          "loss": 0.7113158106803894
+        },
+        "swapped": {
+          "accuracy": 0.7005208134651184,
+          "loss": 0.897284984588623
+        }
+      },
+      "paired_correct": 0.5390625
+    },
+    {
+      "feature": "body_int4_kv_2",
+      "kind": "linear",
+      "seed": 1,
+      "train": {
+        "accuracy": 0.8245000243186951,
+        "loss": 0.5095208287239075
+      },
+      "val": {
+        "accuracy": 0.7109375,
+        "loss": 0.8346814513206482
+      },
+      "tests": {
+        "mixed": {
+          "accuracy": 0.71484375,
+          "loss": 0.8244727253913879
+        },
+        "fixed": {
+          "accuracy": 0.7330729365348816,
+          "loss": 0.7560505270957947
+        },
+        "swapped": {
+          "accuracy": 0.7161458134651184,
+          "loss": 0.8385879397392273
+        }
+      },
+      "paired_correct": 0.5716145634651184
+    },
+    {
+      "feature": "body_int4_kv_2",
+      "kind": "linear",
+      "seed": 2,
+      "train": {
+        "accuracy": 0.8013333082199097,
+        "loss": 0.5650908350944519
+      },
+      "val": {
+        "accuracy": 0.7109375,
+        "loss": 0.8698241114616394
+      },
+      "tests": {
+        "mixed": {
+          "accuracy": 0.6998698115348816,
+          "loss": 0.8743353486061096
+        },
+        "fixed": {
+          "accuracy": 0.74609375,
+          "loss": 0.7389973998069763
+        },
+        "swapped": {
+          "accuracy": 0.6979166865348816,
+          "loss": 0.8902059197425842
+        }
+      },
+      "paired_correct": 0.5416666865348816
+    },
+    {
+      "feature": "body_int4_kv_2",
+      "kind": "mlp",
+      "seed": 0,
+      "train": {
+        "accuracy": 1.0,
+        "loss": 0.009638136252760887
+      },
+      "val": {
+        "accuracy": 0.9270833134651184,
+        "loss": 0.269062340259552
+      },
+      "tests": {
+        "mixed": {
+          "accuracy": 0.92578125,
+          "loss": 0.28165772557258606
+        },
+        "fixed": {
+          "accuracy": 0.96484375,
+          "loss": 0.13129492104053497
+        },
+        "swapped": {
+          "accuracy": 0.92578125,
+          "loss": 0.25972265005111694
+        }
+      },
+      "paired_correct": 0.861328125
+    },
+    {
+      "feature": "body_int4_kv_2",
+      "kind": "mlp",
+      "seed": 1,
+      "train": {
+        "accuracy": 0.9993333220481873,
+        "loss": 0.016956370323896408
+      },
+      "val": {
+        "accuracy": 0.9348958134651184,
+        "loss": 0.2318774312734604
+      },
+      "tests": {
+        "mixed": {
+          "accuracy": 0.9231770634651184,
+          "loss": 0.29618433117866516
+        },
+        "fixed": {
+          "accuracy": 0.9596354365348816,
+          "loss": 0.12857839465141296
+        },
+        "swapped": {
+          "accuracy": 0.9205729365348816,
+          "loss": 0.26494693756103516
+        }
+      },
+      "paired_correct": 0.85546875
+    },
+    {
+      "feature": "body_int4_kv_2",
+      "kind": "mlp",
+      "seed": 2,
+      "train": {
+        "accuracy": 1.0,
+        "loss": 0.008694423362612724
+      },
+      "val": {
+        "accuracy": 0.92578125,
+        "loss": 0.24135993421077728
+      },
+      "tests": {
+        "mixed": {
+          "accuracy": 0.921875,
+          "loss": 0.2870464622974396
+        },
+        "fixed": {
+          "accuracy": 0.9635416865348816,
+          "loss": 0.1341342180967331
+        },
+        "swapped": {
+          "accuracy": 0.9251301884651184,
+          "loss": 0.2519090175628662
+        }
+      },
+      "paired_correct": 0.8600260615348816
+    },
+    {
+      "feature": "raw_bag",
+      "kind": "linear",
+      "seed": 0,
+      "train": {
+        "accuracy": 0.5423333048820496,
+        "loss": 0.8756444454193115
+      },
+      "val": {
+        "accuracy": 0.4791666567325592,
+        "loss": 0.9160912036895752
+      },
+      "tests": {
+        "mixed": {
+          "accuracy": 0.517578125,
+          "loss": 0.9143003821372986
+        },
+        "fixed": {
+          "accuracy": 0.494140625,
+          "loss": 0.9384078979492188
+        },
+        "swapped": {
+          "accuracy": 0.517578125,
+          "loss": 0.9143003821372986
+        }
+      },
+      "paired_correct": 0.517578125
+    },
+    {
+      "feature": "raw_bag",
+      "kind": "linear",
+      "seed": 1,
+      "train": {
+        "accuracy": 0.5378333330154419,
+        "loss": 0.8734447360038757
+      },
+      "val": {
+        "accuracy": 0.5,
+        "loss": 0.9143978953361511
+      },
+      "tests": {
+        "mixed": {
+          "accuracy": 0.5065104365348816,
+          "loss": 0.9175260663032532
+        },
+        "fixed": {
+          "accuracy": 0.4889322817325592,
+          "loss": 0.9474713802337646
+        },
+        "swapped": {
+          "accuracy": 0.5065104365348816,
+          "loss": 0.9175260663032532
+        }
+      },
+      "paired_correct": 0.5065104365348816
+    },
+    {
+      "feature": "raw_bag",
+      "kind": "linear",
+      "seed": 2,
+      "train": {
+        "accuracy": 0.5419999957084656,
+        "loss": 0.8732750415802002
+      },
+      "val": {
+        "accuracy": 0.5026041865348816,
+        "loss": 0.9194259643554688
+      },
+      "tests": {
+        "mixed": {
+          "accuracy": 0.5130208134651184,
+          "loss": 0.9240875840187073
+        },
+        "fixed": {
+          "accuracy": 0.4967447817325592,
+          "loss": 0.9483943581581116
+        },
+        "swapped": {
+          "accuracy": 0.5130208134651184,
+          "loss": 0.9240875840187073
+        }
+      },
+      "paired_correct": 0.5130208134651184
+    },
+    {
+      "feature": "raw_bag",
+      "kind": "mlp",
+      "seed": 0,
+      "train": {
+        "accuracy": 0.6903333067893982,
+        "loss": 0.5954542756080627
+      },
+      "val": {
+        "accuracy": 0.5143229365348816,
+        "loss": 0.8317938446998596
+      },
+      "tests": {
+        "mixed": {
+          "accuracy": 0.513671875,
+          "loss": 0.8504480719566345
+        },
+        "fixed": {
+          "accuracy": 0.49609375,
+          "loss": 0.858443558216095
+        },
+        "swapped": {
+          "accuracy": 0.513671875,
+          "loss": 0.8504480719566345
+        }
+      },
+      "paired_correct": 0.513671875
+    },
+    {
+      "feature": "raw_bag",
+      "kind": "mlp",
+      "seed": 1,
+      "train": {
+        "accuracy": 0.6656666398048401,
+        "loss": 0.628796398639679
+      },
+      "val": {
+        "accuracy": 0.5260416865348816,
+        "loss": 0.8183290958404541
+      },
+      "tests": {
+        "mixed": {
+          "accuracy": 0.5078125,
+          "loss": 0.8174635767936707
+        },
+        "fixed": {
+          "accuracy": 0.4934895932674408,
+          "loss": 0.8495963215827942
+        },
+        "swapped": {
+          "accuracy": 0.5078125,
+          "loss": 0.8174635767936707
+        }
+      },
+      "paired_correct": 0.5078125
+    },
+    {
+      "feature": "raw_bag",
+      "kind": "mlp",
+      "seed": 2,
+      "train": {
+        "accuracy": 0.6241666674613953,
+        "loss": 0.6857494115829468
+      },
+      "val": {
+        "accuracy": 0.5104166865348816,
+        "loss": 0.8312816023826599
+      },
+      "tests": {
+        "mixed": {
+          "accuracy": 0.525390625,
+          "loss": 0.8221623301506042
+        },
+        "fixed": {
+          "accuracy": 0.482421875,
+          "loss": 0.8443031311035156
+        },
+        "swapped": {
+          "accuracy": 0.525390625,
+          "loss": 0.8221623301506042
+        }
+      },
+      "paired_correct": 0.525390625
+    },
+    {
+      "feature": "oracle_value",
+      "kind": "linear",
+      "seed": 0,
+      "train": {
+        "accuracy": 1.0,
+        "loss": 0.0004912350559607148
+      },
+      "val": {
+        "accuracy": 1.0,
+        "loss": 0.0004890355630777776
+      },
+      "tests": {
+        "mixed": {
+          "accuracy": 1.0,
+          "loss": 0.0004931312287226319
+        },
+        "fixed": {
+          "accuracy": 1.0,
+          "loss": 0.0004901062347926199
+        },
+        "swapped": {
+          "accuracy": 1.0,
+          "loss": 0.0004931312287226319
+        }
+      },
+      "paired_correct": 1.0
+    },
+    {
+      "feature": "oracle_value",
+      "kind": "linear",
+      "seed": 1,
+      "train": {
+        "accuracy": 1.0,
+        "loss": 0.000440757954493165
+      },
+      "val": {
+        "accuracy": 1.0,
+        "loss": 0.00044237184920348227
+      },
+      "tests": {
+        "mixed": {
+          "accuracy": 1.0,
+          "loss": 0.00044174506911076605
+        },
+        "fixed": {
+          "accuracy": 1.0,
+          "loss": 0.00044067250564694405
+        },
+        "swapped": {
+          "accuracy": 1.0,
+          "loss": 0.00044174506911076605
+        }
+      },
+      "paired_correct": 1.0
+    },
+    {
+      "feature": "oracle_value",
+      "kind": "linear",
+      "seed": 2,
+      "train": {
+        "accuracy": 1.0,
+        "loss": 0.0004750190128106624
+      },
+      "val": {
+        "accuracy": 1.0,
+        "loss": 0.00048070939374156296
+      },
+      "tests": {
+        "mixed": {
+          "accuracy": 1.0,
+          "loss": 0.00047249611816368997
+        },
+        "fixed": {
+          "accuracy": 1.0,
+          "loss": 0.0004718012933153659
+        },
+        "swapped": {
+          "accuracy": 1.0,
+          "loss": 0.00047249611816368997
+        }
+      },
+      "paired_correct": 1.0
+    },
+    {
+      "feature": "oracle_value",
+      "kind": "mlp",
+      "seed": 0,
+      "train": {
+        "accuracy": 1.0,
+        "loss": 8.748219261178747e-05
+      },
+      "val": {
+        "accuracy": 1.0,
+        "loss": 8.718940080143511e-05
+      },
+      "tests": {
+        "mixed": {
+          "accuracy": 1.0,
+          "loss": 8.77092606970109e-05
+        },
+        "fixed": {
+          "accuracy": 1.0,
+          "loss": 8.756237366469577e-05
+        },
+        "swapped": {
+          "accuracy": 1.0,
+          "loss": 8.77092606970109e-05
+        }
+      },
+      "paired_correct": 1.0
+    },
+    {
+      "feature": "oracle_value",
+      "kind": "mlp",
+      "seed": 1,
+      "train": {
+        "accuracy": 1.0,
+        "loss": 8.502694254275411e-05
+      },
+      "val": {
+        "accuracy": 1.0,
+        "loss": 8.486469596391544e-05
+      },
+      "tests": {
+        "mixed": {
+          "accuracy": 1.0,
+          "loss": 8.533869549864903e-05
+        },
+        "fixed": {
+          "accuracy": 1.0,
+          "loss": 8.511862688465044e-05
+        },
+        "swapped": {
+          "accuracy": 1.0,
+          "loss": 8.533869549864903e-05
+        }
+      },
+      "paired_correct": 1.0
+    },
+    {
+      "feature": "oracle_value",
+      "kind": "mlp",
+      "seed": 2,
+      "train": {
+        "accuracy": 1.0,
+        "loss": 8.222812175517902e-05
+      },
+      "val": {
+        "accuracy": 1.0,
+        "loss": 8.213383989641443e-05
+      },
+      "tests": {
+        "mixed": {
+          "accuracy": 1.0,
+          "loss": 8.233771222876385e-05
+        },
+        "fixed": {
+          "accuracy": 1.0,
+          "loss": 8.199067087844014e-05
+        },
+        "swapped": {
+          "accuracy": 1.0,
+          "loss": 8.233771222876385e-05
+        }
+      },
+      "paired_correct": 1.0
+    }
+  ]
+}

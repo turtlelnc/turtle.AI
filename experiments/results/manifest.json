@@ -1,0 +1,190 @@
+{
+  "scope": "synthetic experiment metrics; binaries and environments excluded",
+  "files": [
+    {
+      "path": "association-calibration/results.json",
+      "bytes": 12966,
+      "sha256": "93a1efb682513ab001329b9af5a6d9d0d0541b45662fb14c59895be0b199dde2"
+    },
+    {
+      "path": "association-cli-smoke/results.json",
+      "bytes": 4488,
+      "sha256": "f953aebdf292a0674c61796ab4f72f789fea0cb50ad2e2f6c000f198d8cd7ae1"
+    },
+    {
+      "path": "association-cli-summary.json",
+      "bytes": 1719,
+      "sha256": "c02f093848a2428061e741bfbf304af391c7ab5b8fec87fcc85a3748323ce8bb"
+    },
+    {
+      "path": "association-final/results.json",
+      "bytes": 88774,
+      "sha256": "c101403edd50fbc9f3bbdcf6d89a43324dc01ff4043a0e560d7b0d38ea4e8b82"
+    },
+    {
+      "path": "association-local-gist-pilot/results.json",
+      "bytes": 7924,
+      "sha256": "27273a96a91349fdc8d67e7ead73e94024d8c6dd9366d303fcc8f66833d55a81"
+    },
+    {
+      "path": "association-long-pilot/results.json",
+      "bytes": 15291,
+      "sha256": "018bc41762e3fe602498eb1382c4442f45b38e8f1a1943a6bde205e945a28054"
+    },
+    {
+      "path": "association-pilot/results.json",
+      "bytes": 9711,
+      "sha256": "911a73d8159014f80c91287f0def39438ca82d4970ed519df02dbefa7d693414"
+    },
+    {
+      "path": "association-summary.json",
+      "bytes": 18000,
+      "sha256": "abd6a68990bc176df172a5325d564f89a6c1a72970c63dc9579564c84893db93"
+    },
+    {
+      "path": "association-unsupervised/results.json",
+      "bytes": 33067,
+      "sha256": "54bed022d48ec6b49562b40e485a633cfab9ebb61f8c148de3ae95e71dfeae9a"
+    },
+    {
+      "path": "binding-continuation/results.json",
+      "bytes": 971,
+      "sha256": "b93afb12a2e8d881c1eae00467b374a59420a98560879f89424e45d9575759a9"
+    },
+    {
+      "path": "binding-retention.json",
+      "bytes": 1620,
+      "sha256": "bc2a19db8b671344ef02e6716fbb66715e0bfbed36ef38db2de6e45c35e1a4dc"
+    },
+    {
+      "path": "candidate-binding-curriculum/results.json",
+      "bytes": 30055,
+      "sha256": "8559d5b63e720a4069250060dbee803b561e739afa1078fa053c6c45a97e9608"
+    },
+    {
+      "path": "candidate-relation-fixed/results.json",
+      "bytes": 47544,
+      "sha256": "5c843b97992dfdbe06578de05f07be2698c247b488776119519e155d0414e7f9"
+    },
+    {
+      "path": "candidate-relation-probes/results.json",
+      "bytes": 47467,
+      "sha256": "93cc948055cabac5436a8162e770d9f1bb07d155339ea13947837140da3dc452"
+    },
+    {
+      "path": "curriculum-extension.json",
+      "bytes": 1303,
+      "sha256": "fd63bdf03a46bf052af6f5dbd4a2e4f27198bcc33c84de1f14a5a6d2868ed33c"
+    },
+    {
+      "path": "curriculum-fixed-vocabulary/results.json",
+      "bytes": 26873,
+      "sha256": "fb3b0e89b06c510ca6cf30a8053e4045c25f6a031bc30965b94d9f4def239c3a"
+    },
+    {
+      "path": "direct-page-value-probes/results.json",
+      "bytes": 19790,
+      "sha256": "b9da01537074393f6dd36381a80859fcaab1168f62874d4a0e1ff1cc8e970be8"
+    },
+    {
+      "path": "eight-value-relation-probes/results.json",
+      "bytes": 19469,
+      "sha256": "d7e9ea9f72a557a4bca24dc92e0c69f33400cc49faaf3e2858ebb068ac842e26"
+    },
+    {
+      "path": "gist-fixed-role-probes/results.json",
+      "bytes": 109472,
+      "sha256": "bb1be2f0a0c7330f192feab831bbbb4e0b68833e94b1538686625bdda3ed8826"
+    },
+    {
+      "path": "gist-kv-probes/results.json",
+      "bytes": 249476,
+      "sha256": "5e65f42994f2b3e7182dea33c8431534264cacc0977c5fec5ba0762cc4570466"
+    },
+    {
+      "path": "gist-relation-probes/results.json",
+      "bytes": 136188,
+      "sha256": "4cdf1d1453b5c623720aaf8353916d3fa32b65258d6338223d2a5ec9d64df538"
+    },
+    {
+      "path": "historical-body-relation-probes/results.json",
+      "bytes": 79441,
+      "sha256": "82ffcf7f097f483658048bdd7e5ea0b56302ead2abfbbfac2d90cf3054b4b5f7"
+    },
+    {
+      "path": "page-competition.json",
+      "bytes": 1524,
+      "sha256": "f255e38b52bc524a0ec249b0e69a8a1125ea4f316061b1a23074f87005509a58"
+    },
+    {
+      "path": "page-readout-mass-neutral/analysis.json",
+      "bytes": 78495,
+      "sha256": "6551ac73e1b162fca18207ba083642f072ca4a2fb5a531f06b7ef84a01a0f4d4"
+    },
+    {
+      "path": "page-readout-mass-neutral/results.json",
+      "bytes": 19001,
+      "sha256": "8edcaeb9a3759334a6cd1cb29fc47a68e2628655f6b3f74f0887ee70505913b6"
+    },
+    {
+      "path": "paired-replay-binding/analysis.json",
+      "bytes": 33000,
+      "sha256": "655a6fe27f2730a6b395de869b0451befc61921c04bad5b528704da5063aa1bf"
+    },
+    {
+      "path": "paired-replay-binding/results.json",
+      "bytes": 29219,
+      "sha256": "1228f288fc54f1176fdc93091c2ad6c9b7be90256b040718d3d9f64ec3dfa7ab"
+    },
+    {
+      "path": "readout-fusion-screen/analysis.json",
+      "bytes": 84255,
+      "sha256": "2bb0fe15ce3b770c488ddef31892728d7e2e7e910138f57eb986294c84065695"
+    },
+    {
+      "path": "readout-fusion-screen/results.json",
+      "bytes": 19077,
+      "sha256": "9bf5ebb50038cd5eb3e9e15eb6874005adb66e878acd0a8b1aebc71d232a61f3"
+    },
+    {
+      "path": "resonant-screening.json",
+      "bytes": 5422,
+      "sha256": "41802930c60b5d3065fba68e012459b35f10f6e593378eeb9f21e9adf0288c5b"
+    },
+    {
+      "path": "single-page-diagnostic.json",
+      "bytes": 134,
+      "sha256": "028aa92d65bc785f83df7a8ef998c7ed13cde6a2fcf23932a9b3b687b0ef247e"
+    },
+    {
+      "path": "single-page-shuffled.json",
+      "bytes": 158,
+      "sha256": "44fa056c378c36c1dff658acc335467e9139ff5baf0b6d7a35784690bd0e92c0"
+    },
+    {
+      "path": "source-supervised-long/results.json",
+      "bytes": 18294,
+      "sha256": "254e503191eb1154f3f92ac6ce4b936ba4b3038033dbe1b1f01cbdbe86a02520"
+    },
+    {
+      "path": "streaming-disk-integration.json",
+      "bytes": 2993,
+      "sha256": "cd5dddf4f4cae857601a4b905a194905c23a8b7183dba1f01f854a7a11274d9c"
+    },
+    {
+      "path": "streaming-disk-screening.json",
+      "bytes": 16427,
+      "sha256": "a0eed3785d45622e61ddfbacadb5561f3fea48516491e8b9c124f099f56e65ba"
+    },
+    {
+      "path": "streaming-screening.json",
+      "bytes": 17164,
+      "sha256": "e99dcbc24170c34426b87b1c28f882830a1e37cc0e30f4279da3c9be1929cc61"
+    },
+    {
+      "path": "three-candidate-advance/results.json",
+      "bytes": 1048,
+      "sha256": "9d506180fbbab583f67716f8c06413689449a268d42d711543a7726ffbd6b520"
+    }
+  ]
+}

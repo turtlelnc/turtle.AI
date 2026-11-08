@@ -1,0 +1,41 @@
+{
+  "checkpoint": "/workspace/work/curriculum-fixed-vocabulary/full_supervised-1/checkpoint.pt",
+  "seed": 1,
+  "mode": "full_supervised",
+  "scope": "validation-qualified single checkpoint; sinusoidal capacity extension without training",
+  "training_max_tokens": 258,
+  "results": [
+    {
+      "blocks": 64,
+      "input_tokens": 514,
+      "examples": 32,
+      "accuracy": 0.4375,
+      "ce": 4.898816548305149,
+      "route_hit_rate": null,
+      "oracle_page_accuracy": null,
+      "counterfactual_examples": 32,
+      "counterfactual_joint_accuracy": 0.21875,
+      "random_topk_page_chance": null,
+      "position_prior_topk_chance": null,
+      "fp32_cold_top1_disagreement": 0.0,
+      "mean_top2_margin": 5.460466846823692,
+      "evaluation_seconds": 3.0084618050000245
+    },
+    {
+      "blocks": 128,
+      "input_tokens": 1026,
+      "examples": 32,
+      "accuracy": 0.1875,
+      "ce": 6.814203131161776,
+      "route_hit_rate": null,
+      "oracle_page_accuracy": null,
+      "counterfactual_examples": 32,
+      "counterfactual_joint_accuracy": 0.03125,
+      "random_topk_page_chance": null,
+      "position_prior_topk_chance": null,
+      "fp32_cold_top1_disagreement": 0.0,
+      "mean_top2_margin": 4.7025101482868195,
+      "evaluation_seconds": 10.957522339999969
+    }
+  ]
+}

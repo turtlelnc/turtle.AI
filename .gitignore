@@ -39,3 +39,13 @@
 
 # debug information files
 *.dwo
+
+# Python reference models and local environments
+__pycache__/
+*.py[cod]
+.venv/
+
+# Local training assets
+work/
+*.pt
+*.pth

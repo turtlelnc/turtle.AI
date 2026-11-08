@@ -8,6 +8,8 @@
 #include <filesystem>
 #include <fstream>
 #include <iostream>
+#include <limits>
+#include <stdexcept>
 #include <string>
 #include <vector>
 
@@ -311,6 +313,23 @@ public:
   int seq_len;
   int d_model;
   int d_head;
+  // Zero window preserves full causal attention. Window includes the query.
+  int window_size = 0;
+  int sink_tokens = 8;
+
+  bool allows(int query, int key) const {
+    return key <= query &&
+           (window_size == 0 || key < sink_tokens ||
+            query - key < window_size);
+  }
+
+  void configure_context(int window, int sinks) {
+    if (window < 0 || sinks < 0)
+      throw std::invalid_argument("attention window/sinks must be nonnegative");
+    window_size = window;
+    sink_tokens = sinks;
+  }
+
   Tensor Q, K, V;
   Tensor K_tp, V_tp;
   Tensor scores, scores_softmax;
@@ -332,8 +351,8 @@ public:
     float scale = 1.0f / sqrt((float)d_head);
     for (int i = 0; i < seq_len; i++) {
       for (int j = 0; j < seq_len; j++) {
-        if (j > i) {
-          scores.data[i * seq_len + j] = -1e9f;
+        if (!allows(i, j)) {
+          scores.data[i * seq_len + j] = -std::numeric_limits<float>::infinity();
         } else {
           scores.data[i * seq_len + j] *= scale;
         }
@@ -348,7 +367,7 @@ public:
   void backward(Tensor &input, Tensor &output) override {
     int L = seq_len;
     int D = d_head;
-    static Tensor scores_softmax_tp(L, L);
+    Tensor scores_softmax_tp(L, L);
     transpose(scores_softmax.data, scores_softmax_tp.data, L, L);
     matmul(scores_softmax_tp.data, output.grad, V.grad, L, L, D);
     transpose(V.data, V_tp.data, L, D);
@@ -364,7 +383,7 @@ public:
         float y = scores_softmax.data[i * L + j];
         float dy = d_scores_softmax.data[i * L + j];
         d_scores_raw.data[i * L + j] = y * (dy - dot_sum) * scale;
-        if (j > i)
+        if (!allows(i, j))
           d_scores_raw.data[i * L + j] = 0.0f;
       }
     }
@@ -372,9 +391,16 @@ public:
     matmul(d_scores_raw.data, K.data, Q.grad, L, L, D);
     transpose(d_scores_raw.data, d_scores_raw_tp.data, L, L);
     matmul(d_scores_raw_tp.data, Q.data, K.grad, L, L, D);
+    // LinearLayer::backward overwrites input.grad; sum all three paths.
+    std::vector<float> input_grad(input.rows * input.cols);
     W_q.backward(input, Q);
+    std::copy(input.grad, input.grad + input_grad.size(), input_grad.begin());
     W_k.backward(input, K);
+    for (size_t i = 0; i < input_grad.size(); ++i)
+      input_grad[i] += input.grad[i];
     W_v.backward(input, V);
+    for (size_t i = 0; i < input_grad.size(); ++i)
+      input.grad[i] += input_grad[i];
   }
 
   void update(float lr) override {
@@ -822,6 +848,12 @@ int main() {
   int save_point = cfg["training"].value("save_point", 100);
   string weight_path = cfg["training"].value("save_path", "model.bin");
   string load_path = cfg["training"].value("load_path", "");
+  int attention_window = cfg["model"].value("attention_window", 0);
+  int attention_sinks = cfg["model"].value("attention_sink_tokens", 8);
+  if (seq_len <= 0 || d_model <= 0 || attention_window < 0 || attention_sinks < 0) {
+    cerr << "Invalid model dimensions or attention context configuration" << endl;
+    return 1;
+  }
   bool is_vlm = fs::is_directory(corpus_path);
   bpe::BPEConfig bpe_cfg;
   bpe_cfg.vocab_size = cfg["model"].value("vocab_size", 2000);
@@ -841,6 +873,7 @@ int main() {
 
   for (int i = 0; i < 8; i++) {
     blocks.push_back(new TransformerBlock(seq_len, d_model, d_model));
+    blocks.back()->attn.configure_context(attention_window, attention_sinks);
   }
   LinearLayer projection(d_model, vocab_size);
 

@@ -1,0 +1,3120 @@
+{
+  "arguments": {
+    "parent": "/workspace/work/binding-continuation/retrieval-1.pt",
+    "replay": "/workspace/work/paired-replay-binding/replay-0/checkpoint.pt",
+    "output": "/workspace/work/gist-fixed-role-probes",
+    "steps": 600,
+    "seeds": 3,
+    "features": [
+      "gist",
+      "gist_kv_1",
+      "gist_kv_2"
+    ],
+    "train_roles": "fixed"
+  },
+  "encoder_unchanged": true,
+  "results": [
+    {
+      "encoder": "parent",
+      "feature": "gist",
+      "probe": "linear",
+      "seed": 0,
+      "validation": {
+        "key_accuracy": 0.06484375149011612,
+        "value_accuracy": 0.3226562440395355,
+        "decoy_accuracy": 0.13906249403953552,
+        "role_choice": 0.629687488079071,
+        "both_values": 0.05703125149011612,
+        "key_and_value": 0.008593750186264515,
+        "loss": 8.731292724609375
+      },
+      "tests": {
+        "mixed": {
+          "key_accuracy": 0.04023437574505806,
+          "value_accuracy": 0.20429687201976776,
+          "decoy_accuracy": 0.10664062201976776,
+          "role_choice": 0.48515623807907104,
+          "both_values": 0.02734375,
+          "key_and_value": 0.0031250000465661287,
+          "loss": 9.230403900146484
+        },
+        "paired_swapped": {
+          "key_accuracy": 0.03945312649011612,
+          "value_accuracy": 0.2109375,
+          "decoy_accuracy": 0.10703124850988388,
+          "role_choice": 0.48750001192092896,
+          "both_values": 0.03281249850988388,
+          "key_and_value": 0.0042968750931322575,
+          "loss": 9.180390357971191
+        },
+        "fixed_order": {
+          "key_accuracy": 0.05742187425494194,
+          "value_accuracy": 0.32109373807907104,
+          "decoy_accuracy": 0.12382812798023224,
+          "role_choice": 0.619921863079071,
+          "both_values": 0.04374999925494194,
+          "key_and_value": 0.00937500037252903,
+          "loss": 8.725200653076172
+        },
+        "longer": {
+          "key_accuracy": 0.03945312649011612,
+          "value_accuracy": 0.169921875,
+          "decoy_accuracy": 0.10781250149011612,
+          "role_choice": 0.5101562738418579,
+          "both_values": 0.02109375037252903,
+          "key_and_value": 0.0042968750931322575,
+          "loss": 9.395402908325195
+        }
+      },
+      "paired_prediction_agreement": 0.15859374403953552,
+      "paired_value_correct": 0.0234375
+    },
+    {
+      "encoder": "parent",
+      "feature": "gist",
+      "probe": "linear",
+      "seed": 1,
+      "validation": {
+        "key_accuracy": 0.06093750149011612,
+        "value_accuracy": 0.33203125,
+        "decoy_accuracy": 0.15078124403953552,
+        "role_choice": 0.624218761920929,
+        "both_values": 0.0546875,
+        "key_and_value": 0.008593750186264515,
+        "loss": 8.730697631835938
+      },
+      "tests": {
+        "mixed": {
+          "key_accuracy": 0.03437500074505806,
+          "value_accuracy": 0.205078125,
+          "decoy_accuracy": 0.11640624701976776,
+          "role_choice": 0.48710936307907104,
+          "both_values": 0.03242187574505806,
+          "key_and_value": 0.0031250000465661287,
+          "loss": 9.213308334350586
+        },
+        "paired_swapped": {
+          "key_accuracy": 0.04453124850988388,
+          "value_accuracy": 0.22226563096046448,
+          "decoy_accuracy": 0.11210937798023224,
+          "role_choice": 0.5082031488418579,
+          "both_values": 0.02968749962747097,
+          "key_and_value": 0.007031249813735485,
+          "loss": 9.169054985046387
+        },
+        "fixed_order": {
+          "key_accuracy": 0.05820312350988388,
+          "value_accuracy": 0.32343751192092896,
+          "decoy_accuracy": 0.11601562798023224,
+          "role_choice": 0.623828113079071,
+          "both_values": 0.0390625,
+          "key_and_value": 0.008593750186264515,
+          "loss": 8.72632884979248
+        },
+        "longer": {
+          "key_accuracy": 0.03984374925494194,
+          "value_accuracy": 0.17734375596046448,
+          "decoy_accuracy": 0.11992187798023224,
+          "role_choice": 0.5078125,
+          "both_values": 0.02382812462747097,
+          "key_and_value": 0.005078124813735485,
+          "loss": 9.386486053466797
+        }
+      },
+      "paired_prediction_agreement": 0.23945312201976776,
+      "paired_value_correct": 0.03398437425494194
+    },
+    {
+      "encoder": "parent",
+      "feature": "gist",
+      "probe": "linear",
+      "seed": 2,
+      "validation": {
+        "key_accuracy": 0.05078125,
+        "value_accuracy": 0.33671873807907104,
+        "decoy_accuracy": 0.11796875298023224,
+        "role_choice": 0.6390625238418579,
+        "both_values": 0.04140625149011612,
+        "key_and_value": 0.0054687499068677425,
+        "loss": 8.762752532958984
+      },
+      "tests": {
+        "mixed": {
+          "key_accuracy": 0.02695312537252903,
+          "value_accuracy": 0.205078125,
+          "decoy_accuracy": 0.12382812798023224,
+          "role_choice": 0.49687498807907104,
+          "both_values": 0.03085937537252903,
+          "key_and_value": 0.0035156249068677425,
+          "loss": 9.25760269165039
+        },
+        "paired_swapped": {
+          "key_accuracy": 0.03554687649011612,
+          "value_accuracy": 0.2109375,
+          "decoy_accuracy": 0.12187500298023224,
+          "role_choice": 0.501171886920929,
+          "both_values": 0.02617187425494194,
+          "key_and_value": 0.0042968750931322575,
+          "loss": 9.229103088378906
+        },
+        "fixed_order": {
+          "key_accuracy": 0.04414062574505806,
+          "value_accuracy": 0.32148438692092896,
+          "decoy_accuracy": 0.12343750149011612,
+          "role_choice": 0.628125011920929,
+          "both_values": 0.03632812574505806,
+          "key_and_value": 0.005859375,
+          "loss": 8.755988121032715
+        },
+        "longer": {
+          "key_accuracy": 0.037109375,
+          "value_accuracy": 0.17031249403953552,
+          "decoy_accuracy": 0.125,
+          "role_choice": 0.503125011920929,
+          "both_values": 0.02460937574505806,
+          "key_and_value": 0.0042968750931322575,
+          "loss": 9.3833646774292
+        }
+      },
+      "paired_prediction_agreement": 0.19804687798023224,
+      "paired_value_correct": 0.03007812425494194
+    },
+    {
+      "encoder": "parent",
+      "feature": "gist",
+      "probe": "mlp",
+      "seed": 0,
+      "validation": {
+        "key_accuracy": 0.08046875149011612,
+        "value_accuracy": 0.34843748807907104,
+        "decoy_accuracy": 0.13437500596046448,
+        "role_choice": 0.643750011920929,
+        "both_values": 0.05390625074505806,
+        "key_and_value": 0.01796874962747097,
+        "loss": 8.337126731872559
+      },
+      "tests": {
+        "mixed": {
+          "key_accuracy": 0.04414062574505806,
+          "value_accuracy": 0.21210937201976776,
+          "decoy_accuracy": 0.09453125298023224,
+          "role_choice": 0.47968751192092896,
+          "both_values": 0.02460937574505806,
+          "key_and_value": 0.007031249813735485,
+          "loss": 10.52066421508789
+        },
+        "paired_swapped": {
+          "key_accuracy": 0.04296875,
+          "value_accuracy": 0.21523436903953552,
+          "decoy_accuracy": 0.09765625,
+          "role_choice": 0.47968751192092896,
+          "both_values": 0.02617187425494194,
+          "key_and_value": 0.0042968750931322575,
+          "loss": 10.453049659729004
+        },
+        "fixed_order": {
+          "key_accuracy": 0.07773437350988388,
+          "value_accuracy": 0.3578124940395355,
+          "decoy_accuracy": 0.12734374403953552,
+          "role_choice": 0.640625,
+          "both_values": 0.05117187649011612,
+          "key_and_value": 0.01328125037252903,
+          "loss": 8.301193237304688
+        },
+        "longer": {
+          "key_accuracy": 0.03945312649011612,
+          "value_accuracy": 0.17343750596046448,
+          "decoy_accuracy": 0.11835937201976776,
+          "role_choice": 0.49726563692092896,
+          "both_values": 0.021484375,
+          "key_and_value": 0.0054687499068677425,
+          "loss": 10.908171653747559
+        }
+      },
+      "paired_prediction_agreement": 0.142578125,
+      "paired_value_correct": 0.01914062537252903
+    },
+    {
+      "encoder": "parent",
+      "feature": "gist",
+      "probe": "mlp",
+      "seed": 1,
+      "validation": {
+        "key_accuracy": 0.08437500149011612,
+        "value_accuracy": 0.34453123807907104,
+        "decoy_accuracy": 0.15156249701976776,
+        "role_choice": 0.6382812261581421,
+        "both_values": 0.05781250074505806,
+        "key_and_value": 0.01171875,
+        "loss": 8.375497817993164
+      },
+      "tests": {
+        "mixed": {
+          "key_accuracy": 0.04218750074505806,
+          "value_accuracy": 0.21523436903953552,
+          "decoy_accuracy": 0.1015625,
+          "role_choice": 0.4925781190395355,
+          "both_values": 0.02968749962747097,
+          "key_and_value": 0.007031249813735485,
+          "loss": 10.549836158752441
+        },
+        "paired_swapped": {
+          "key_accuracy": 0.04804687574505806,
+          "value_accuracy": 0.22226563096046448,
+          "decoy_accuracy": 0.09765625,
+          "role_choice": 0.49140626192092896,
+          "both_values": 0.02734375,
+          "key_and_value": 0.007031249813735485,
+          "loss": 10.480578422546387
+        },
+        "fixed_order": {
+          "key_accuracy": 0.08203125,
+          "value_accuracy": 0.3453125059604645,
+          "decoy_accuracy": 0.13164062798023224,
+          "role_choice": 0.637890636920929,
+          "both_values": 0.05000000074505806,
+          "key_and_value": 0.01640624925494194,
+          "loss": 8.330890655517578
+        },
+        "longer": {
+          "key_accuracy": 0.03984374925494194,
+          "value_accuracy": 0.17695312201976776,
+          "decoy_accuracy": 0.12265624850988388,
+          "role_choice": 0.4898437559604645,
+          "both_values": 0.02460937574505806,
+          "key_and_value": 0.005078124813735485,
+          "loss": 10.82076358795166
+        }
+      },
+      "paired_prediction_agreement": 0.11484374850988388,
+      "paired_value_correct": 0.01875000074505806
+    },
+    {
+      "encoder": "parent",
+      "feature": "gist",
+      "probe": "mlp",
+      "seed": 2,
+      "validation": {
+        "key_accuracy": 0.08906249701976776,
+        "value_accuracy": 0.35078126192092896,
+        "decoy_accuracy": 0.14296874403953552,
+        "role_choice": 0.6664062738418579,
+        "both_values": 0.04921875149011612,
+        "key_and_value": 0.01406249962747097,
+        "loss": 8.370044708251953
+      },
+      "tests": {
+        "mixed": {
+          "key_accuracy": 0.04648437350988388,
+          "value_accuracy": 0.220703125,
+          "decoy_accuracy": 0.111328125,
+          "role_choice": 0.4925781190395355,
+          "both_values": 0.033203125,
+          "key_and_value": 0.0074218749068677425,
+          "loss": 10.448471069335938
+        },
+        "paired_swapped": {
+          "key_accuracy": 0.046875,
+          "value_accuracy": 0.22773437201976776,
+          "decoy_accuracy": 0.111328125,
+          "role_choice": 0.47929686307907104,
+          "both_values": 0.03085937537252903,
+          "key_and_value": 0.00937500037252903,
+          "loss": 10.364763259887695
+        },
+        "fixed_order": {
+          "key_accuracy": 0.0703125,
+          "value_accuracy": 0.3578124940395355,
+          "decoy_accuracy": 0.13046875596046448,
+          "role_choice": 0.6324218511581421,
+          "both_values": 0.05390625074505806,
+          "key_and_value": 0.013671875,
+          "loss": 8.336533546447754
+        },
+        "longer": {
+          "key_accuracy": 0.041015625,
+          "value_accuracy": 0.17265625298023224,
+          "decoy_accuracy": 0.12617187201976776,
+          "role_choice": 0.5015624761581421,
+          "both_values": 0.02773437462747097,
+          "key_and_value": 0.005078124813735485,
+          "loss": 10.783308029174805
+        }
+      },
+      "paired_prediction_agreement": 0.17578125,
+      "paired_value_correct": 0.02734375
+    },
+    {
+      "encoder": "parent",
+      "feature": "gist_kv_1",
+      "probe": "linear",
+      "seed": 0,
+      "validation": {
+        "key_accuracy": 0.15390625596046448,
+        "value_accuracy": 0.12968750298023224,
+        "decoy_accuracy": 0.12421874701976776,
+        "role_choice": 0.510937511920929,
+        "both_values": 0.02109375037252903,
+        "key_and_value": 0.01328125037252903,
+        "loss": 8.45585823059082
+      },
+      "tests": {
+        "mixed": {
+          "key_accuracy": 0.080078125,
+          "value_accuracy": 0.119140625,
+          "decoy_accuracy": 0.12148437649011612,
+          "role_choice": 0.4996093809604645,
+          "both_values": 0.012890624813735485,
+          "key_and_value": 0.01015624962747097,
+          "loss": 13.913942337036133
+        },
+        "paired_swapped": {
+          "key_accuracy": 0.08749999850988388,
+          "value_accuracy": 0.11874999850988388,
+          "decoy_accuracy": 0.11874999850988388,
+          "role_choice": 0.503125011920929,
+          "both_values": 0.01835937425494194,
+          "key_and_value": 0.006640625186264515,
+          "loss": 13.479549407958984
+        },
+        "fixed_order": {
+          "key_accuracy": 0.15195313096046448,
+          "value_accuracy": 0.126953125,
+          "decoy_accuracy": 0.12851563096046448,
+          "role_choice": 0.5042968988418579,
+          "both_values": 0.01718750037252903,
+          "key_and_value": 0.02070312574505806,
+          "loss": 8.476638793945312
+        },
+        "longer": {
+          "key_accuracy": 0.07070312649011612,
+          "value_accuracy": 0.126953125,
+          "decoy_accuracy": 0.13046875596046448,
+          "role_choice": 0.49687498807907104,
+          "both_values": 0.01328125037252903,
+          "key_and_value": 0.01015624962747097,
+          "loss": 14.534599304199219
+        }
+      },
+      "paired_prediction_agreement": 0.23164062201976776,
+      "paired_value_correct": 0.025390625
+    },
+    {
+      "encoder": "parent",
+      "feature": "gist_kv_1",
+      "probe": "linear",
+      "seed": 1,
+      "validation": {
+        "key_accuracy": 0.16875000298023224,
+        "value_accuracy": 0.13906249403953552,
+        "decoy_accuracy": 0.14218750596046448,
+        "role_choice": 0.5171874761581421,
+        "both_values": 0.01796874962747097,
+        "key_and_value": 0.02187499962747097,
+        "loss": 8.445721626281738
+      },
+      "tests": {
+        "mixed": {
+          "key_accuracy": 0.078125,
+          "value_accuracy": 0.12578125298023224,
+          "decoy_accuracy": 0.130859375,
+          "role_choice": 0.4976562559604645,
+          "both_values": 0.01640624925494194,
+          "key_and_value": 0.01015624962747097,
+          "loss": 13.841619491577148
+        },
+        "paired_swapped": {
+          "key_accuracy": 0.08749999850988388,
+          "value_accuracy": 0.126953125,
+          "decoy_accuracy": 0.125,
+          "role_choice": 0.4925781190395355,
+          "both_values": 0.017578125,
+          "key_and_value": 0.012500000186264515,
+          "loss": 13.45843505859375
+        },
+        "fixed_order": {
+          "key_accuracy": 0.14609375596046448,
+          "value_accuracy": 0.12929686903953552,
+          "decoy_accuracy": 0.123046875,
+          "role_choice": 0.509765625,
+          "both_values": 0.015625,
+          "key_and_value": 0.01679687574505806,
+          "loss": 8.47121524810791
+        },
+        "longer": {
+          "key_accuracy": 0.06484375149011612,
+          "value_accuracy": 0.12460937350988388,
+          "decoy_accuracy": 0.119140625,
+          "role_choice": 0.500781238079071,
+          "both_values": 0.014453125186264515,
+          "key_and_value": 0.008593750186264515,
+          "loss": 14.5133056640625
+        }
+      },
+      "paired_prediction_agreement": 0.21523436903953552,
+      "paired_value_correct": 0.02968749962747097
+    },
+    {
+      "encoder": "parent",
+      "feature": "gist_kv_1",
+      "probe": "linear",
+      "seed": 2,
+      "validation": {
+        "key_accuracy": 0.1484375,
+        "value_accuracy": 0.13359375298023224,
+        "decoy_accuracy": 0.12578125298023224,
+        "role_choice": 0.5210937261581421,
+        "both_values": 0.01171875,
+        "key_and_value": 0.02031249925494194,
+        "loss": 8.45714282989502
+      },
+      "tests": {
+        "mixed": {
+          "key_accuracy": 0.07343749701976776,
+          "value_accuracy": 0.11835937201976776,
+          "decoy_accuracy": 0.125,
+          "role_choice": 0.49492186307907104,
+          "both_values": 0.012890624813735485,
+          "key_and_value": 0.010546875186264515,
+          "loss": 12.962940216064453
+        },
+        "paired_swapped": {
+          "key_accuracy": 0.08632812649011612,
+          "value_accuracy": 0.12031249701976776,
+          "decoy_accuracy": 0.11992187798023224,
+          "role_choice": 0.501171886920929,
+          "both_values": 0.01679687574505806,
+          "key_and_value": 0.0078125,
+          "loss": 12.6221923828125
+        },
+        "fixed_order": {
+          "key_accuracy": 0.13515624403953552,
+          "value_accuracy": 0.13007812201976776,
+          "decoy_accuracy": 0.12656250596046448,
+          "role_choice": 0.5015624761581421,
+          "both_values": 0.012890624813735485,
+          "key_and_value": 0.01914062537252903,
+          "loss": 8.511863708496094
+        },
+        "longer": {
+          "key_accuracy": 0.06015624850988388,
+          "value_accuracy": 0.13203124701976776,
+          "decoy_accuracy": 0.13828125596046448,
+          "role_choice": 0.49882811307907104,
+          "both_values": 0.01953125,
+          "key_and_value": 0.0078125,
+          "loss": 13.434935569763184
+        }
+      },
+      "paired_prediction_agreement": 0.3460937440395355,
+      "paired_value_correct": 0.04062499850988388
+    },
+    {
+      "encoder": "parent",
+      "feature": "gist_kv_1",
+      "probe": "mlp",
+      "seed": 0,
+      "validation": {
+        "key_accuracy": 0.22343750298023224,
+        "value_accuracy": 0.12890625,
+        "decoy_accuracy": 0.12265624850988388,
+        "role_choice": 0.5140625238418579,
+        "both_values": 0.01875000074505806,
+        "key_and_value": 0.02656250074505806,
+        "loss": 7.9917778968811035
+      },
+      "tests": {
+        "mixed": {
+          "key_accuracy": 0.11835937201976776,
+          "value_accuracy": 0.12578125298023224,
+          "decoy_accuracy": 0.11953125149011612,
+          "role_choice": 0.5078125,
+          "both_values": 0.012890624813735485,
+          "key_and_value": 0.01523437537252903,
+          "loss": 16.071762084960938
+        },
+        "paired_swapped": {
+          "key_accuracy": 0.130859375,
+          "value_accuracy": 0.123046875,
+          "decoy_accuracy": 0.11562500149011612,
+          "role_choice": 0.4906249940395355,
+          "both_values": 0.01796874962747097,
+          "key_and_value": 0.01992187462747097,
+          "loss": 15.308025360107422
+        },
+        "fixed_order": {
+          "key_accuracy": 0.21250000596046448,
+          "value_accuracy": 0.13632813096046448,
+          "decoy_accuracy": 0.12070312350988388,
+          "role_choice": 0.5078125,
+          "both_values": 0.01679687574505806,
+          "key_and_value": 0.03359375149011612,
+          "loss": 8.01473617553711
+        },
+        "longer": {
+          "key_accuracy": 0.08281250298023224,
+          "value_accuracy": 0.12265624850988388,
+          "decoy_accuracy": 0.12539061903953552,
+          "role_choice": 0.4878906309604645,
+          "both_values": 0.01835937425494194,
+          "key_and_value": 0.008593750186264515,
+          "loss": 18.817026138305664
+        }
+      },
+      "paired_prediction_agreement": 0.03515625,
+      "paired_value_correct": 0.004687500186264515
+    },
+    {
+      "encoder": "parent",
+      "feature": "gist_kv_1",
+      "probe": "mlp",
+      "seed": 1,
+      "validation": {
+        "key_accuracy": 0.21953125298023224,
+        "value_accuracy": 0.14140625298023224,
+        "decoy_accuracy": 0.12734374403953552,
+        "role_choice": 0.5054687261581421,
+        "both_values": 0.01953125,
+        "key_and_value": 0.02812499925494194,
+        "loss": 7.964840412139893
+      },
+      "tests": {
+        "mixed": {
+          "key_accuracy": 0.11796875298023224,
+          "value_accuracy": 0.134765625,
+          "decoy_accuracy": 0.12578125298023224,
+          "role_choice": 0.48945313692092896,
+          "both_values": 0.02070312574505806,
+          "key_and_value": 0.01875000074505806,
+          "loss": 16.085660934448242
+        },
+        "paired_swapped": {
+          "key_accuracy": 0.13124999403953552,
+          "value_accuracy": 0.12812499701976776,
+          "decoy_accuracy": 0.13007812201976776,
+          "role_choice": 0.4898437559604645,
+          "both_values": 0.01992187462747097,
+          "key_and_value": 0.01953125,
+          "loss": 15.30924129486084
+        },
+        "fixed_order": {
+          "key_accuracy": 0.21562500298023224,
+          "value_accuracy": 0.13828125596046448,
+          "decoy_accuracy": 0.13203124701976776,
+          "role_choice": 0.501953125,
+          "both_values": 0.02421874925494194,
+          "key_and_value": 0.029296875,
+          "loss": 8.010263442993164
+        },
+        "longer": {
+          "key_accuracy": 0.08906249701976776,
+          "value_accuracy": 0.13242188096046448,
+          "decoy_accuracy": 0.13671875,
+          "role_choice": 0.49531251192092896,
+          "both_values": 0.01914062537252903,
+          "key_and_value": 0.013671875,
+          "loss": 18.710464477539062
+        }
+      },
+      "paired_prediction_agreement": 0.03085937537252903,
+      "paired_value_correct": 0.0042968750931322575
+    },
+    {
+      "encoder": "parent",
+      "feature": "gist_kv_1",
+      "probe": "mlp",
+      "seed": 2,
+      "validation": {
+        "key_accuracy": 0.22734375298023224,
+        "value_accuracy": 0.14374999701976776,
+        "decoy_accuracy": 0.12578125298023224,
+        "role_choice": 0.516406238079071,
+        "both_values": 0.02265625074505806,
+        "key_and_value": 0.03203124925494194,
+        "loss": 7.975929260253906
+      },
+      "tests": {
+        "mixed": {
+          "key_accuracy": 0.11640624701976776,
+          "value_accuracy": 0.13398437201976776,
+          "decoy_accuracy": 0.12421874701976776,
+          "role_choice": 0.5082031488418579,
+          "both_values": 0.01640624925494194,
+          "key_and_value": 0.01210937462747097,
+          "loss": 14.610092163085938
+        },
+        "paired_swapped": {
+          "key_accuracy": 0.13242188096046448,
+          "value_accuracy": 0.12890625,
+          "decoy_accuracy": 0.12734374403953552,
+          "role_choice": 0.48945313692092896,
+          "both_values": 0.01992187462747097,
+          "key_and_value": 0.01992187462747097,
+          "loss": 13.984963417053223
+        },
+        "fixed_order": {
+          "key_accuracy": 0.22382812201976776,
+          "value_accuracy": 0.13828125596046448,
+          "decoy_accuracy": 0.13359375298023224,
+          "role_choice": 0.509765625,
+          "both_values": 0.02031249925494194,
+          "key_and_value": 0.03125,
+          "loss": 8.011619567871094
+        },
+        "longer": {
+          "key_accuracy": 0.08632812649011612,
+          "value_accuracy": 0.12109375,
+          "decoy_accuracy": 0.12265624850988388,
+          "role_choice": 0.49492186307907104,
+          "both_values": 0.02031249925494194,
+          "key_and_value": 0.008593750186264515,
+          "loss": 17.423864364624023
+        }
+      },
+      "paired_prediction_agreement": 0.189453125,
+      "paired_value_correct": 0.02500000037252903
+    },
+    {
+      "encoder": "parent",
+      "feature": "gist_kv_2",
+      "probe": "linear",
+      "seed": 0,
+      "validation": {
+        "key_accuracy": 0.04062499850988388,
+        "value_accuracy": 0.3421874940395355,
+        "decoy_accuracy": 0.12968750298023224,
+        "role_choice": 0.6109374761581421,
+        "both_values": 0.05781250074505806,
+        "key_and_value": 0.0078125,
+        "loss": 8.894641876220703
+      },
+      "tests": {
+        "mixed": {
+          "key_accuracy": 0.02578124962747097,
+          "value_accuracy": 0.20859375596046448,
+          "decoy_accuracy": 0.12031249701976776,
+          "role_choice": 0.48359376192092896,
+          "both_values": 0.02851562574505806,
+          "key_and_value": 0.001953125,
+          "loss": 9.605903625488281
+        },
+        "paired_swapped": {
+          "key_accuracy": 0.03164062649011612,
+          "value_accuracy": 0.21953125298023224,
+          "decoy_accuracy": 0.11249999701976776,
+          "role_choice": 0.49531251192092896,
+          "both_values": 0.03281249850988388,
+          "key_and_value": 0.0042968750931322575,
+          "loss": 9.553837776184082
+        },
+        "fixed_order": {
+          "key_accuracy": 0.04453124850988388,
+          "value_accuracy": 0.3363281190395355,
+          "decoy_accuracy": 0.13398437201976776,
+          "role_choice": 0.625,
+          "both_values": 0.04960937425494194,
+          "key_and_value": 0.00820312462747097,
+          "loss": 8.891599655151367
+        },
+        "longer": {
+          "key_accuracy": 0.02578124962747097,
+          "value_accuracy": 0.17226561903953552,
+          "decoy_accuracy": 0.11953125149011612,
+          "role_choice": 0.507031261920929,
+          "both_values": 0.0234375,
+          "key_and_value": 0.0035156249068677425,
+          "loss": 9.843192100524902
+        }
+      },
+      "paired_prediction_agreement": 0.17031249403953552,
+      "paired_value_correct": 0.02617187425494194
+    },
+    {
+      "encoder": "parent",
+      "feature": "gist_kv_2",
+      "probe": "linear",
+      "seed": 1,
+      "validation": {
+        "key_accuracy": 0.04609375074505806,
+        "value_accuracy": 0.33125001192092896,
+        "decoy_accuracy": 0.13906249403953552,
+        "role_choice": 0.6109374761581421,
+        "both_values": 0.05624999850988388,
+        "key_and_value": 0.008593750186264515,
+        "loss": 8.87672233581543
+      },
+      "tests": {
+        "mixed": {
+          "key_accuracy": 0.025390625,
+          "value_accuracy": 0.19882813096046448,
+          "decoy_accuracy": 0.11054687201976776,
+          "role_choice": 0.46796876192092896,
+          "both_values": 0.02421874925494194,
+          "key_and_value": 0.0042968750931322575,
+          "loss": 9.536441802978516
+        },
+        "paired_swapped": {
+          "key_accuracy": 0.03125,
+          "value_accuracy": 0.20820312201976776,
+          "decoy_accuracy": 0.11445312201976776,
+          "role_choice": 0.4878906309604645,
+          "both_values": 0.03437500074505806,
+          "key_and_value": 0.00390625,
+          "loss": 9.503144264221191
+        },
+        "fixed_order": {
+          "key_accuracy": 0.05312500149011612,
+          "value_accuracy": 0.3277343809604645,
+          "decoy_accuracy": 0.11992187798023224,
+          "role_choice": 0.614062488079071,
+          "both_values": 0.04140625149011612,
+          "key_and_value": 0.00937500037252903,
+          "loss": 8.872659683227539
+        },
+        "longer": {
+          "key_accuracy": 0.029296875,
+          "value_accuracy": 0.16093750298023224,
+          "decoy_accuracy": 0.12148437649011612,
+          "role_choice": 0.48906248807907104,
+          "both_values": 0.02304687537252903,
+          "key_and_value": 0.0031250000465661287,
+          "loss": 9.717443466186523
+        }
+      },
+      "paired_prediction_agreement": 0.16054686903953552,
+      "paired_value_correct": 0.02968749962747097
+    },
+    {
+      "encoder": "parent",
+      "feature": "gist_kv_2",
+      "probe": "linear",
+      "seed": 2,
+      "validation": {
+        "key_accuracy": 0.046875,
+        "value_accuracy": 0.28515625,
+        "decoy_accuracy": 0.12265624850988388,
+        "role_choice": 0.6328125,
+        "both_values": 0.03359375149011612,
+        "key_and_value": 0.01015624962747097,
+        "loss": 8.870530128479004
+      },
+      "tests": {
+        "mixed": {
+          "key_accuracy": 0.02968749962747097,
+          "value_accuracy": 0.19257812201976776,
+          "decoy_accuracy": 0.10507812350988388,
+          "role_choice": 0.4742187559604645,
+          "both_values": 0.02851562574505806,
+          "key_and_value": 0.005078124813735485,
+          "loss": 9.626182556152344
+        },
+        "paired_swapped": {
+          "key_accuracy": 0.03242187574505806,
+          "value_accuracy": 0.20234374701976776,
+          "decoy_accuracy": 0.10117187350988388,
+          "role_choice": 0.4917968809604645,
+          "both_values": 0.03398437425494194,
+          "key_and_value": 0.004687500186264515,
+          "loss": 9.565226554870605
+        },
+        "fixed_order": {
+          "key_accuracy": 0.03984374925494194,
+          "value_accuracy": 0.2972656190395355,
+          "decoy_accuracy": 0.12578125298023224,
+          "role_choice": 0.62890625,
+          "both_values": 0.03867187350988388,
+          "key_and_value": 0.004687500186264515,
+          "loss": 8.881814956665039
+        },
+        "longer": {
+          "key_accuracy": 0.02734375,
+          "value_accuracy": 0.16718749701976776,
+          "decoy_accuracy": 0.1015625,
+          "role_choice": 0.49726563692092896,
+          "both_values": 0.02109375037252903,
+          "key_and_value": 0.004687500186264515,
+          "loss": 9.81930160522461
+        }
+      },
+      "paired_prediction_agreement": 0.2847656309604645,
+      "paired_value_correct": 0.04179687425494194
+    },
+    {
+      "encoder": "parent",
+      "feature": "gist_kv_2",
+      "probe": "mlp",
+      "seed": 0,
+      "validation": {
+        "key_accuracy": 0.06796874850988388,
+        "value_accuracy": 0.3335937559604645,
+        "decoy_accuracy": 0.13906249403953552,
+        "role_choice": 0.6312500238418579,
+        "both_values": 0.04609375074505806,
+        "key_and_value": 0.007031249813735485,
+        "loss": 8.356154441833496
+      },
+      "tests": {
+        "mixed": {
+          "key_accuracy": 0.04140625149011612,
+          "value_accuracy": 0.21132811903953552,
+          "decoy_accuracy": 0.10039062798023224,
+          "role_choice": 0.48710936307907104,
+          "both_values": 0.029296875,
+          "key_and_value": 0.004687500186264515,
+          "loss": 10.684516906738281
+        },
+        "paired_swapped": {
+          "key_accuracy": 0.04453124850988388,
+          "value_accuracy": 0.22539062798023224,
+          "decoy_accuracy": 0.09921874850988388,
+          "role_choice": 0.48906248807907104,
+          "both_values": 0.03007812425494194,
+          "key_and_value": 0.0074218749068677425,
+          "loss": 10.568485260009766
+        },
+        "fixed_order": {
+          "key_accuracy": 0.07851562649011612,
+          "value_accuracy": 0.33320313692092896,
+          "decoy_accuracy": 0.13203124701976776,
+          "role_choice": 0.642578125,
+          "both_values": 0.04960937425494194,
+          "key_and_value": 0.014453125186264515,
+          "loss": 8.32923412322998
+        },
+        "longer": {
+          "key_accuracy": 0.03632812574505806,
+          "value_accuracy": 0.16835936903953552,
+          "decoy_accuracy": 0.12460937350988388,
+          "role_choice": 0.5,
+          "both_values": 0.02617187425494194,
+          "key_and_value": 0.004687500186264515,
+          "loss": 10.880549430847168
+        }
+      },
+      "paired_prediction_agreement": 0.22695311903953552,
+      "paired_value_correct": 0.02890625037252903
+    },
+    {
+      "encoder": "parent",
+      "feature": "gist_kv_2",
+      "probe": "mlp",
+      "seed": 1,
+      "validation": {
+        "key_accuracy": 0.07109375298023224,
+        "value_accuracy": 0.34765625,
+        "decoy_accuracy": 0.13359375298023224,
+        "role_choice": 0.639843761920929,
+        "both_values": 0.05000000074505806,
+        "key_and_value": 0.01406249962747097,
+        "loss": 8.376753807067871
+      },
+      "tests": {
+        "mixed": {
+          "key_accuracy": 0.041015625,
+          "value_accuracy": 0.20624999701976776,
+          "decoy_accuracy": 0.10625000298023224,
+          "role_choice": 0.48320311307907104,
+          "both_values": 0.03359375149011612,
+          "key_and_value": 0.005859375,
+          "loss": 10.448700904846191
+        },
+        "paired_swapped": {
+          "key_accuracy": 0.04023437574505806,
+          "value_accuracy": 0.21484375,
+          "decoy_accuracy": 0.09414062649011612,
+          "role_choice": 0.4859375059604645,
+          "both_values": 0.02773437462747097,
+          "key_and_value": 0.005078124813735485,
+          "loss": 10.35354995727539
+        },
+        "fixed_order": {
+          "key_accuracy": 0.06562499701976776,
+          "value_accuracy": 0.3492187559604645,
+          "decoy_accuracy": 0.13671875,
+          "role_choice": 0.635546863079071,
+          "both_values": 0.05546874925494194,
+          "key_and_value": 0.009765625,
+          "loss": 8.391380310058594
+        },
+        "longer": {
+          "key_accuracy": 0.03164062649011612,
+          "value_accuracy": 0.17031249403953552,
+          "decoy_accuracy": 0.11328125,
+          "role_choice": 0.490234375,
+          "both_values": 0.021484375,
+          "key_and_value": 0.005859375,
+          "loss": 10.703177452087402
+        }
+      },
+      "paired_prediction_agreement": 0.09218750149011612,
+      "paired_value_correct": 0.01406249962747097
+    },
+    {
+      "encoder": "parent",
+      "feature": "gist_kv_2",
+      "probe": "mlp",
+      "seed": 2,
+      "validation": {
+        "key_accuracy": 0.06718750298023224,
+        "value_accuracy": 0.3343749940395355,
+        "decoy_accuracy": 0.12265624850988388,
+        "role_choice": 0.64453125,
+        "both_values": 0.04296875,
+        "key_and_value": 0.01015624962747097,
+        "loss": 8.386961936950684
+      },
+      "tests": {
+        "mixed": {
+          "key_accuracy": 0.044921875,
+          "value_accuracy": 0.21015624701976776,
+          "decoy_accuracy": 0.10820312798023224,
+          "role_choice": 0.4847656190395355,
+          "both_values": 0.03085937537252903,
+          "key_and_value": 0.007031249813735485,
+          "loss": 10.75635051727295
+        },
+        "paired_swapped": {
+          "key_accuracy": 0.04257812350988388,
+          "value_accuracy": 0.21367187798023224,
+          "decoy_accuracy": 0.10273437201976776,
+          "role_choice": 0.4867187440395355,
+          "both_values": 0.0234375,
+          "key_and_value": 0.005859375,
+          "loss": 10.657130241394043
+        },
+        "fixed_order": {
+          "key_accuracy": 0.06601562350988388,
+          "value_accuracy": 0.34375,
+          "decoy_accuracy": 0.13984374701976776,
+          "role_choice": 0.633593738079071,
+          "both_values": 0.05429687350988388,
+          "key_and_value": 0.01171875,
+          "loss": 8.358772277832031
+        },
+        "longer": {
+          "key_accuracy": 0.03554687649011612,
+          "value_accuracy": 0.17109374701976776,
+          "decoy_accuracy": 0.115234375,
+          "role_choice": 0.4808593690395355,
+          "both_values": 0.01914062537252903,
+          "key_and_value": 0.00390625,
+          "loss": 11.048649787902832
+        }
+      },
+      "paired_prediction_agreement": 0.11796875298023224,
+      "paired_value_correct": 0.01914062537252903
+    },
+    {
+      "encoder": "parent",
+      "feature": "gist_label_shuffle",
+      "probe": "mlp",
+      "seed": 0,
+      "tests": {
+        "mixed": {
+          "key_accuracy": 0.00390625,
+          "value_accuracy": 0.12343750149011612,
+          "decoy_accuracy": 0.13828125596046448,
+          "role_choice": 0.49609375,
+          "both_values": 0.01914062537252903,
+          "key_and_value": 0.0,
+          "loss": 9.09770393371582
+        },
+        "paired_swapped": {
+          "key_accuracy": 0.0078125,
+          "value_accuracy": 0.12148437649011612,
+          "decoy_accuracy": 0.14140625298023224,
+          "role_choice": 0.503125011920929,
+          "both_values": 0.02031249925494194,
+          "key_and_value": 0.0011718750465661287,
+          "loss": 9.09294605255127
+        },
+        "fixed_order": {
+          "key_accuracy": 0.009765625,
+          "value_accuracy": 0.119140625,
+          "decoy_accuracy": 0.12070312350988388,
+          "role_choice": 0.4765625,
+          "both_values": 0.010546875186264515,
+          "key_and_value": 0.0011718750465661287,
+          "loss": 9.101238250732422
+        },
+        "longer": {
+          "key_accuracy": 0.005859375,
+          "value_accuracy": 0.125,
+          "decoy_accuracy": 0.12656250596046448,
+          "role_choice": 0.4984374940395355,
+          "both_values": 0.014843749813735485,
+          "key_and_value": 0.0007812500116415322,
+          "loss": 9.115901947021484
+        }
+      }
+    },
+    {
+      "encoder": "replay",
+      "feature": "gist",
+      "probe": "linear",
+      "seed": 0,
+      "validation": {
+        "key_accuracy": 0.007031249813735485,
+        "value_accuracy": 0.35468751192092896,
+        "decoy_accuracy": 0.16562500596046448,
+        "role_choice": 0.671875,
+        "both_values": 0.03515625,
+        "key_and_value": 0.0023437500931322575,
+        "loss": 8.898895263671875
+      },
+      "tests": {
+        "mixed": {
+          "key_accuracy": 0.007031249813735485,
+          "value_accuracy": 0.23671874403953552,
+          "decoy_accuracy": 0.13945312798023224,
+          "role_choice": 0.5296875238418579,
+          "both_values": 0.02773437462747097,
+          "key_and_value": 0.0031250000465661287,
+          "loss": 9.305427551269531
+        },
+        "paired_swapped": {
+          "key_accuracy": 0.0078125,
+          "value_accuracy": 0.24492187798023224,
+          "decoy_accuracy": 0.15859374403953552,
+          "role_choice": 0.512890636920929,
+          "both_values": 0.03476562350988388,
+          "key_and_value": 0.0035156249068677425,
+          "loss": 9.292495727539062
+        },
+        "fixed_order": {
+          "key_accuracy": 0.008593750186264515,
+          "value_accuracy": 0.36835938692092896,
+          "decoy_accuracy": 0.15742187201976776,
+          "role_choice": 0.6851562261581421,
+          "both_values": 0.046875,
+          "key_and_value": 0.001953125,
+          "loss": 8.912369728088379
+        },
+        "longer": {
+          "key_accuracy": 0.01132812537252903,
+          "value_accuracy": 0.18593749403953552,
+          "decoy_accuracy": 0.14296874403953552,
+          "role_choice": 0.507031261920929,
+          "both_values": 0.02734375,
+          "key_and_value": 0.0007812500116415322,
+          "loss": 9.447591781616211
+        }
+      },
+      "paired_prediction_agreement": 0.1171875,
+      "paired_value_correct": 0.03867187350988388
+    },
+    {
+      "encoder": "replay",
+      "feature": "gist",
+      "probe": "linear",
+      "seed": 1,
+      "validation": {
+        "key_accuracy": 0.00937500037252903,
+        "value_accuracy": 0.3421874940395355,
+        "decoy_accuracy": 0.17109374701976776,
+        "role_choice": 0.6507812738418579,
+        "both_values": 0.05078125,
+        "key_and_value": 0.004687500186264515,
+        "loss": 8.911535263061523
+      },
+      "tests": {
+        "mixed": {
+          "key_accuracy": 0.007031249813735485,
+          "value_accuracy": 0.22812500596046448,
+          "decoy_accuracy": 0.13945312798023224,
+          "role_choice": 0.505859375,
+          "both_values": 0.03125,
+          "key_and_value": 0.0015625000232830644,
+          "loss": 9.267379760742188
+        },
+        "paired_swapped": {
+          "key_accuracy": 0.014453125186264515,
+          "value_accuracy": 0.23203125596046448,
+          "decoy_accuracy": 0.13906249403953552,
+          "role_choice": 0.4886718690395355,
+          "both_values": 0.03203124925494194,
+          "key_and_value": 0.0027343749534338713,
+          "loss": 9.268707275390625
+        },
+        "fixed_order": {
+          "key_accuracy": 0.0074218749068677425,
+          "value_accuracy": 0.34257811307907104,
+          "decoy_accuracy": 0.15664061903953552,
+          "role_choice": 0.682812511920929,
+          "both_values": 0.03867187350988388,
+          "key_and_value": 0.0035156249068677425,
+          "loss": 8.917659759521484
+        },
+        "longer": {
+          "key_accuracy": 0.013671875,
+          "value_accuracy": 0.18828125298023224,
+          "decoy_accuracy": 0.13828125596046448,
+          "role_choice": 0.500781238079071,
+          "both_values": 0.02382812462747097,
+          "key_and_value": 0.0027343749534338713,
+          "loss": 9.42383098602295
+        }
+      },
+      "paired_prediction_agreement": 0.10976562649011612,
+      "paired_value_correct": 0.03437500074505806
+    },
+    {
+      "encoder": "replay",
+      "feature": "gist",
+      "probe": "linear",
+      "seed": 2,
+      "validation": {
+        "key_accuracy": 0.01328125037252903,
+        "value_accuracy": 0.359375,
+        "decoy_accuracy": 0.15703125298023224,
+        "role_choice": 0.67578125,
+        "both_values": 0.06875000149011612,
+        "key_and_value": 0.007031249813735485,
+        "loss": 8.898004531860352
+      },
+      "tests": {
+        "mixed": {
+          "key_accuracy": 0.0078125,
+          "value_accuracy": 0.22578124701976776,
+          "decoy_accuracy": 0.11992187798023224,
+          "role_choice": 0.522265613079071,
+          "both_values": 0.03007812425494194,
+          "key_and_value": 0.001953125,
+          "loss": 9.328310012817383
+        },
+        "paired_swapped": {
+          "key_accuracy": 0.01132812537252903,
+          "value_accuracy": 0.25,
+          "decoy_accuracy": 0.12343750149011612,
+          "role_choice": 0.4976562559604645,
+          "both_values": 0.03515625,
+          "key_and_value": 0.0027343749534338713,
+          "loss": 9.318344116210938
+        },
+        "fixed_order": {
+          "key_accuracy": 0.008984374813735485,
+          "value_accuracy": 0.36054688692092896,
+          "decoy_accuracy": 0.11484374850988388,
+          "role_choice": 0.689453125,
+          "both_values": 0.04374999925494194,
+          "key_and_value": 0.00390625,
+          "loss": 8.927041053771973
+        },
+        "longer": {
+          "key_accuracy": 0.01328125037252903,
+          "value_accuracy": 0.18515625596046448,
+          "decoy_accuracy": 0.12265624850988388,
+          "role_choice": 0.49335938692092896,
+          "both_values": 0.02578124962747097,
+          "key_and_value": 0.0023437500931322575,
+          "loss": 9.455512046813965
+        }
+      },
+      "paired_prediction_agreement": 0.13789062201976776,
+      "paired_value_correct": 0.04414062574505806
+    },
+    {
+      "encoder": "replay",
+      "feature": "gist",
+      "probe": "mlp",
+      "seed": 0,
+      "validation": {
+        "key_accuracy": 0.01328125037252903,
+        "value_accuracy": 0.5523437261581421,
+        "decoy_accuracy": 0.21484375,
+        "role_choice": 0.782031238079071,
+        "both_values": 0.09687499701976776,
+        "key_and_value": 0.008593750186264515,
+        "loss": 8.266332626342773
+      },
+      "tests": {
+        "mixed": {
+          "key_accuracy": 0.00937500037252903,
+          "value_accuracy": 0.28203123807907104,
+          "decoy_accuracy": 0.15703125298023224,
+          "role_choice": 0.530078113079071,
+          "both_values": 0.04609375074505806,
+          "key_and_value": 0.001953125,
+          "loss": 11.174978256225586
+        },
+        "paired_swapped": {
+          "key_accuracy": 0.01015624962747097,
+          "value_accuracy": 0.30156248807907104,
+          "decoy_accuracy": 0.16562500596046448,
+          "role_choice": 0.5249999761581421,
+          "both_values": 0.06015624850988388,
+          "key_and_value": 0.0035156249068677425,
+          "loss": 10.833701133728027
+        },
+        "fixed_order": {
+          "key_accuracy": 0.01718750037252903,
+          "value_accuracy": 0.5582031011581421,
+          "decoy_accuracy": 0.22265625,
+          "role_choice": 0.7769531011581421,
+          "both_values": 0.11601562798023224,
+          "key_and_value": 0.008593750186264515,
+          "loss": 8.227418899536133
+        },
+        "longer": {
+          "key_accuracy": 0.010546875186264515,
+          "value_accuracy": 0.21054688096046448,
+          "decoy_accuracy": 0.13437500596046448,
+          "role_choice": 0.520703136920929,
+          "both_values": 0.03515625,
+          "key_and_value": 0.0035156249068677425,
+          "loss": 11.747451782226562
+        }
+      },
+      "paired_prediction_agreement": 0.14374999701976776,
+      "paired_value_correct": 0.04843749850988388
+    },
+    {
+      "encoder": "replay",
+      "feature": "gist",
+      "probe": "mlp",
+      "seed": 1,
+      "validation": {
+        "key_accuracy": 0.01718750037252903,
+        "value_accuracy": 0.5523437261581421,
+        "decoy_accuracy": 0.20859375596046448,
+        "role_choice": 0.770312488079071,
+        "both_values": 0.09843750298023224,
+        "key_and_value": 0.008593750186264515,
+        "loss": 8.257527351379395
+      },
+      "tests": {
+        "mixed": {
+          "key_accuracy": 0.009765625,
+          "value_accuracy": 0.28515625,
+          "decoy_accuracy": 0.154296875,
+          "role_choice": 0.533984363079071,
+          "both_values": 0.05156249925494194,
+          "key_and_value": 0.0023437500931322575,
+          "loss": 10.879196166992188
+        },
+        "paired_swapped": {
+          "key_accuracy": 0.01015624962747097,
+          "value_accuracy": 0.30000001192092896,
+          "decoy_accuracy": 0.150390625,
+          "role_choice": 0.524218738079071,
+          "both_values": 0.04804687574505806,
+          "key_and_value": 0.005078124813735485,
+          "loss": 10.603259086608887
+        },
+        "fixed_order": {
+          "key_accuracy": 0.01914062537252903,
+          "value_accuracy": 0.553906261920929,
+          "decoy_accuracy": 0.21796874701976776,
+          "role_choice": 0.7710937261581421,
+          "both_values": 0.10664062201976776,
+          "key_and_value": 0.01210937462747097,
+          "loss": 8.22892951965332
+        },
+        "longer": {
+          "key_accuracy": 0.012890624813735485,
+          "value_accuracy": 0.21562500298023224,
+          "decoy_accuracy": 0.14374999701976776,
+          "role_choice": 0.522656261920929,
+          "both_values": 0.03671874850988388,
+          "key_and_value": 0.004687500186264515,
+          "loss": 11.483383178710938
+        }
+      },
+      "paired_prediction_agreement": 0.14960937201976776,
+      "paired_value_correct": 0.048828125
+    },
+    {
+      "encoder": "replay",
+      "feature": "gist",
+      "probe": "mlp",
+      "seed": 2,
+      "validation": {
+        "key_accuracy": 0.015625,
+        "value_accuracy": 0.5609375238418579,
+        "decoy_accuracy": 0.21562500298023224,
+        "role_choice": 0.7789062261581421,
+        "both_values": 0.10390625149011612,
+        "key_and_value": 0.00937500037252903,
+        "loss": 8.270665168762207
+      },
+      "tests": {
+        "mixed": {
+          "key_accuracy": 0.01015624962747097,
+          "value_accuracy": 0.2816406190395355,
+          "decoy_accuracy": 0.17460937798023224,
+          "role_choice": 0.5238281488418579,
+          "both_values": 0.05078125,
+          "key_and_value": 0.0027343749534338713,
+          "loss": 10.945514678955078
+        },
+        "paired_swapped": {
+          "key_accuracy": 0.01328125037252903,
+          "value_accuracy": 0.296875,
+          "decoy_accuracy": 0.16953125596046448,
+          "role_choice": 0.524218738079071,
+          "both_values": 0.05078125,
+          "key_and_value": 0.005078124813735485,
+          "loss": 10.662042617797852
+        },
+        "fixed_order": {
+          "key_accuracy": 0.015625,
+          "value_accuracy": 0.5609375238418579,
+          "decoy_accuracy": 0.20390625298023224,
+          "role_choice": 0.764843761920929,
+          "both_values": 0.10429687798023224,
+          "key_and_value": 0.009765625,
+          "loss": 8.220914840698242
+        },
+        "longer": {
+          "key_accuracy": 0.01171875,
+          "value_accuracy": 0.21640625596046448,
+          "decoy_accuracy": 0.14570312201976776,
+          "role_choice": 0.5121093988418579,
+          "both_values": 0.03398437425494194,
+          "key_and_value": 0.0031250000465661287,
+          "loss": 11.548592567443848
+        }
+      },
+      "paired_prediction_agreement": 0.14374999701976776,
+      "paired_value_correct": 0.04765624925494194
+    },
+    {
+      "encoder": "replay",
+      "feature": "gist_kv_1",
+      "probe": "linear",
+      "seed": 0,
+      "validation": {
+        "key_accuracy": 0.02500000037252903,
+        "value_accuracy": 0.1328125,
+        "decoy_accuracy": 0.14687499403953552,
+        "role_choice": 0.5218750238418579,
+        "both_values": 0.02265625074505806,
+        "key_and_value": 0.0062500000931322575,
+        "loss": 9.165179252624512
+      },
+      "tests": {
+        "mixed": {
+          "key_accuracy": 0.02304687537252903,
+          "value_accuracy": 0.11796875298023224,
+          "decoy_accuracy": 0.11640624701976776,
+          "role_choice": 0.4906249940395355,
+          "both_values": 0.015625,
+          "key_and_value": 0.0011718750465661287,
+          "loss": 14.98202133178711
+        },
+        "paired_swapped": {
+          "key_accuracy": 0.02070312574505806,
+          "value_accuracy": 0.126953125,
+          "decoy_accuracy": 0.126953125,
+          "role_choice": 0.49921876192092896,
+          "both_values": 0.014843749813735485,
+          "key_and_value": 0.0031250000465661287,
+          "loss": 14.5819091796875
+        },
+        "fixed_order": {
+          "key_accuracy": 0.02578124962747097,
+          "value_accuracy": 0.13164062798023224,
+          "decoy_accuracy": 0.11562500149011612,
+          "role_choice": 0.49687498807907104,
+          "both_values": 0.01640624925494194,
+          "key_and_value": 0.0042968750931322575,
+          "loss": 9.191486358642578
+        },
+        "longer": {
+          "key_accuracy": 0.03242187574505806,
+          "value_accuracy": 0.13710936903953552,
+          "decoy_accuracy": 0.12226562201976776,
+          "role_choice": 0.5101562738418579,
+          "both_values": 0.02187499962747097,
+          "key_and_value": 0.005078124813735485,
+          "loss": 15.829477310180664
+        }
+      },
+      "paired_prediction_agreement": 0.412109375,
+      "paired_value_correct": 0.05000000074505806
+    },
+    {
+      "encoder": "replay",
+      "feature": "gist_kv_1",
+      "probe": "linear",
+      "seed": 1,
+      "validation": {
+        "key_accuracy": 0.03125,
+        "value_accuracy": 0.12031249701976776,
+        "decoy_accuracy": 0.12734374403953552,
+        "role_choice": 0.48828125,
+        "both_values": 0.01406249962747097,
+        "key_and_value": 0.00390625,
+        "loss": 9.15841007232666
+      },
+      "tests": {
+        "mixed": {
+          "key_accuracy": 0.02617187425494194,
+          "value_accuracy": 0.12929686903953552,
+          "decoy_accuracy": 0.12734374403953552,
+          "role_choice": 0.501171886920929,
+          "both_values": 0.01953125,
+          "key_and_value": 0.0031250000465661287,
+          "loss": 15.208647727966309
+        },
+        "paired_swapped": {
+          "key_accuracy": 0.02382812462747097,
+          "value_accuracy": 0.12148437649011612,
+          "decoy_accuracy": 0.130859375,
+          "role_choice": 0.4976562559604645,
+          "both_values": 0.015625,
+          "key_and_value": 0.0031250000465661287,
+          "loss": 14.827010154724121
+        },
+        "fixed_order": {
+          "key_accuracy": 0.02617187425494194,
+          "value_accuracy": 0.12539061903953552,
+          "decoy_accuracy": 0.13320311903953552,
+          "role_choice": 0.4859375059604645,
+          "both_values": 0.01875000074505806,
+          "key_and_value": 0.0031250000465661287,
+          "loss": 9.186882019042969
+        },
+        "longer": {
+          "key_accuracy": 0.03359375149011612,
+          "value_accuracy": 0.12265624850988388,
+          "decoy_accuracy": 0.12578125298023224,
+          "role_choice": 0.49726563692092896,
+          "both_values": 0.014843749813735485,
+          "key_and_value": 0.004687500186264515,
+          "loss": 16.076255798339844
+        }
+      },
+      "paired_prediction_agreement": 0.482421875,
+      "paired_value_correct": 0.05859375
+    },
+    {
+      "encoder": "replay",
+      "feature": "gist_kv_1",
+      "probe": "linear",
+      "seed": 2,
+      "validation": {
+        "key_accuracy": 0.02734375,
+        "value_accuracy": 0.11562500149011612,
+        "decoy_accuracy": 0.13437500596046448,
+        "role_choice": 0.4945312440395355,
+        "both_values": 0.01406249962747097,
+        "key_and_value": 0.004687500186264515,
+        "loss": 9.097162246704102
+      },
+      "tests": {
+        "mixed": {
+          "key_accuracy": 0.02656250074505806,
+          "value_accuracy": 0.11953125149011612,
+          "decoy_accuracy": 0.1171875,
+          "role_choice": 0.49882811307907104,
+          "both_values": 0.012890624813735485,
+          "key_and_value": 0.0023437500931322575,
+          "loss": 15.26910400390625
+        },
+        "paired_swapped": {
+          "key_accuracy": 0.02382812462747097,
+          "value_accuracy": 0.12031249701976776,
+          "decoy_accuracy": 0.12421874701976776,
+          "role_choice": 0.4886718690395355,
+          "both_values": 0.017578125,
+          "key_and_value": 0.004687500186264515,
+          "loss": 14.844245910644531
+        },
+        "fixed_order": {
+          "key_accuracy": 0.02851562574505806,
+          "value_accuracy": 0.13203124701976776,
+          "decoy_accuracy": 0.126953125,
+          "role_choice": 0.504687488079071,
+          "both_values": 0.012500000186264515,
+          "key_and_value": 0.004687500186264515,
+          "loss": 9.156962394714355
+        },
+        "longer": {
+          "key_accuracy": 0.03476562350988388,
+          "value_accuracy": 0.12070312350988388,
+          "decoy_accuracy": 0.11835937201976776,
+          "role_choice": 0.4964843690395355,
+          "both_values": 0.014843749813735485,
+          "key_and_value": 0.0054687499068677425,
+          "loss": 16.098827362060547
+        }
+      },
+      "paired_prediction_agreement": 0.025390625,
+      "paired_value_correct": 0.0015625000232830644
+    },
+    {
+      "encoder": "replay",
+      "feature": "gist_kv_1",
+      "probe": "mlp",
+      "seed": 0,
+      "validation": {
+        "key_accuracy": 0.04453124850988388,
+        "value_accuracy": 0.125,
+        "decoy_accuracy": 0.12734374403953552,
+        "role_choice": 0.49687498807907104,
+        "both_values": 0.01953125,
+        "key_and_value": 0.0054687499068677425,
+        "loss": 8.86143684387207
+      },
+      "tests": {
+        "mixed": {
+          "key_accuracy": 0.03125,
+          "value_accuracy": 0.11992187798023224,
+          "decoy_accuracy": 0.11796875298023224,
+          "role_choice": 0.49140626192092896,
+          "both_values": 0.01640624925494194,
+          "key_and_value": 0.0027343749534338713,
+          "loss": 23.33016586303711
+        },
+        "paired_swapped": {
+          "key_accuracy": 0.03281249850988388,
+          "value_accuracy": 0.119140625,
+          "decoy_accuracy": 0.11015625298023224,
+          "role_choice": 0.4937500059604645,
+          "both_values": 0.01601562462747097,
+          "key_and_value": 0.0015625000232830644,
+          "loss": 22.308427810668945
+        },
+        "fixed_order": {
+          "key_accuracy": 0.04374999925494194,
+          "value_accuracy": 0.12734374403953552,
+          "decoy_accuracy": 0.13046875596046448,
+          "role_choice": 0.49531251192092896,
+          "both_values": 0.017578125,
+          "key_and_value": 0.004687500186264515,
+          "loss": 8.890035629272461
+        },
+        "longer": {
+          "key_accuracy": 0.03671874850988388,
+          "value_accuracy": 0.12070312350988388,
+          "decoy_accuracy": 0.13007812201976776,
+          "role_choice": 0.49921876192092896,
+          "both_values": 0.02382812462747097,
+          "key_and_value": 0.0035156249068677425,
+          "loss": 28.4050235748291
+        }
+      },
+      "paired_prediction_agreement": 0.03242187574505806,
+      "paired_value_correct": 0.0031250000465661287
+    },
+    {
+      "encoder": "replay",
+      "feature": "gist_kv_1",
+      "probe": "mlp",
+      "seed": 1,
+      "validation": {
+        "key_accuracy": 0.05078125,
+        "value_accuracy": 0.11093749850988388,
+        "decoy_accuracy": 0.1328125,
+        "role_choice": 0.503125011920929,
+        "both_values": 0.02031249925494194,
+        "key_and_value": 0.004687500186264515,
+        "loss": 8.844347953796387
+      },
+      "tests": {
+        "mixed": {
+          "key_accuracy": 0.037109375,
+          "value_accuracy": 0.11874999850988388,
+          "decoy_accuracy": 0.125,
+          "role_choice": 0.49101561307907104,
+          "both_values": 0.01328125037252903,
+          "key_and_value": 0.0035156249068677425,
+          "loss": 22.50298309326172
+        },
+        "paired_swapped": {
+          "key_accuracy": 0.03476562350988388,
+          "value_accuracy": 0.126953125,
+          "decoy_accuracy": 0.11835937201976776,
+          "role_choice": 0.49335938692092896,
+          "both_values": 0.014453125186264515,
+          "key_and_value": 0.00390625,
+          "loss": 21.531700134277344
+        },
+        "fixed_order": {
+          "key_accuracy": 0.03945312649011612,
+          "value_accuracy": 0.12460937350988388,
+          "decoy_accuracy": 0.12929686903953552,
+          "role_choice": 0.510546863079071,
+          "both_values": 0.02031249925494194,
+          "key_and_value": 0.00390625,
+          "loss": 8.879304885864258
+        },
+        "longer": {
+          "key_accuracy": 0.03437500074505806,
+          "value_accuracy": 0.12734374403953552,
+          "decoy_accuracy": 0.13242188096046448,
+          "role_choice": 0.49882811307907104,
+          "both_values": 0.01718750037252903,
+          "key_and_value": 0.0035156249068677425,
+          "loss": 27.590526580810547
+        }
+      },
+      "paired_prediction_agreement": 0.02187499962747097,
+      "paired_value_correct": 0.0031250000465661287
+    },
+    {
+      "encoder": "replay",
+      "feature": "gist_kv_1",
+      "probe": "mlp",
+      "seed": 2,
+      "validation": {
+        "key_accuracy": 0.04921875149011612,
+        "value_accuracy": 0.13593749701976776,
+        "decoy_accuracy": 0.13046875596046448,
+        "role_choice": 0.5140625238418579,
+        "both_values": 0.01796874962747097,
+        "key_and_value": 0.0054687499068677425,
+        "loss": 8.863166809082031
+      },
+      "tests": {
+        "mixed": {
+          "key_accuracy": 0.02812499925494194,
+          "value_accuracy": 0.12578125298023224,
+          "decoy_accuracy": 0.11484374850988388,
+          "role_choice": 0.49882811307907104,
+          "both_values": 0.01914062537252903,
+          "key_and_value": 0.0031250000465661287,
+          "loss": 22.338111877441406
+        },
+        "paired_swapped": {
+          "key_accuracy": 0.03398437425494194,
+          "value_accuracy": 0.11445312201976776,
+          "decoy_accuracy": 0.11249999701976776,
+          "role_choice": 0.4906249940395355,
+          "both_values": 0.01601562462747097,
+          "key_and_value": 0.001953125,
+          "loss": 21.38551902770996
+        },
+        "fixed_order": {
+          "key_accuracy": 0.03554687649011612,
+          "value_accuracy": 0.11953125149011612,
+          "decoy_accuracy": 0.12343750149011612,
+          "role_choice": 0.49882811307907104,
+          "both_values": 0.01875000074505806,
+          "key_and_value": 0.0042968750931322575,
+          "loss": 8.903891563415527
+        },
+        "longer": {
+          "key_accuracy": 0.03828125074505806,
+          "value_accuracy": 0.11757812649011612,
+          "decoy_accuracy": 0.12734374403953552,
+          "role_choice": 0.5015624761581421,
+          "both_values": 0.02070312574505806,
+          "key_and_value": 0.006640625186264515,
+          "loss": 27.339061737060547
+        }
+      },
+      "paired_prediction_agreement": 0.02187499962747097,
+      "paired_value_correct": 0.0007812500116415322
+    },
+    {
+      "encoder": "replay",
+      "feature": "gist_kv_2",
+      "probe": "linear",
+      "seed": 0,
+      "validation": {
+        "key_accuracy": 0.0054687499068677425,
+        "value_accuracy": 0.3343749940395355,
+        "decoy_accuracy": 0.13671875,
+        "role_choice": 0.6640625,
+        "both_values": 0.04531250149011612,
+        "key_and_value": 0.0015625000232830644,
+        "loss": 9.017561912536621
+      },
+      "tests": {
+        "mixed": {
+          "key_accuracy": 0.00937500037252903,
+          "value_accuracy": 0.21523436903953552,
+          "decoy_accuracy": 0.11249999701976776,
+          "role_choice": 0.50390625,
+          "both_values": 0.02773437462747097,
+          "key_and_value": 0.0007812500116415322,
+          "loss": 9.385684967041016
+        },
+        "paired_swapped": {
+          "key_accuracy": 0.0062500000931322575,
+          "value_accuracy": 0.21523436903953552,
+          "decoy_accuracy": 0.109375,
+          "role_choice": 0.504687488079071,
+          "both_values": 0.02890625037252903,
+          "key_and_value": 0.0015625000232830644,
+          "loss": 9.36310863494873
+        },
+        "fixed_order": {
+          "key_accuracy": 0.0074218749068677425,
+          "value_accuracy": 0.3335937559604645,
+          "decoy_accuracy": 0.11835937201976776,
+          "role_choice": 0.673828125,
+          "both_values": 0.04062499850988388,
+          "key_and_value": 0.0007812500116415322,
+          "loss": 9.06873893737793
+        },
+        "longer": {
+          "key_accuracy": 0.012890624813735485,
+          "value_accuracy": 0.17265625298023224,
+          "decoy_accuracy": 0.11445312201976776,
+          "role_choice": 0.49140626192092896,
+          "both_values": 0.02460937574505806,
+          "key_and_value": 0.0031250000465661287,
+          "loss": 9.433120727539062
+        }
+      },
+      "paired_prediction_agreement": 0.08867187798023224,
+      "paired_value_correct": 0.01875000074505806
+    },
+    {
+      "encoder": "replay",
+      "feature": "gist_kv_2",
+      "probe": "linear",
+      "seed": 1,
+      "validation": {
+        "key_accuracy": 0.0078125,
+        "value_accuracy": 0.3421874940395355,
+        "decoy_accuracy": 0.14921875298023224,
+        "role_choice": 0.667187511920929,
+        "both_values": 0.05000000074505806,
+        "key_and_value": 0.00390625,
+        "loss": 9.054454803466797
+      },
+      "tests": {
+        "mixed": {
+          "key_accuracy": 0.00820312462747097,
+          "value_accuracy": 0.21328124403953552,
+          "decoy_accuracy": 0.12656250596046448,
+          "role_choice": 0.490234375,
+          "both_values": 0.02421874925494194,
+          "key_and_value": 0.0007812500116415322,
+          "loss": 9.311081886291504
+        },
+        "paired_swapped": {
+          "key_accuracy": 0.00937500037252903,
+          "value_accuracy": 0.21953125298023224,
+          "decoy_accuracy": 0.12734374403953552,
+          "role_choice": 0.4749999940395355,
+          "both_values": 0.02656250074505806,
+          "key_and_value": 0.0015625000232830644,
+          "loss": 9.338851928710938
+        },
+        "fixed_order": {
+          "key_accuracy": 0.008593750186264515,
+          "value_accuracy": 0.33867186307907104,
+          "decoy_accuracy": 0.13789062201976776,
+          "role_choice": 0.657421886920929,
+          "both_values": 0.04296875,
+          "key_and_value": 0.0023437500931322575,
+          "loss": 9.029006004333496
+        },
+        "longer": {
+          "key_accuracy": 0.008984374813735485,
+          "value_accuracy": 0.17226561903953552,
+          "decoy_accuracy": 0.12773437798023224,
+          "role_choice": 0.4921875,
+          "both_values": 0.0234375,
+          "key_and_value": 0.001953125,
+          "loss": 9.410268783569336
+        }
+      },
+      "paired_prediction_agreement": 0.09101562201976776,
+      "paired_value_correct": 0.02734375
+    },
+    {
+      "encoder": "replay",
+      "feature": "gist_kv_2",
+      "probe": "linear",
+      "seed": 2,
+      "validation": {
+        "key_accuracy": 0.014843749813735485,
+        "value_accuracy": 0.33984375,
+        "decoy_accuracy": 0.13437500596046448,
+        "role_choice": 0.66796875,
+        "both_values": 0.05000000074505806,
+        "key_and_value": 0.0054687499068677425,
+        "loss": 8.983277320861816
+      },
+      "tests": {
+        "mixed": {
+          "key_accuracy": 0.01015624962747097,
+          "value_accuracy": 0.21757812798023224,
+          "decoy_accuracy": 0.1015625,
+          "role_choice": 0.5,
+          "both_values": 0.02734375,
+          "key_and_value": 0.0015625000232830644,
+          "loss": 9.454853057861328
+        },
+        "paired_swapped": {
+          "key_accuracy": 0.010546875186264515,
+          "value_accuracy": 0.224609375,
+          "decoy_accuracy": 0.10781250149011612,
+          "role_choice": 0.49882811307907104,
+          "both_values": 0.03203124925494194,
+          "key_and_value": 0.001953125,
+          "loss": 9.434503555297852
+        },
+        "fixed_order": {
+          "key_accuracy": 0.00937500037252903,
+          "value_accuracy": 0.33671873807907104,
+          "decoy_accuracy": 0.12734374403953552,
+          "role_choice": 0.670703113079071,
+          "both_values": 0.04960937425494194,
+          "key_and_value": 0.0035156249068677425,
+          "loss": 9.016098022460938
+        },
+        "longer": {
+          "key_accuracy": 0.01015624962747097,
+          "value_accuracy": 0.17617186903953552,
+          "decoy_accuracy": 0.11406250298023224,
+          "role_choice": 0.48828125,
+          "both_values": 0.02890625037252903,
+          "key_and_value": 0.0007812500116415322,
+          "loss": 9.52627944946289
+        }
+      },
+      "paired_prediction_agreement": 0.10976562649011612,
+      "paired_value_correct": 0.02812499925494194
+    },
+    {
+      "encoder": "replay",
+      "feature": "gist_kv_2",
+      "probe": "mlp",
+      "seed": 0,
+      "validation": {
+        "key_accuracy": 0.01171875,
+        "value_accuracy": 0.5296875238418579,
+        "decoy_accuracy": 0.21328124403953552,
+        "role_choice": 0.7593749761581421,
+        "both_values": 0.08828125149011612,
+        "key_and_value": 0.00390625,
+        "loss": 8.366432189941406
+      },
+      "tests": {
+        "mixed": {
+          "key_accuracy": 0.009765625,
+          "value_accuracy": 0.26835936307907104,
+          "decoy_accuracy": 0.1640625,
+          "role_choice": 0.5210937261581421,
+          "both_values": 0.04335937649011612,
+          "key_and_value": 0.001953125,
+          "loss": 10.29838752746582
+        },
+        "paired_swapped": {
+          "key_accuracy": 0.010937499813735485,
+          "value_accuracy": 0.2886718809604645,
+          "decoy_accuracy": 0.16093750298023224,
+          "role_choice": 0.520703136920929,
+          "both_values": 0.05234374850988388,
+          "key_and_value": 0.0023437500931322575,
+          "loss": 10.07943058013916
+        },
+        "fixed_order": {
+          "key_accuracy": 0.01601562462747097,
+          "value_accuracy": 0.534375011920929,
+          "decoy_accuracy": 0.21445313096046448,
+          "role_choice": 0.771484375,
+          "both_values": 0.09882812201976776,
+          "key_and_value": 0.008593750186264515,
+          "loss": 8.295135498046875
+        },
+        "longer": {
+          "key_accuracy": 0.010937499813735485,
+          "value_accuracy": 0.20742186903953552,
+          "decoy_accuracy": 0.14687499403953552,
+          "role_choice": 0.5101562738418579,
+          "both_values": 0.03281249850988388,
+          "key_and_value": 0.0031250000465661287,
+          "loss": 10.79308795928955
+        }
+      },
+      "paired_prediction_agreement": 0.13203124701976776,
+      "paired_value_correct": 0.04374999925494194
+    },
+    {
+      "encoder": "replay",
+      "feature": "gist_kv_2",
+      "probe": "mlp",
+      "seed": 1,
+      "validation": {
+        "key_accuracy": 0.012500000186264515,
+        "value_accuracy": 0.520312488079071,
+        "decoy_accuracy": 0.21250000596046448,
+        "role_choice": 0.733593761920929,
+        "both_values": 0.09140624850988388,
+        "key_and_value": 0.0078125,
+        "loss": 8.368441581726074
+      },
+      "tests": {
+        "mixed": {
+          "key_accuracy": 0.0074218749068677425,
+          "value_accuracy": 0.259765625,
+          "decoy_accuracy": 0.17499999701976776,
+          "role_choice": 0.5218750238418579,
+          "both_values": 0.041015625,
+          "key_and_value": 0.001953125,
+          "loss": 10.022699356079102
+        },
+        "paired_swapped": {
+          "key_accuracy": 0.00937500037252903,
+          "value_accuracy": 0.2757812440395355,
+          "decoy_accuracy": 0.16562500596046448,
+          "role_choice": 0.51171875,
+          "both_values": 0.03945312649011612,
+          "key_and_value": 0.00390625,
+          "loss": 9.913875579833984
+        },
+        "fixed_order": {
+          "key_accuracy": 0.014453125186264515,
+          "value_accuracy": 0.514843761920929,
+          "decoy_accuracy": 0.21445313096046448,
+          "role_choice": 0.7578125,
+          "both_values": 0.09765625,
+          "key_and_value": 0.0078125,
+          "loss": 8.33743667602539
+        },
+        "longer": {
+          "key_accuracy": 0.012500000186264515,
+          "value_accuracy": 0.20390625298023224,
+          "decoy_accuracy": 0.15273436903953552,
+          "role_choice": 0.515625,
+          "both_values": 0.03085937537252903,
+          "key_and_value": 0.0031250000465661287,
+          "loss": 10.480265617370605
+        }
+      },
+      "paired_prediction_agreement": 0.12031249701976776,
+      "paired_value_correct": 0.03515625
+    },
+    {
+      "encoder": "replay",
+      "feature": "gist_kv_2",
+      "probe": "mlp",
+      "seed": 2,
+      "validation": {
+        "key_accuracy": 0.015625,
+        "value_accuracy": 0.515625,
+        "decoy_accuracy": 0.20078125596046448,
+        "role_choice": 0.78515625,
+        "both_values": 0.09218750149011612,
+        "key_and_value": 0.010937499813735485,
+        "loss": 8.35009765625
+      },
+      "tests": {
+        "mixed": {
+          "key_accuracy": 0.01015624962747097,
+          "value_accuracy": 0.2601562440395355,
+          "decoy_accuracy": 0.15468749403953552,
+          "role_choice": 0.516796886920929,
+          "both_values": 0.04140625149011612,
+          "key_and_value": 0.0027343749534338713,
+          "loss": 10.311362266540527
+        },
+        "paired_swapped": {
+          "key_accuracy": 0.01132812537252903,
+          "value_accuracy": 0.27421873807907104,
+          "decoy_accuracy": 0.1640625,
+          "role_choice": 0.51171875,
+          "both_values": 0.048828125,
+          "key_and_value": 0.00390625,
+          "loss": 10.156375885009766
+        },
+        "fixed_order": {
+          "key_accuracy": 0.01328125037252903,
+          "value_accuracy": 0.5269531011581421,
+          "decoy_accuracy": 0.19296875596046448,
+          "role_choice": 0.7734375,
+          "both_values": 0.08515624701976776,
+          "key_and_value": 0.0078125,
+          "loss": 8.342484474182129
+        },
+        "longer": {
+          "key_accuracy": 0.01015624962747097,
+          "value_accuracy": 0.20664063096046448,
+          "decoy_accuracy": 0.13906249403953552,
+          "role_choice": 0.517578125,
+          "both_values": 0.03164062649011612,
+          "key_and_value": 0.0015625000232830644,
+          "loss": 10.782109260559082
+        }
+      },
+      "paired_prediction_agreement": 0.16484375298023224,
+      "paired_value_correct": 0.046875
+    },
+    {
+      "encoder": "replay",
+      "feature": "gist_label_shuffle",
+      "probe": "mlp",
+      "seed": 0,
+      "tests": {
+        "mixed": {
+          "key_accuracy": 0.00937500037252903,
+          "value_accuracy": 0.12187500298023224,
+          "decoy_accuracy": 0.12148437649011612,
+          "role_choice": 0.5101562738418579,
+          "both_values": 0.01171875,
+          "key_and_value": 0.0007812500116415322,
+          "loss": 9.110512733459473
+        },
+        "paired_swapped": {
+          "key_accuracy": 0.007031249813735485,
+          "value_accuracy": 0.123046875,
+          "decoy_accuracy": 0.12109375,
+          "role_choice": 0.5171874761581421,
+          "both_values": 0.008984374813735485,
+          "key_and_value": 0.0015625000232830644,
+          "loss": 9.10305118560791
+        },
+        "fixed_order": {
+          "key_accuracy": 0.00820312462747097,
+          "value_accuracy": 0.11484374850988388,
+          "decoy_accuracy": 0.11835937201976776,
+          "role_choice": 0.5,
+          "both_values": 0.00937500037252903,
+          "key_and_value": 0.0007812500116415322,
+          "loss": 9.104276657104492
+        },
+        "longer": {
+          "key_accuracy": 0.00820312462747097,
+          "value_accuracy": 0.1171875,
+          "decoy_accuracy": 0.12031249701976776,
+          "role_choice": 0.501171886920929,
+          "both_values": 0.01601562462747097,
+          "key_and_value": 0.0003906250058207661,
+          "loss": 9.10029411315918
+        }
+      }
+    },
+    {
+      "encoder": "random",
+      "feature": "gist",
+      "probe": "linear",
+      "seed": 0,
+      "validation": {
+        "key_accuracy": 1.0,
+        "value_accuracy": 0.50390625,
+        "decoy_accuracy": 0.51953125,
+        "role_choice": 0.5257812738418579,
+        "both_values": 0.15234375,
+        "key_and_value": 0.50390625,
+        "loss": 2.49643874168396
+      },
+      "tests": {
+        "mixed": {
+          "key_accuracy": 0.8617187738418579,
+          "value_accuracy": 0.4574218690395355,
+          "decoy_accuracy": 0.44062501192092896,
+          "role_choice": 0.4996093809604645,
+          "both_values": 0.11054687201976776,
+          "key_and_value": 0.3980468809604645,
+          "loss": 3.3565077781677246
+        },
+        "paired_swapped": {
+          "key_accuracy": 0.8871093988418579,
+          "value_accuracy": 0.45429688692092896,
+          "decoy_accuracy": 0.4488281309604645,
+          "role_choice": 0.4957031309604645,
+          "both_values": 0.11093749850988388,
+          "key_and_value": 0.40546876192092896,
+          "loss": 3.2684273719787598
+        },
+        "fixed_order": {
+          "key_accuracy": 1.0,
+          "value_accuracy": 0.490234375,
+          "decoy_accuracy": 0.532421886920929,
+          "role_choice": 0.5140625238418579,
+          "both_values": 0.15273436903953552,
+          "key_and_value": 0.490234375,
+          "loss": 2.4897236824035645
+        },
+        "longer": {
+          "key_accuracy": 0.4765625,
+          "value_accuracy": 0.3089843690395355,
+          "decoy_accuracy": 0.3101562559604645,
+          "role_choice": 0.520312488079071,
+          "both_values": 0.05898437649011612,
+          "key_and_value": 0.20781250298023224,
+          "loss": 16.681636810302734
+        }
+      },
+      "paired_prediction_agreement": 0.660937488079071,
+      "paired_value_correct": 0.31367188692092896
+    },
+    {
+      "encoder": "random",
+      "feature": "gist",
+      "probe": "linear",
+      "seed": 1,
+      "validation": {
+        "key_accuracy": 0.999218761920929,
+        "value_accuracy": 0.4867187440395355,
+        "decoy_accuracy": 0.520312488079071,
+        "role_choice": 0.5171874761581421,
+        "both_values": 0.15078124403953552,
+        "key_and_value": 0.4867187440395355,
+        "loss": 2.5106749534606934
+      },
+      "tests": {
+        "mixed": {
+          "key_accuracy": 0.8589843511581421,
+          "value_accuracy": 0.45976561307907104,
+          "decoy_accuracy": 0.4339843690395355,
+          "role_choice": 0.4984374940395355,
+          "both_values": 0.10039062798023224,
+          "key_and_value": 0.39453125,
+          "loss": 3.3423328399658203
+        },
+        "paired_swapped": {
+          "key_accuracy": 0.8863281011581421,
+          "value_accuracy": 0.45585936307907104,
+          "decoy_accuracy": 0.4527343809604645,
+          "role_choice": 0.500781238079071,
+          "both_values": 0.107421875,
+          "key_and_value": 0.4066406190395355,
+          "loss": 3.25770902633667
+        },
+        "fixed_order": {
+          "key_accuracy": 1.0,
+          "value_accuracy": 0.49140626192092896,
+          "decoy_accuracy": 0.541796863079071,
+          "role_choice": 0.513671875,
+          "both_values": 0.15781250596046448,
+          "key_and_value": 0.49140626192092896,
+          "loss": 2.488396644592285
+        },
+        "longer": {
+          "key_accuracy": 0.47148436307907104,
+          "value_accuracy": 0.31953126192092896,
+          "decoy_accuracy": 0.31640625,
+          "role_choice": 0.518750011920929,
+          "both_values": 0.05859375,
+          "key_and_value": 0.21328124403953552,
+          "loss": 16.70902442932129
+        }
+      },
+      "paired_prediction_agreement": 0.678515613079071,
+      "paired_value_correct": 0.3246093690395355
+    },
+    {
+      "encoder": "random",
+      "feature": "gist",
+      "probe": "linear",
+      "seed": 2,
+      "validation": {
+        "key_accuracy": 1.0,
+        "value_accuracy": 0.5015624761581421,
+        "decoy_accuracy": 0.510937511920929,
+        "role_choice": 0.534375011920929,
+        "both_values": 0.15156249701976776,
+        "key_and_value": 0.5015624761581421,
+        "loss": 2.506248950958252
+      },
+      "tests": {
+        "mixed": {
+          "key_accuracy": 0.866406261920929,
+          "value_accuracy": 0.45781248807907104,
+          "decoy_accuracy": 0.43359375,
+          "role_choice": 0.5023437738418579,
+          "both_values": 0.10898437350988388,
+          "key_and_value": 0.39960938692092896,
+          "loss": 3.3345398902893066
+        },
+        "paired_swapped": {
+          "key_accuracy": 0.889453113079071,
+          "value_accuracy": 0.4546875059604645,
+          "decoy_accuracy": 0.458984375,
+          "role_choice": 0.498046875,
+          "both_values": 0.10976562649011612,
+          "key_and_value": 0.4058593809604645,
+          "loss": 3.249006986618042
+        },
+        "fixed_order": {
+          "key_accuracy": 1.0,
+          "value_accuracy": 0.49296873807907104,
+          "decoy_accuracy": 0.5335937738418579,
+          "role_choice": 0.516406238079071,
+          "both_values": 0.15390625596046448,
+          "key_and_value": 0.49296873807907104,
+          "loss": 2.50347638130188
+        },
+        "longer": {
+          "key_accuracy": 0.47265625,
+          "value_accuracy": 0.31367188692092896,
+          "decoy_accuracy": 0.3203125,
+          "role_choice": 0.5140625238418579,
+          "both_values": 0.06523437798023224,
+          "key_and_value": 0.20859375596046448,
+          "loss": 16.463685989379883
+        }
+      },
+      "paired_prediction_agreement": 0.6773437261581421,
+      "paired_value_correct": 0.322265625
+    },
+    {
+      "encoder": "random",
+      "feature": "gist",
+      "probe": "mlp",
+      "seed": 0,
+      "validation": {
+        "key_accuracy": 0.999218761920929,
+        "value_accuracy": 0.532031238079071,
+        "decoy_accuracy": 0.5718749761581421,
+        "role_choice": 0.5445312261581421,
+        "both_values": 0.22578124701976776,
+        "key_and_value": 0.532031238079071,
+        "loss": 2.0933475494384766
+      },
+      "tests": {
+        "mixed": {
+          "key_accuracy": 0.7914062738418579,
+          "value_accuracy": 0.45703125,
+          "decoy_accuracy": 0.4453125,
+          "role_choice": 0.5062500238418579,
+          "both_values": 0.134765625,
+          "key_and_value": 0.3687500059604645,
+          "loss": 3.5880632400512695
+        },
+        "paired_swapped": {
+          "key_accuracy": 0.819140613079071,
+          "value_accuracy": 0.4605468809604645,
+          "decoy_accuracy": 0.45820313692092896,
+          "role_choice": 0.4996093809604645,
+          "both_values": 0.138671875,
+          "key_and_value": 0.3929687440395355,
+          "loss": 3.438626527786255
+        },
+        "fixed_order": {
+          "key_accuracy": 1.0,
+          "value_accuracy": 0.5257812738418579,
+          "decoy_accuracy": 0.569140613079071,
+          "role_choice": 0.534375011920929,
+          "both_values": 0.22226563096046448,
+          "key_and_value": 0.5257812738418579,
+          "loss": 2.0963351726531982
+        },
+        "longer": {
+          "key_accuracy": 0.4410156309604645,
+          "value_accuracy": 0.3023437559604645,
+          "decoy_accuracy": 0.294921875,
+          "role_choice": 0.512499988079071,
+          "both_values": 0.0703125,
+          "key_and_value": 0.19687500596046448,
+          "loss": 18.616437911987305
+        }
+      },
+      "paired_prediction_agreement": 0.6078125238418579,
+      "paired_value_correct": 0.29609376192092896
+    },
+    {
+      "encoder": "random",
+      "feature": "gist",
+      "probe": "mlp",
+      "seed": 1,
+      "validation": {
+        "key_accuracy": 1.0,
+        "value_accuracy": 0.5218750238418579,
+        "decoy_accuracy": 0.553906261920929,
+        "role_choice": 0.539843738079071,
+        "both_values": 0.21328124403953552,
+        "key_and_value": 0.5218750238418579,
+        "loss": 2.10245943069458
+      },
+      "tests": {
+        "mixed": {
+          "key_accuracy": 0.785937488079071,
+          "value_accuracy": 0.4749999940395355,
+          "decoy_accuracy": 0.4605468809604645,
+          "role_choice": 0.5082031488418579,
+          "both_values": 0.14570312201976776,
+          "key_and_value": 0.37890625,
+          "loss": 3.6127827167510986
+        },
+        "paired_swapped": {
+          "key_accuracy": 0.815625011920929,
+          "value_accuracy": 0.4613281190395355,
+          "decoy_accuracy": 0.4761718809604645,
+          "role_choice": 0.49492186307907104,
+          "both_values": 0.15468749403953552,
+          "key_and_value": 0.38203126192092896,
+          "loss": 3.4637064933776855
+        },
+        "fixed_order": {
+          "key_accuracy": 1.0,
+          "value_accuracy": 0.508984386920929,
+          "decoy_accuracy": 0.5777343511581421,
+          "role_choice": 0.518359363079071,
+          "both_values": 0.22187499701976776,
+          "key_and_value": 0.508984386920929,
+          "loss": 2.086237668991089
+        },
+        "longer": {
+          "key_accuracy": 0.41874998807907104,
+          "value_accuracy": 0.3179687559604645,
+          "decoy_accuracy": 0.3160156309604645,
+          "role_choice": 0.5113281011581421,
+          "both_values": 0.08320312201976776,
+          "key_and_value": 0.19492188096046448,
+          "loss": 19.407712936401367
+        }
+      },
+      "paired_prediction_agreement": 0.640625,
+      "paired_value_correct": 0.31562501192092896
+    },
+    {
+      "encoder": "random",
+      "feature": "gist",
+      "probe": "mlp",
+      "seed": 2,
+      "validation": {
+        "key_accuracy": 1.0,
+        "value_accuracy": 0.5390625,
+        "decoy_accuracy": 0.550000011920929,
+        "role_choice": 0.553906261920929,
+        "both_values": 0.22343750298023224,
+        "key_and_value": 0.5390625,
+        "loss": 2.150569438934326
+      },
+      "tests": {
+        "mixed": {
+          "key_accuracy": 0.7601562738418579,
+          "value_accuracy": 0.45976561307907104,
+          "decoy_accuracy": 0.44648438692092896,
+          "role_choice": 0.5140625238418579,
+          "both_values": 0.150390625,
+          "key_and_value": 0.3597656190395355,
+          "loss": 3.79158091545105
+        },
+        "paired_swapped": {
+          "key_accuracy": 0.8011718988418579,
+          "value_accuracy": 0.45390623807907104,
+          "decoy_accuracy": 0.4664062559604645,
+          "role_choice": 0.4984374940395355,
+          "both_values": 0.15312500298023224,
+          "key_and_value": 0.3746093809604645,
+          "loss": 3.5758252143859863
+        },
+        "fixed_order": {
+          "key_accuracy": 1.0,
+          "value_accuracy": 0.5093749761581421,
+          "decoy_accuracy": 0.5570312738418579,
+          "role_choice": 0.520312488079071,
+          "both_values": 0.21562500298023224,
+          "key_and_value": 0.5093749761581421,
+          "loss": 2.1334385871887207
+        },
+        "longer": {
+          "key_accuracy": 0.4183593690395355,
+          "value_accuracy": 0.29960936307907104,
+          "decoy_accuracy": 0.2972656190395355,
+          "role_choice": 0.5101562738418579,
+          "both_values": 0.07304687798023224,
+          "key_and_value": 0.18906250596046448,
+          "loss": 19.09523582458496
+        }
+      },
+      "paired_prediction_agreement": 0.6136718988418579,
+      "paired_value_correct": 0.30742186307907104
+    },
+    {
+      "encoder": "random",
+      "feature": "gist_kv_1",
+      "probe": "linear",
+      "seed": 0,
+      "validation": {
+        "key_accuracy": 0.97265625,
+        "value_accuracy": 0.4867187440395355,
+        "decoy_accuracy": 0.44999998807907104,
+        "role_choice": 0.526562511920929,
+        "both_values": 0.10312499850988388,
+        "key_and_value": 0.47343748807907104,
+        "loss": 3.196199417114258
+      },
+      "tests": {
+        "mixed": {
+          "key_accuracy": 0.833984375,
+          "value_accuracy": 0.44804686307907104,
+          "decoy_accuracy": 0.4320312440395355,
+          "role_choice": 0.5,
+          "both_values": 0.08984375,
+          "key_and_value": 0.376953125,
+          "loss": 3.6719000339508057
+        },
+        "paired_swapped": {
+          "key_accuracy": 0.850781261920929,
+          "value_accuracy": 0.4546875059604645,
+          "decoy_accuracy": 0.42578125,
+          "role_choice": 0.5078125,
+          "both_values": 0.09257812798023224,
+          "key_and_value": 0.38671875,
+          "loss": 3.624786376953125
+        },
+        "fixed_order": {
+          "key_accuracy": 0.9742187261581421,
+          "value_accuracy": 0.4867187440395355,
+          "decoy_accuracy": 0.451171875,
+          "role_choice": 0.5249999761581421,
+          "both_values": 0.115234375,
+          "key_and_value": 0.474609375,
+          "loss": 3.172712564468384
+        },
+        "longer": {
+          "key_accuracy": 0.4261718690395355,
+          "value_accuracy": 0.29765623807907104,
+          "decoy_accuracy": 0.310546875,
+          "role_choice": 0.5062500238418579,
+          "both_values": 0.04921875149011612,
+          "key_and_value": 0.19374999403953552,
+          "loss": 34.09860610961914
+        }
+      },
+      "paired_prediction_agreement": 0.684765636920929,
+      "paired_value_correct": 0.322265625
+    },
+    {
+      "encoder": "random",
+      "feature": "gist_kv_1",
+      "probe": "linear",
+      "seed": 1,
+      "validation": {
+        "key_accuracy": 0.9781249761581421,
+        "value_accuracy": 0.4703125059604645,
+        "decoy_accuracy": 0.45390623807907104,
+        "role_choice": 0.534375011920929,
+        "both_values": 0.10859374701976776,
+        "key_and_value": 0.4593749940395355,
+        "loss": 3.201647996902466
+      },
+      "tests": {
+        "mixed": {
+          "key_accuracy": 0.837109386920929,
+          "value_accuracy": 0.43828123807907104,
+          "decoy_accuracy": 0.4410156309604645,
+          "role_choice": 0.5,
+          "both_values": 0.09375,
+          "key_and_value": 0.3687500059604645,
+          "loss": 3.6884119510650635
+        },
+        "paired_swapped": {
+          "key_accuracy": 0.8453124761581421,
+          "value_accuracy": 0.435546875,
+          "decoy_accuracy": 0.4488281309604645,
+          "role_choice": 0.5,
+          "both_values": 0.09726562350988388,
+          "key_and_value": 0.36328125,
+          "loss": 3.6442508697509766
+        },
+        "fixed_order": {
+          "key_accuracy": 0.967968761920929,
+          "value_accuracy": 0.4730468690395355,
+          "decoy_accuracy": 0.44648438692092896,
+          "role_choice": 0.5218750238418579,
+          "both_values": 0.10585937649011612,
+          "key_and_value": 0.45820313692092896,
+          "loss": 3.1960277557373047
+        },
+        "longer": {
+          "key_accuracy": 0.4242187440395355,
+          "value_accuracy": 0.2855468690395355,
+          "decoy_accuracy": 0.2984375059604645,
+          "role_choice": 0.506640613079071,
+          "both_values": 0.04765624925494194,
+          "key_and_value": 0.18437500298023224,
+          "loss": 34.8077507019043
+        }
+      },
+      "paired_prediction_agreement": 0.676953136920929,
+      "paired_value_correct": 0.30937498807907104
+    },
+    {
+      "encoder": "random",
+      "feature": "gist_kv_1",
+      "probe": "linear",
+      "seed": 2,
+      "validation": {
+        "key_accuracy": 0.9703124761581421,
+        "value_accuracy": 0.4906249940395355,
+        "decoy_accuracy": 0.4609375,
+        "role_choice": 0.534375011920929,
+        "both_values": 0.10078124701976776,
+        "key_and_value": 0.47734373807907104,
+        "loss": 3.177520275115967
+      },
+      "tests": {
+        "mixed": {
+          "key_accuracy": 0.8277343511581421,
+          "value_accuracy": 0.4375,
+          "decoy_accuracy": 0.4359374940395355,
+          "role_choice": 0.4957031309604645,
+          "both_values": 0.08437500149011612,
+          "key_and_value": 0.36601561307907104,
+          "loss": 3.6742231845855713
+        },
+        "paired_swapped": {
+          "key_accuracy": 0.8402343988418579,
+          "value_accuracy": 0.447265625,
+          "decoy_accuracy": 0.4222656190395355,
+          "role_choice": 0.5,
+          "both_values": 0.07304687798023224,
+          "key_and_value": 0.37421876192092896,
+          "loss": 3.6352715492248535
+        },
+        "fixed_order": {
+          "key_accuracy": 0.973437488079071,
+          "value_accuracy": 0.4683593809604645,
+          "decoy_accuracy": 0.4488281309604645,
+          "role_choice": 0.516796886920929,
+          "both_values": 0.08437500149011612,
+          "key_and_value": 0.4554687440395355,
+          "loss": 3.1758875846862793
+        },
+        "longer": {
+          "key_accuracy": 0.4253906309604645,
+          "value_accuracy": 0.29609376192092896,
+          "decoy_accuracy": 0.3089843690395355,
+          "role_choice": 0.5132812261581421,
+          "both_values": 0.04531250149011612,
+          "key_and_value": 0.19296875596046448,
+          "loss": 34.44363784790039
+        }
+      },
+      "paired_prediction_agreement": 0.6761718988418579,
+      "paired_value_correct": 0.31328123807907104
+    },
+    {
+      "encoder": "random",
+      "feature": "gist_kv_1",
+      "probe": "mlp",
+      "seed": 0,
+      "validation": {
+        "key_accuracy": 0.9906250238418579,
+        "value_accuracy": 0.49687498807907104,
+        "decoy_accuracy": 0.46953123807907104,
+        "role_choice": 0.528124988079071,
+        "both_values": 0.1015625,
+        "key_and_value": 0.49296873807907104,
+        "loss": 2.546138286590576
+      },
+      "tests": {
+        "mixed": {
+          "key_accuracy": 0.7710937261581421,
+          "value_accuracy": 0.4605468809604645,
+          "decoy_accuracy": 0.44257813692092896,
+          "role_choice": 0.4996093809604645,
+          "both_values": 0.08320312201976776,
+          "key_and_value": 0.35859376192092896,
+          "loss": 3.599411964416504
+        },
+        "paired_swapped": {
+          "key_accuracy": 0.77734375,
+          "value_accuracy": 0.45585936307907104,
+          "decoy_accuracy": 0.443359375,
+          "role_choice": 0.4957031309604645,
+          "both_values": 0.08476562798023224,
+          "key_and_value": 0.359375,
+          "loss": 3.546459197998047
+        },
+        "fixed_order": {
+          "key_accuracy": 0.9917968511581421,
+          "value_accuracy": 0.5035156011581421,
+          "decoy_accuracy": 0.47343748807907104,
+          "role_choice": 0.5289062261581421,
+          "both_values": 0.115234375,
+          "key_and_value": 0.5,
+          "loss": 2.5099878311157227
+        },
+        "longer": {
+          "key_accuracy": 0.3988281190395355,
+          "value_accuracy": 0.32109373807907104,
+          "decoy_accuracy": 0.3167968690395355,
+          "role_choice": 0.508984386920929,
+          "both_values": 0.05820312350988388,
+          "key_and_value": 0.19101563096046448,
+          "loss": 40.896484375
+        }
+      },
+      "paired_prediction_agreement": 0.6761718988418579,
+      "paired_value_correct": 0.31953126192092896
+    },
+    {
+      "encoder": "random",
+      "feature": "gist_kv_1",
+      "probe": "mlp",
+      "seed": 1,
+      "validation": {
+        "key_accuracy": 0.9906250238418579,
+        "value_accuracy": 0.5062500238418579,
+        "decoy_accuracy": 0.4781250059604645,
+        "role_choice": 0.5414062738418579,
+        "both_values": 0.11640624701976776,
+        "key_and_value": 0.503125011920929,
+        "loss": 2.558915138244629
+      },
+      "tests": {
+        "mixed": {
+          "key_accuracy": 0.7417968511581421,
+          "value_accuracy": 0.4488281309604645,
+          "decoy_accuracy": 0.43671876192092896,
+          "role_choice": 0.501171886920929,
+          "both_values": 0.08164062350988388,
+          "key_and_value": 0.3359375,
+          "loss": 3.8191781044006348
+        },
+        "paired_swapped": {
+          "key_accuracy": 0.7613281011581421,
+          "value_accuracy": 0.44921875,
+          "decoy_accuracy": 0.4496093690395355,
+          "role_choice": 0.5062500238418579,
+          "both_values": 0.08984375,
+          "key_and_value": 0.35039061307907104,
+          "loss": 3.7418224811553955
+        },
+        "fixed_order": {
+          "key_accuracy": 0.995312511920929,
+          "value_accuracy": 0.4925781190395355,
+          "decoy_accuracy": 0.4703125059604645,
+          "role_choice": 0.524609386920929,
+          "both_values": 0.11249999701976776,
+          "key_and_value": 0.4906249940395355,
+          "loss": 2.5330708026885986
+        },
+        "longer": {
+          "key_accuracy": 0.3949218690395355,
+          "value_accuracy": 0.30585938692092896,
+          "decoy_accuracy": 0.30390626192092896,
+          "role_choice": 0.518359363079071,
+          "both_values": 0.05156249925494194,
+          "key_and_value": 0.18398436903953552,
+          "loss": 45.60505294799805
+        }
+      },
+      "paired_prediction_agreement": 0.661328136920929,
+      "paired_value_correct": 0.3121093809604645
+    },
+    {
+      "encoder": "random",
+      "feature": "gist_kv_1",
+      "probe": "mlp",
+      "seed": 2,
+      "validation": {
+        "key_accuracy": 0.9906250238418579,
+        "value_accuracy": 0.48750001192092896,
+        "decoy_accuracy": 0.46953123807907104,
+        "role_choice": 0.5218750238418579,
+        "both_values": 0.10390625149011612,
+        "key_and_value": 0.4820312559604645,
+        "loss": 2.581514835357666
+      },
+      "tests": {
+        "mixed": {
+          "key_accuracy": 0.744921863079071,
+          "value_accuracy": 0.4527343809604645,
+          "decoy_accuracy": 0.44609373807907104,
+          "role_choice": 0.4984374940395355,
+          "both_values": 0.091796875,
+          "key_and_value": 0.3402343690395355,
+          "loss": 3.889756202697754
+        },
+        "paired_swapped": {
+          "key_accuracy": 0.755859375,
+          "value_accuracy": 0.4546875059604645,
+          "decoy_accuracy": 0.45390623807907104,
+          "role_choice": 0.5023437738418579,
+          "both_values": 0.10273437201976776,
+          "key_and_value": 0.35273438692092896,
+          "loss": 3.807526111602783
+        },
+        "fixed_order": {
+          "key_accuracy": 0.9925781488418579,
+          "value_accuracy": 0.48945313692092896,
+          "decoy_accuracy": 0.4546875059604645,
+          "role_choice": 0.5179687738418579,
+          "both_values": 0.10078124701976776,
+          "key_and_value": 0.48515623807907104,
+          "loss": 2.5588059425354004
+        },
+        "longer": {
+          "key_accuracy": 0.3902343809604645,
+          "value_accuracy": 0.30390626192092896,
+          "decoy_accuracy": 0.2710937559604645,
+          "role_choice": 0.5199218988418579,
+          "both_values": 0.05156249925494194,
+          "key_and_value": 0.18476562201976776,
+          "loss": 47.62061309814453
+        }
+      },
+      "paired_prediction_agreement": 0.6929687261581421,
+      "paired_value_correct": 0.328125
+    },
+    {
+      "encoder": "random",
+      "feature": "gist_kv_2",
+      "probe": "linear",
+      "seed": 0,
+      "validation": {
+        "key_accuracy": 0.99609375,
+        "value_accuracy": 0.520312488079071,
+        "decoy_accuracy": 0.4765625,
+        "role_choice": 0.539843738079071,
+        "both_values": 0.11015625298023224,
+        "key_and_value": 0.518750011920929,
+        "loss": 2.5987510681152344
+      },
+      "tests": {
+        "mixed": {
+          "key_accuracy": 0.8980468511581421,
+          "value_accuracy": 0.43671876192092896,
+          "decoy_accuracy": 0.4574218690395355,
+          "role_choice": 0.49140626192092896,
+          "both_values": 0.08515624701976776,
+          "key_and_value": 0.3980468809604645,
+          "loss": 3.2562034130096436
+        },
+        "paired_swapped": {
+          "key_accuracy": 0.9019531011581421,
+          "value_accuracy": 0.46015626192092896,
+          "decoy_accuracy": 0.4742187559604645,
+          "role_choice": 0.504687488079071,
+          "both_values": 0.095703125,
+          "key_and_value": 0.41679686307907104,
+          "loss": 3.208798885345459
+        },
+        "fixed_order": {
+          "key_accuracy": 0.9976562261581421,
+          "value_accuracy": 0.5210937261581421,
+          "decoy_accuracy": 0.47578126192092896,
+          "role_choice": 0.5445312261581421,
+          "both_values": 0.12343750149011612,
+          "key_and_value": 0.5199218988418579,
+          "loss": 2.6272056102752686
+        },
+        "longer": {
+          "key_accuracy": 0.4691406190395355,
+          "value_accuracy": 0.32499998807907104,
+          "decoy_accuracy": 0.28398436307907104,
+          "role_choice": 0.520312488079071,
+          "both_values": 0.05000000074505806,
+          "key_and_value": 0.21796874701976776,
+          "loss": 26.847591400146484
+        }
+      },
+      "paired_prediction_agreement": 0.6304687261581421,
+      "paired_value_correct": 0.30390626192092896
+    },
+    {
+      "encoder": "random",
+      "feature": "gist_kv_2",
+      "probe": "linear",
+      "seed": 1,
+      "validation": {
+        "key_accuracy": 0.996874988079071,
+        "value_accuracy": 0.5218750238418579,
+        "decoy_accuracy": 0.453125,
+        "role_choice": 0.5453125238418579,
+        "both_values": 0.12343750149011612,
+        "key_and_value": 0.51953125,
+        "loss": 2.615997791290283
+      },
+      "tests": {
+        "mixed": {
+          "key_accuracy": 0.903124988079071,
+          "value_accuracy": 0.4339843690395355,
+          "decoy_accuracy": 0.4527343809604645,
+          "role_choice": 0.4867187440395355,
+          "both_values": 0.08359374850988388,
+          "key_and_value": 0.39726561307907104,
+          "loss": 3.2531871795654297
+        },
+        "paired_swapped": {
+          "key_accuracy": 0.899609386920929,
+          "value_accuracy": 0.46875,
+          "decoy_accuracy": 0.48164063692092896,
+          "role_choice": 0.513671875,
+          "both_values": 0.10625000298023224,
+          "key_and_value": 0.4253906309604645,
+          "loss": 3.2104640007019043
+        },
+        "fixed_order": {
+          "key_accuracy": 0.997265636920929,
+          "value_accuracy": 0.503125011920929,
+          "decoy_accuracy": 0.4644531309604645,
+          "role_choice": 0.5355468988418579,
+          "both_values": 0.11249999701976776,
+          "key_and_value": 0.501953125,
+          "loss": 2.6345090866088867
+        },
+        "longer": {
+          "key_accuracy": 0.46953123807907104,
+          "value_accuracy": 0.3355468809604645,
+          "decoy_accuracy": 0.29374998807907104,
+          "role_choice": 0.518750011920929,
+          "both_values": 0.05624999850988388,
+          "key_and_value": 0.22187499701976776,
+          "loss": 26.805564880371094
+        }
+      },
+      "paired_prediction_agreement": 0.641406238079071,
+      "paired_value_correct": 0.30585938692092896
+    },
+    {
+      "encoder": "random",
+      "feature": "gist_kv_2",
+      "probe": "linear",
+      "seed": 2,
+      "validation": {
+        "key_accuracy": 0.995312511920929,
+        "value_accuracy": 0.5234375,
+        "decoy_accuracy": 0.46562498807907104,
+        "role_choice": 0.546093761920929,
+        "both_values": 0.12109375,
+        "key_and_value": 0.520312488079071,
+        "loss": 2.600940465927124
+      },
+      "tests": {
+        "mixed": {
+          "key_accuracy": 0.8949218988418579,
+          "value_accuracy": 0.4375,
+          "decoy_accuracy": 0.47343748807907104,
+          "role_choice": 0.49140626192092896,
+          "both_values": 0.09218750149011612,
+          "key_and_value": 0.3984375,
+          "loss": 3.2769784927368164
+        },
+        "paired_swapped": {
+          "key_accuracy": 0.8988281488418579,
+          "value_accuracy": 0.4453125,
+          "decoy_accuracy": 0.47265625,
+          "role_choice": 0.4921875,
+          "both_values": 0.09335937350988388,
+          "key_and_value": 0.4058593809604645,
+          "loss": 3.2313177585601807
+        },
+        "fixed_order": {
+          "key_accuracy": 0.9976562261581421,
+          "value_accuracy": 0.500781238079071,
+          "decoy_accuracy": 0.4742187559604645,
+          "role_choice": 0.528515636920929,
+          "both_values": 0.10429687798023224,
+          "key_and_value": 0.49921876192092896,
+          "loss": 2.6417899131774902
+        },
+        "longer": {
+          "key_accuracy": 0.4671874940395355,
+          "value_accuracy": 0.3304687440395355,
+          "decoy_accuracy": 0.2953124940395355,
+          "role_choice": 0.5230468511581421,
+          "both_values": 0.05234374850988388,
+          "key_and_value": 0.21640625596046448,
+          "loss": 26.471923828125
+        }
+      },
+      "paired_prediction_agreement": 0.6527343988418579,
+      "paired_value_correct": 0.3046875
+    },
+    {
+      "encoder": "random",
+      "feature": "gist_kv_2",
+      "probe": "mlp",
+      "seed": 0,
+      "validation": {
+        "key_accuracy": 0.9976562261581421,
+        "value_accuracy": 0.528124988079071,
+        "decoy_accuracy": 0.4828124940395355,
+        "role_choice": 0.547656238079071,
+        "both_values": 0.15234375,
+        "key_and_value": 0.5257812738418579,
+        "loss": 2.3256988525390625
+      },
+      "tests": {
+        "mixed": {
+          "key_accuracy": 0.8046875,
+          "value_accuracy": 0.466796875,
+          "decoy_accuracy": 0.4710937440395355,
+          "role_choice": 0.500781238079071,
+          "both_values": 0.11289062350988388,
+          "key_and_value": 0.3792968690395355,
+          "loss": 3.409468173980713
+        },
+        "paired_swapped": {
+          "key_accuracy": 0.8179687261581421,
+          "value_accuracy": 0.4749999940395355,
+          "decoy_accuracy": 0.4703125059604645,
+          "role_choice": 0.5093749761581421,
+          "both_values": 0.12382812798023224,
+          "key_and_value": 0.4000000059604645,
+          "loss": 3.3793797492980957
+        },
+        "fixed_order": {
+          "key_accuracy": 0.997265636920929,
+          "value_accuracy": 0.5234375,
+          "decoy_accuracy": 0.5035156011581421,
+          "role_choice": 0.54296875,
+          "both_values": 0.15546874701976776,
+          "key_and_value": 0.5210937261581421,
+          "loss": 2.309504508972168
+        },
+        "longer": {
+          "key_accuracy": 0.421875,
+          "value_accuracy": 0.34492188692092896,
+          "decoy_accuracy": 0.306640625,
+          "role_choice": 0.526171863079071,
+          "both_values": 0.080078125,
+          "key_and_value": 0.20624999701976776,
+          "loss": 27.748525619506836
+        }
+      },
+      "paired_prediction_agreement": 0.642578125,
+      "paired_value_correct": 0.31914061307907104
+    },
+    {
+      "encoder": "random",
+      "feature": "gist_kv_2",
+      "probe": "mlp",
+      "seed": 1,
+      "validation": {
+        "key_accuracy": 0.9976562261581421,
+        "value_accuracy": 0.5367187261581421,
+        "decoy_accuracy": 0.4867187440395355,
+        "role_choice": 0.553906261920929,
+        "both_values": 0.15859374403953552,
+        "key_and_value": 0.53515625,
+        "loss": 2.302640199661255
+      },
+      "tests": {
+        "mixed": {
+          "key_accuracy": 0.8042968511581421,
+          "value_accuracy": 0.4496093690395355,
+          "decoy_accuracy": 0.474609375,
+          "role_choice": 0.49609375,
+          "both_values": 0.11210937798023224,
+          "key_and_value": 0.3726562559604645,
+          "loss": 3.4566636085510254
+        },
+        "paired_swapped": {
+          "key_accuracy": 0.828906238079071,
+          "value_accuracy": 0.4613281190395355,
+          "decoy_accuracy": 0.4765625,
+          "role_choice": 0.505859375,
+          "both_values": 0.11054687201976776,
+          "key_and_value": 0.39570313692092896,
+          "loss": 3.3976240158081055
+        },
+        "fixed_order": {
+          "key_accuracy": 0.998046875,
+          "value_accuracy": 0.528124988079071,
+          "decoy_accuracy": 0.48906248807907104,
+          "role_choice": 0.545703113079071,
+          "both_values": 0.14570312201976776,
+          "key_and_value": 0.526562511920929,
+          "loss": 2.306149482727051
+        },
+        "longer": {
+          "key_accuracy": 0.43242186307907104,
+          "value_accuracy": 0.337890625,
+          "decoy_accuracy": 0.3023437559604645,
+          "role_choice": 0.5218750238418579,
+          "both_values": 0.07109375298023224,
+          "key_and_value": 0.20703125,
+          "loss": 27.30936050415039
+        }
+      },
+      "paired_prediction_agreement": 0.619921863079071,
+      "paired_value_correct": 0.30000001192092896
+    },
+    {
+      "encoder": "random",
+      "feature": "gist_kv_2",
+      "probe": "mlp",
+      "seed": 2,
+      "validation": {
+        "key_accuracy": 0.9976562261581421,
+        "value_accuracy": 0.546093761920929,
+        "decoy_accuracy": 0.4859375059604645,
+        "role_choice": 0.561718761920929,
+        "both_values": 0.16562500596046448,
+        "key_and_value": 0.543749988079071,
+        "loss": 2.2973792552948
+      },
+      "tests": {
+        "mixed": {
+          "key_accuracy": 0.815234363079071,
+          "value_accuracy": 0.4476562440395355,
+          "decoy_accuracy": 0.48164063692092896,
+          "role_choice": 0.4898437559604645,
+          "both_values": 0.10976562649011612,
+          "key_and_value": 0.37109375,
+          "loss": 3.413116931915283
+        },
+        "paired_swapped": {
+          "key_accuracy": 0.8402343988418579,
+          "value_accuracy": 0.46210938692092896,
+          "decoy_accuracy": 0.4859375059604645,
+          "role_choice": 0.498046875,
+          "both_values": 0.12617187201976776,
+          "key_and_value": 0.3960937559604645,
+          "loss": 3.317127227783203
+        },
+        "fixed_order": {
+          "key_accuracy": 0.9957031011581421,
+          "value_accuracy": 0.5308593511581421,
+          "decoy_accuracy": 0.490234375,
+          "role_choice": 0.5464843511581421,
+          "both_values": 0.158203125,
+          "key_and_value": 0.5277343988418579,
+          "loss": 2.3273987770080566
+        },
+        "longer": {
+          "key_accuracy": 0.42500001192092896,
+          "value_accuracy": 0.33281248807907104,
+          "decoy_accuracy": 0.30546873807907104,
+          "role_choice": 0.5191406011581421,
+          "both_values": 0.06132812425494194,
+          "key_and_value": 0.19921875,
+          "loss": 28.576000213623047
+        }
+      },
+      "paired_prediction_agreement": 0.6343749761581421,
+      "paired_value_correct": 0.302734375
+    },
+    {
+      "encoder": "random",
+      "feature": "gist_label_shuffle",
+      "probe": "mlp",
+      "seed": 0,
+      "tests": {
+        "mixed": {
+          "key_accuracy": 0.005078124813735485,
+          "value_accuracy": 0.13242188096046448,
+          "decoy_accuracy": 0.11406250298023224,
+          "role_choice": 0.5121093988418579,
+          "both_values": 0.01679687574505806,
+          "key_and_value": 0.0003906250058207661,
+          "loss": 9.100303649902344
+        },
+        "paired_swapped": {
+          "key_accuracy": 0.008984374813735485,
+          "value_accuracy": 0.130859375,
+          "decoy_accuracy": 0.11601562798023224,
+          "role_choice": 0.515625,
+          "both_values": 0.01523437537252903,
+          "key_and_value": 0.0007812500116415322,
+          "loss": 9.101804733276367
+        },
+        "fixed_order": {
+          "key_accuracy": 0.0042968750931322575,
+          "value_accuracy": 0.12617187201976776,
+          "decoy_accuracy": 0.10625000298023224,
+          "role_choice": 0.5054687261581421,
+          "both_values": 0.015625,
+          "key_and_value": 0.0003906250058207661,
+          "loss": 9.10065746307373
+        },
+        "longer": {
+          "key_accuracy": 0.007031249813735485,
+          "value_accuracy": 0.11015625298023224,
+          "decoy_accuracy": 0.11171875149011612,
+          "role_choice": 0.48750001192092896,
+          "both_values": 0.01523437537252903,
+          "key_and_value": 0.0007812500116415322,
+          "loss": 9.251201629638672
+        }
+      }
+    }
+  ]
+}

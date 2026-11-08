@@ -1,0 +1,82 @@
+{
+  "protocol": {
+    "steps": 1,
+    "seeds": 1,
+    "width": 48,
+    "layers": 3,
+    "gist_slots": 2,
+    "query_gap": 2,
+    "batch_size": 16,
+    "learning_rate": 0.003,
+    "routing_weight": 0.5,
+    "keys": 32,
+    "values": 8,
+    "no_contradictions": false,
+    "local_gists": true,
+    "train_blocks": [
+      6
+    ],
+    "eval_blocks": [
+      6
+    ],
+    "stream_blocks": [
+      6
+    ],
+    "examples": 2,
+    "evaluation_seed": 1900000,
+    "modes": [
+      "retrieval"
+    ],
+    "output": "/workspace/work/association-cli-smoke"
+  },
+  "value_only_chance": 0.125,
+  "lengths": [
+    {
+      "blocks": 6,
+      "tokens": 50,
+      "modes": {
+        "retrieval": {
+          "runs": 1,
+          "metrics": {
+            "accuracy": {
+              "mean": 0.0,
+              "min": 0.0,
+              "max": 0.0
+            },
+            "route_hit_rate": {
+              "mean": 0.5,
+              "min": 0.5,
+              "max": 0.5
+            },
+            "oracle_page_accuracy": {
+              "mean": 0.0,
+              "min": 0.0,
+              "max": 0.0
+            },
+            "counterfactual_joint_accuracy": {
+              "mean": 0.0,
+              "min": 0.0,
+              "max": 0.0
+            },
+            "fp32_cold_top1_disagreement": {
+              "mean": 0.0,
+              "min": 0.0,
+              "max": 0.0
+            },
+            "position_prior_topk_chance": {
+              "mean": 0.5,
+              "min": 0.5,
+              "max": 0.5
+            }
+          }
+        }
+      },
+      "query_blind_majority_accuracy": 0.0
+    }
+  ],
+  "streaming": {
+    "checks": 1,
+    "all_top1_match": true,
+    "max_logit_difference": 5.960464477539062e-07
+  }
+}

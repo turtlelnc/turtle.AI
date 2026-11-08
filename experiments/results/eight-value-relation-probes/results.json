@@ -1,0 +1,671 @@
+{
+  "arguments": {
+    "parent": "/workspace/work/binding-continuation/retrieval-1.pt",
+    "replay": "/workspace/work/paired-replay-binding/replay-0/checkpoint.pt",
+    "output": "/workspace/work/eight-value-relation-probes",
+    "train_roles": "mixed",
+    "seeds": 3,
+    "steps": 600,
+    "features": [
+      "gist_kv_2",
+      "body_kv_2",
+      "body_int4_kv_2"
+    ],
+    "historical_only": true,
+    "encoders": [
+      "replay"
+    ],
+    "all_values": true
+  },
+  "encoder_unchanged": true,
+  "results": [
+    {
+      "encoder": "replay",
+      "feature": "gist_kv_2",
+      "probe": "bilinear",
+      "seed": 0,
+      "training": {
+        "pair_choice": 0.5511666536331177,
+        "binary_accuracy": 0.531333327293396,
+        "loss": 0.747404932975769
+      },
+      "validation": {
+        "pair_choice": 0.5625,
+        "binary_accuracy": 0.55078125,
+        "loss": 0.7415953874588013
+      },
+      "tests": {
+        "mixed": {
+          "pair_choice": 0.5631510615348816,
+          "binary_accuracy": 0.54296875,
+          "loss": 0.7520605325698853,
+          "all_value_accuracy": 0.1276041716337204
+        },
+        "fixed": {
+          "pair_choice": 0.52734375,
+          "binary_accuracy": 0.5563151240348816,
+          "loss": 0.7877343893051147,
+          "all_value_accuracy": 0.1360677033662796
+        },
+        "swapped": {
+          "pair_choice": 0.5625,
+          "binary_accuracy": 0.5364583134651184,
+          "loss": 0.742379903793335,
+          "all_value_accuracy": 0.1341145783662796
+        }
+      }
+    },
+    {
+      "encoder": "replay",
+      "feature": "gist_kv_2",
+      "probe": "bilinear",
+      "seed": 1,
+      "training": {
+        "pair_choice": 0.5254999995231628,
+        "binary_accuracy": 0.515666663646698,
+        "loss": 0.7500907182693481
+      },
+      "validation": {
+        "pair_choice": 0.515625,
+        "binary_accuracy": 0.5045573115348816,
+        "loss": 0.7473764419555664
+      },
+      "tests": {
+        "mixed": {
+          "pair_choice": 0.5260416865348816,
+          "binary_accuracy": 0.5143229365348816,
+          "loss": 0.7634686231613159,
+          "all_value_accuracy": 0.1627604216337204
+        },
+        "fixed": {
+          "pair_choice": 0.51953125,
+          "binary_accuracy": 0.498046875,
+          "loss": 0.7840675711631775,
+          "all_value_accuracy": 0.2018229216337204
+        },
+        "swapped": {
+          "pair_choice": 0.5358073115348816,
+          "binary_accuracy": 0.515625,
+          "loss": 0.7464935779571533,
+          "all_value_accuracy": 0.158203125
+        }
+      }
+    },
+    {
+      "encoder": "replay",
+      "feature": "gist_kv_2",
+      "probe": "bilinear",
+      "seed": 2,
+      "training": {
+        "pair_choice": 0.5183333158493042,
+        "binary_accuracy": 0.5172500014305115,
+        "loss": 0.7594726085662842
+      },
+      "validation": {
+        "pair_choice": 0.5325520634651184,
+        "binary_accuracy": 0.517578125,
+        "loss": 0.7502233982086182
+      },
+      "tests": {
+        "mixed": {
+          "pair_choice": 0.51171875,
+          "binary_accuracy": 0.5201823115348816,
+          "loss": 0.7662599682807922,
+          "all_value_accuracy": 0.1451822966337204
+        },
+        "fixed": {
+          "pair_choice": 0.5983073115348816,
+          "binary_accuracy": 0.5908203125,
+          "loss": 0.7088921070098877,
+          "all_value_accuracy": 0.1295572966337204
+        },
+        "swapped": {
+          "pair_choice": 0.5130208134651184,
+          "binary_accuracy": 0.5169270634651184,
+          "loss": 0.7603683471679688,
+          "all_value_accuracy": 0.1484375
+        }
+      }
+    },
+    {
+      "encoder": "replay",
+      "feature": "gist_kv_2",
+      "probe": "mlp",
+      "seed": 0,
+      "training": {
+        "pair_choice": 0.718999981880188,
+        "binary_accuracy": 0.6835833191871643,
+        "loss": 0.5824520587921143
+      },
+      "validation": {
+        "pair_choice": 0.67578125,
+        "binary_accuracy": 0.64453125,
+        "loss": 0.6049904823303223
+      },
+      "tests": {
+        "mixed": {
+          "pair_choice": 0.685546875,
+          "binary_accuracy": 0.6526692509651184,
+          "loss": 0.6043646335601807,
+          "all_value_accuracy": 0.2408854216337204
+        },
+        "fixed": {
+          "pair_choice": 0.6959635615348816,
+          "binary_accuracy": 0.7041015625,
+          "loss": 0.5941172242164612,
+          "all_value_accuracy": 0.2649739682674408
+        },
+        "swapped": {
+          "pair_choice": 0.68359375,
+          "binary_accuracy": 0.6510416865348816,
+          "loss": 0.6102445721626282,
+          "all_value_accuracy": 0.2272135466337204
+        }
+      }
+    },
+    {
+      "encoder": "replay",
+      "feature": "gist_kv_2",
+      "probe": "mlp",
+      "seed": 1,
+      "training": {
+        "pair_choice": 0.7304999828338623,
+        "binary_accuracy": 0.6853333115577698,
+        "loss": 0.5718758702278137
+      },
+      "validation": {
+        "pair_choice": 0.70703125,
+        "binary_accuracy": 0.6634114384651184,
+        "loss": 0.5969058275222778
+      },
+      "tests": {
+        "mixed": {
+          "pair_choice": 0.6803385615348816,
+          "binary_accuracy": 0.6494140625,
+          "loss": 0.6040441393852234,
+          "all_value_accuracy": 0.26171875
+        },
+        "fixed": {
+          "pair_choice": 0.6595051884651184,
+          "binary_accuracy": 0.6393229365348816,
+          "loss": 0.6294600367546082,
+          "all_value_accuracy": 0.283203125
+        },
+        "swapped": {
+          "pair_choice": 0.6803385615348816,
+          "binary_accuracy": 0.6419270634651184,
+          "loss": 0.6093472838401794,
+          "all_value_accuracy": 0.23046875
+        }
+      }
+    },
+    {
+      "encoder": "replay",
+      "feature": "gist_kv_2",
+      "probe": "mlp",
+      "seed": 2,
+      "training": {
+        "pair_choice": 0.7176666855812073,
+        "binary_accuracy": 0.6909999847412109,
+        "loss": 0.5692981481552124
+      },
+      "validation": {
+        "pair_choice": 0.6875,
+        "binary_accuracy": 0.6673176884651184,
+        "loss": 0.5937265157699585
+      },
+      "tests": {
+        "mixed": {
+          "pair_choice": 0.669921875,
+          "binary_accuracy": 0.6617838740348816,
+          "loss": 0.6029304265975952,
+          "all_value_accuracy": 0.283203125
+        },
+        "fixed": {
+          "pair_choice": 0.6940104365348816,
+          "binary_accuracy": 0.6780598759651184,
+          "loss": 0.5898041725158691,
+          "all_value_accuracy": 0.3450520932674408
+        },
+        "swapped": {
+          "pair_choice": 0.6731770634651184,
+          "binary_accuracy": 0.65234375,
+          "loss": 0.6035177707672119,
+          "all_value_accuracy": 0.2532552182674408
+        }
+      }
+    },
+    {
+      "encoder": "replay",
+      "feature": "body_kv_2",
+      "probe": "bilinear",
+      "seed": 0,
+      "training": {
+        "pair_choice": 0.6746666431427002,
+        "binary_accuracy": 0.643750011920929,
+        "loss": 1.2921960353851318
+      },
+      "validation": {
+        "pair_choice": 0.6197916865348816,
+        "binary_accuracy": 0.6048176884651184,
+        "loss": 1.5424439907073975
+      },
+      "tests": {
+        "mixed": {
+          "pair_choice": 0.671875,
+          "binary_accuracy": 0.6357421875,
+          "loss": 1.401656150817871,
+          "all_value_accuracy": 0.26171875
+        },
+        "fixed": {
+          "pair_choice": 0.6796875,
+          "binary_accuracy": 0.6334635615348816,
+          "loss": 1.4360239505767822,
+          "all_value_accuracy": 0.2923177182674408
+        },
+        "swapped": {
+          "pair_choice": 0.6321614384651184,
+          "binary_accuracy": 0.6090494990348816,
+          "loss": 1.4430921077728271,
+          "all_value_accuracy": 0.2473958283662796
+        }
+      }
+    },
+    {
+      "encoder": "replay",
+      "feature": "body_kv_2",
+      "probe": "bilinear",
+      "seed": 1,
+      "training": {
+        "pair_choice": 0.7336666584014893,
+        "binary_accuracy": 0.6829166412353516,
+        "loss": 1.2537736892700195
+      },
+      "validation": {
+        "pair_choice": 0.6549479365348816,
+        "binary_accuracy": 0.6419270634651184,
+        "loss": 1.4777312278747559
+      },
+      "tests": {
+        "mixed": {
+          "pair_choice": 0.6888020634651184,
+          "binary_accuracy": 0.650390625,
+          "loss": 1.4463224411010742,
+          "all_value_accuracy": 0.23046875
+        },
+        "fixed": {
+          "pair_choice": 0.646484375,
+          "binary_accuracy": 0.626953125,
+          "loss": 1.6753686666488647,
+          "all_value_accuracy": 0.1998697966337204
+        },
+        "swapped": {
+          "pair_choice": 0.6744791865348816,
+          "binary_accuracy": 0.6578776240348816,
+          "loss": 1.4803967475891113,
+          "all_value_accuracy": 0.203125
+        }
+      }
+    },
+    {
+      "encoder": "replay",
+      "feature": "body_kv_2",
+      "probe": "bilinear",
+      "seed": 2,
+      "training": {
+        "pair_choice": 0.6791666746139526,
+        "binary_accuracy": 0.6431666612625122,
+        "loss": 1.309328317642212
+      },
+      "validation": {
+        "pair_choice": 0.609375,
+        "binary_accuracy": 0.6184895634651184,
+        "loss": 1.5958092212677002
+      },
+      "tests": {
+        "mixed": {
+          "pair_choice": 0.6575520634651184,
+          "binary_accuracy": 0.615234375,
+          "loss": 1.4649271965026855,
+          "all_value_accuracy": 0.19140625
+        },
+        "fixed": {
+          "pair_choice": 0.60546875,
+          "binary_accuracy": 0.5862630009651184,
+          "loss": 1.7498033046722412,
+          "all_value_accuracy": 0.2005208283662796
+        },
+        "swapped": {
+          "pair_choice": 0.6477864384651184,
+          "binary_accuracy": 0.6123046875,
+          "loss": 1.5433063507080078,
+          "all_value_accuracy": 0.2024739533662796
+        }
+      }
+    },
+    {
+      "encoder": "replay",
+      "feature": "body_kv_2",
+      "probe": "mlp",
+      "seed": 0,
+      "training": {
+        "pair_choice": 0.9831666946411133,
+        "binary_accuracy": 0.9470833539962769,
+        "loss": 0.14352595806121826
+      },
+      "validation": {
+        "pair_choice": 0.9518229365348816,
+        "binary_accuracy": 0.91015625,
+        "loss": 0.21358272433280945
+      },
+      "tests": {
+        "mixed": {
+          "pair_choice": 0.955078125,
+          "binary_accuracy": 0.9186198115348816,
+          "loss": 0.20987604558467865,
+          "all_value_accuracy": 0.6204426884651184
+        },
+        "fixed": {
+          "pair_choice": 0.9498698115348816,
+          "binary_accuracy": 0.8974609375,
+          "loss": 0.22626543045043945,
+          "all_value_accuracy": 0.74609375
+        },
+        "swapped": {
+          "pair_choice": 0.947265625,
+          "binary_accuracy": 0.9036458134651184,
+          "loss": 0.23127734661102295,
+          "all_value_accuracy": 0.5983073115348816
+        }
+      }
+    },
+    {
+      "encoder": "replay",
+      "feature": "body_kv_2",
+      "probe": "mlp",
+      "seed": 1,
+      "training": {
+        "pair_choice": 0.984666645526886,
+        "binary_accuracy": 0.9468333125114441,
+        "loss": 0.14984524250030518
+      },
+      "validation": {
+        "pair_choice": 0.9596354365348816,
+        "binary_accuracy": 0.91015625,
+        "loss": 0.2379460632801056
+      },
+      "tests": {
+        "mixed": {
+          "pair_choice": 0.9544270634651184,
+          "binary_accuracy": 0.9046223759651184,
+          "loss": 0.23116280138492584,
+          "all_value_accuracy": 0.5638020634651184
+        },
+        "fixed": {
+          "pair_choice": 0.9524739384651184,
+          "binary_accuracy": 0.8974609375,
+          "loss": 0.24150699377059937,
+          "all_value_accuracy": 0.6640625
+        },
+        "swapped": {
+          "pair_choice": 0.9544270634651184,
+          "binary_accuracy": 0.9069010615348816,
+          "loss": 0.22496160864830017,
+          "all_value_accuracy": 0.5501301884651184
+        }
+      }
+    },
+    {
+      "encoder": "replay",
+      "feature": "body_kv_2",
+      "probe": "mlp",
+      "seed": 2,
+      "training": {
+        "pair_choice": 0.98416668176651,
+        "binary_accuracy": 0.9479166865348816,
+        "loss": 0.14483922719955444
+      },
+      "validation": {
+        "pair_choice": 0.953125,
+        "binary_accuracy": 0.90625,
+        "loss": 0.21742169559001923
+      },
+      "tests": {
+        "mixed": {
+          "pair_choice": 0.9583333134651184,
+          "binary_accuracy": 0.9075520634651184,
+          "loss": 0.21333077549934387,
+          "all_value_accuracy": 0.59765625
+        },
+        "fixed": {
+          "pair_choice": 0.962890625,
+          "binary_accuracy": 0.9075520634651184,
+          "loss": 0.22082920372486115,
+          "all_value_accuracy": 0.7838541865348816
+        },
+        "swapped": {
+          "pair_choice": 0.9557291865348816,
+          "binary_accuracy": 0.9052734375,
+          "loss": 0.22206440567970276,
+          "all_value_accuracy": 0.58203125
+        }
+      }
+    },
+    {
+      "encoder": "replay",
+      "feature": "body_int4_kv_2",
+      "probe": "bilinear",
+      "seed": 0,
+      "training": {
+        "pair_choice": 0.7730000019073486,
+        "binary_accuracy": 0.7307500243186951,
+        "loss": 1.0659825801849365
+      },
+      "validation": {
+        "pair_choice": 0.7265625,
+        "binary_accuracy": 0.6822916865348816,
+        "loss": 1.3327751159667969
+      },
+      "tests": {
+        "mixed": {
+          "pair_choice": 0.7213541865348816,
+          "binary_accuracy": 0.6764323115348816,
+          "loss": 1.3598195314407349,
+          "all_value_accuracy": 0.3059895932674408
+        },
+        "fixed": {
+          "pair_choice": 0.71484375,
+          "binary_accuracy": 0.6708984375,
+          "loss": 1.4296854734420776,
+          "all_value_accuracy": 0.3268229067325592
+        },
+        "swapped": {
+          "pair_choice": 0.7109375,
+          "binary_accuracy": 0.6751301884651184,
+          "loss": 1.3434841632843018,
+          "all_value_accuracy": 0.2858072817325592
+        }
+      }
+    },
+    {
+      "encoder": "replay",
+      "feature": "body_int4_kv_2",
+      "probe": "bilinear",
+      "seed": 1,
+      "training": {
+        "pair_choice": 0.8351666927337646,
+        "binary_accuracy": 0.7681666612625122,
+        "loss": 0.8720735311508179
+      },
+      "validation": {
+        "pair_choice": 0.7513020634651184,
+        "binary_accuracy": 0.6868489384651184,
+        "loss": 1.3307106494903564
+      },
+      "tests": {
+        "mixed": {
+          "pair_choice": 0.7376301884651184,
+          "binary_accuracy": 0.6871744990348816,
+          "loss": 1.377243995666504,
+          "all_value_accuracy": 0.2571614682674408
+        },
+        "fixed": {
+          "pair_choice": 0.701171875,
+          "binary_accuracy": 0.6656901240348816,
+          "loss": 1.5662903785705566,
+          "all_value_accuracy": 0.2721354067325592
+        },
+        "swapped": {
+          "pair_choice": 0.744140625,
+          "binary_accuracy": 0.6962890625,
+          "loss": 1.2800122499465942,
+          "all_value_accuracy": 0.2493489533662796
+        }
+      }
+    },
+    {
+      "encoder": "replay",
+      "feature": "body_int4_kv_2",
+      "probe": "bilinear",
+      "seed": 2,
+      "training": {
+        "pair_choice": 0.7756666541099548,
+        "binary_accuracy": 0.7212499976158142,
+        "loss": 1.0190882682800293
+      },
+      "validation": {
+        "pair_choice": 0.7109375,
+        "binary_accuracy": 0.658203125,
+        "loss": 1.3483872413635254
+      },
+      "tests": {
+        "mixed": {
+          "pair_choice": 0.7115885615348816,
+          "binary_accuracy": 0.669921875,
+          "loss": 1.2603615522384644,
+          "all_value_accuracy": 0.2337239533662796
+        },
+        "fixed": {
+          "pair_choice": 0.69921875,
+          "binary_accuracy": 0.646484375,
+          "loss": 1.3643743991851807,
+          "all_value_accuracy": 0.251953125
+        },
+        "swapped": {
+          "pair_choice": 0.7213541865348816,
+          "binary_accuracy": 0.671875,
+          "loss": 1.3354041576385498,
+          "all_value_accuracy": 0.234375
+        }
+      }
+    },
+    {
+      "encoder": "replay",
+      "feature": "body_int4_kv_2",
+      "probe": "mlp",
+      "seed": 0,
+      "training": {
+        "pair_choice": 0.9884999990463257,
+        "binary_accuracy": 0.965666651725769,
+        "loss": 0.11326385289430618
+      },
+      "validation": {
+        "pair_choice": 0.9427083134651184,
+        "binary_accuracy": 0.9069010615348816,
+        "loss": 0.2159157693386078
+      },
+      "tests": {
+        "mixed": {
+          "pair_choice": 0.9479166865348816,
+          "binary_accuracy": 0.9166666865348816,
+          "loss": 0.20475128293037415,
+          "all_value_accuracy": 0.6178385615348816
+        },
+        "fixed": {
+          "pair_choice": 0.947265625,
+          "binary_accuracy": 0.9091796875,
+          "loss": 0.20738887786865234,
+          "all_value_accuracy": 0.7610676884651184
+        },
+        "swapped": {
+          "pair_choice": 0.9361979365348816,
+          "binary_accuracy": 0.9049479365348816,
+          "loss": 0.22778266668319702,
+          "all_value_accuracy": 0.5794270634651184
+        }
+      }
+    },
+    {
+      "encoder": "replay",
+      "feature": "body_int4_kv_2",
+      "probe": "mlp",
+      "seed": 1,
+      "training": {
+        "pair_choice": 0.9883333444595337,
+        "binary_accuracy": 0.9493333101272583,
+        "loss": 0.136452779173851
+      },
+      "validation": {
+        "pair_choice": 0.94921875,
+        "binary_accuracy": 0.8951823115348816,
+        "loss": 0.2396666407585144
+      },
+      "tests": {
+        "mixed": {
+          "pair_choice": 0.9440104365348816,
+          "binary_accuracy": 0.9007161259651184,
+          "loss": 0.2453973889350891,
+          "all_value_accuracy": 0.564453125
+        },
+        "fixed": {
+          "pair_choice": 0.947265625,
+          "binary_accuracy": 0.8922526240348816,
+          "loss": 0.24181592464447021,
+          "all_value_accuracy": 0.7122395634651184
+        },
+        "swapped": {
+          "pair_choice": 0.9479166865348816,
+          "binary_accuracy": 0.8997395634651184,
+          "loss": 0.24897298216819763,
+          "all_value_accuracy": 0.548828125
+        }
+      }
+    },
+    {
+      "encoder": "replay",
+      "feature": "body_int4_kv_2",
+      "probe": "mlp",
+      "seed": 2,
+      "training": {
+        "pair_choice": 0.9789999723434448,
+        "binary_accuracy": 0.9424166679382324,
+        "loss": 0.1504150629043579
+      },
+      "validation": {
+        "pair_choice": 0.9453125,
+        "binary_accuracy": 0.8880208134651184,
+        "loss": 0.24984878301620483
+      },
+      "tests": {
+        "mixed": {
+          "pair_choice": 0.92578125,
+          "binary_accuracy": 0.8844401240348816,
+          "loss": 0.26443129777908325,
+          "all_value_accuracy": 0.5729166865348816
+        },
+        "fixed": {
+          "pair_choice": 0.9309895634651184,
+          "binary_accuracy": 0.8870442509651184,
+          "loss": 0.2564346194267273,
+          "all_value_accuracy": 0.7506510615348816
+        },
+        "swapped": {
+          "pair_choice": 0.923828125,
+          "binary_accuracy": 0.8828125,
+          "loss": 0.26067036390304565,
+          "all_value_accuracy": 0.544921875
+        }
+      }
+    }
+  ]
+}

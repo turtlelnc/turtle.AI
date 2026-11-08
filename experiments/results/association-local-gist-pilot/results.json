@@ -1,0 +1,271 @@
+{
+  "arguments": {
+    "steps": 1000,
+    "seeds": 1,
+    "width": 48,
+    "batch_size": 16,
+    "learning_rate": 0.003,
+    "routing_weight": 0.5,
+    "keys": 32,
+    "values": 8,
+    "no_contradictions": true,
+    "local_gists": true,
+    "train_blocks": [
+      4,
+      8,
+      12
+    ],
+    "eval_blocks": [
+      4,
+      8,
+      12,
+      24,
+      32
+    ],
+    "stream_blocks": [
+      12
+    ],
+    "examples": 64,
+    "evaluation_seed": 1900000,
+    "modes": [
+      "retrieval"
+    ],
+    "output": "/workspace/work/association-local-gist-pilot"
+  },
+  "value_only_chance": 0.125,
+  "results": [
+    {
+      "mode": "retrieval",
+      "seed": 0,
+      "config": {
+        "vocab_size": 324,
+        "width": 48,
+        "layers": 2,
+        "block_size": 8,
+        "window": 32,
+        "sinks": 8,
+        "top_k": 2,
+        "max_tokens": 258,
+        "retain_threshold": 0.5,
+        "position_mode": "sinusoidal",
+        "gist_local_only": true
+      },
+      "training_seconds": 27.515408428000228,
+      "routing_supervision_weight": 0.5,
+      "training": [
+        {
+          "step": 1,
+          "total": 6.568504333496094,
+          "ce": 5.798414707183838,
+          "routing": 1.0911775827407837,
+          "batch_accuracy": 0.0
+        },
+        {
+          "step": 100,
+          "total": 2.785174608230591,
+          "ce": 2.158186435699463,
+          "routing": 1.130478024482727,
+          "batch_accuracy": 0.125
+        },
+        {
+          "step": 200,
+          "total": 3.1792545318603516,
+          "ce": 2.146899700164795,
+          "routing": 1.9406952857971191,
+          "batch_accuracy": 0.125
+        },
+        {
+          "step": 300,
+          "total": 3.3076014518737793,
+          "ce": 2.0762293338775635,
+          "routing": 2.377612829208374,
+          "batch_accuracy": 0.1875
+        },
+        {
+          "step": 400,
+          "total": 2.723526954650879,
+          "ce": 2.122501850128174,
+          "routing": 1.0924859046936035,
+          "batch_accuracy": 0.1875
+        },
+        {
+          "step": 500,
+          "total": 3.076967239379883,
+          "ce": 2.085141181945801,
+          "routing": 1.9024651050567627,
+          "batch_accuracy": 0.0625
+        },
+        {
+          "step": 600,
+          "total": 2.922421455383301,
+          "ce": 2.09749698638916,
+          "routing": 1.5234472751617432,
+          "batch_accuracy": 0.125
+        },
+        {
+          "step": 700,
+          "total": 2.3868372440338135,
+          "ce": 2.090071201324463,
+          "routing": 0.5198591351509094,
+          "batch_accuracy": 0.1875
+        },
+        {
+          "step": 800,
+          "total": 2.6455583572387695,
+          "ce": 2.1238861083984375,
+          "routing": 0.9387118816375732,
+          "batch_accuracy": 0.125
+        },
+        {
+          "step": 900,
+          "total": 2.952036142349243,
+          "ce": 2.0948853492736816,
+          "routing": 1.6388198137283325,
+          "batch_accuracy": 0.1875
+        },
+        {
+          "step": 1000,
+          "total": 2.425772190093994,
+          "ce": 2.047394037246704,
+          "routing": 0.6641209721565247,
+          "batch_accuracy": 0.1875
+        }
+      ],
+      "evaluation": [
+        {
+          "blocks": 4,
+          "input_tokens": 34,
+          "examples": 64,
+          "accuracy": 0.21875,
+          "ce": 2.0321708023548126,
+          "route_hit_rate": 0.921875,
+          "oracle_page_accuracy": 0.21875,
+          "counterfactual_examples": 63,
+          "counterfactual_joint_accuracy": 0.015873015873015872,
+          "random_topk_page_chance": 0.6666666666666666,
+          "fp32_cold_top1_disagreement": 0.0,
+          "mean_top2_margin": 0.11009415239095688,
+          "evaluation_seconds": 0.08030455999960395
+        },
+        {
+          "blocks": 8,
+          "input_tokens": 66,
+          "examples": 64,
+          "accuracy": 0.140625,
+          "ce": 2.088782012462616,
+          "route_hit_rate": 0.625,
+          "oracle_page_accuracy": 0.15625,
+          "counterfactual_examples": 64,
+          "counterfactual_joint_accuracy": 0.0,
+          "random_topk_page_chance": 0.2857142857142857,
+          "fp32_cold_top1_disagreement": 0.0,
+          "mean_top2_margin": 0.08988111466169357,
+          "evaluation_seconds": 0.14785423200009973
+        },
+        {
+          "blocks": 12,
+          "input_tokens": 98,
+          "examples": 64,
+          "accuracy": 0.078125,
+          "ce": 2.0927010774612427,
+          "route_hit_rate": 0.5625,
+          "oracle_page_accuracy": 0.09375,
+          "counterfactual_examples": 64,
+          "counterfactual_joint_accuracy": 0.0,
+          "random_topk_page_chance": 0.18181818181818182,
+          "fp32_cold_top1_disagreement": 0.0,
+          "mean_top2_margin": 0.10336868092417717,
+          "evaluation_seconds": 0.24887550600033137
+        },
+        {
+          "blocks": 24,
+          "input_tokens": 194,
+          "examples": 64,
+          "accuracy": 0.171875,
+          "ce": 2.0791454315185547,
+          "route_hit_rate": 0.515625,
+          "oracle_page_accuracy": 0.203125,
+          "counterfactual_examples": 64,
+          "counterfactual_joint_accuracy": 0.03125,
+          "random_topk_page_chance": 0.08695652173913043,
+          "fp32_cold_top1_disagreement": 0.015625,
+          "mean_top2_margin": 0.10622232779860497,
+          "evaluation_seconds": 0.7626252499994735
+        },
+        {
+          "blocks": 32,
+          "input_tokens": 258,
+          "examples": 64,
+          "accuracy": 0.15625,
+          "ce": 2.078607205301523,
+          "route_hit_rate": 0.46875,
+          "oracle_page_accuracy": 0.1875,
+          "counterfactual_examples": 64,
+          "counterfactual_joint_accuracy": 0.03125,
+          "random_topk_page_chance": 0.06451612903225806,
+          "fp32_cold_top1_disagreement": 0.078125,
+          "mean_top2_margin": 0.07294948771595955,
+          "evaluation_seconds": 1.4003308000001198
+        }
+      ],
+      "stream_checks": [
+        {
+          "input_tokens": 98,
+          "logits_close": true,
+          "top1_matches_dense": true,
+          "max_logit_difference": 2.384185791015625e-06,
+          "correct": false,
+          "route_hit": false,
+          "stats": {
+            "seen_tokens": 98,
+            "logical_positions": 110,
+            "persistent_payload_bytes": 15872,
+            "payload_bound_bytes": 21248,
+            "layers": [
+              {
+                "working_payload_bytes": 4608,
+                "cold_payload_bytes": 3328,
+                "persistent_payload_bytes": 7936,
+                "payload_bound_bytes": 10624,
+                "cold_pages": 4,
+                "evictions": 7,
+                "peak_payload_bytes": 10240,
+                "peak_attention_tokens": 36,
+                "seen_tokens": 98,
+                "attention_token_bound": 37,
+                "disk": {
+                  "pages": 11,
+                  "disk_bytes": 38963,
+                  "page_loads": 43,
+                  "searches": 98,
+                  "keys_scanned": 182,
+                  "index_batch": 64
+                }
+              },
+              {
+                "working_payload_bytes": 4608,
+                "cold_payload_bytes": 3328,
+                "persistent_payload_bytes": 7936,
+                "payload_bound_bytes": 10624,
+                "cold_pages": 4,
+                "evictions": 7,
+                "peak_payload_bytes": 10240,
+                "peak_attention_tokens": 36,
+                "seen_tokens": 98,
+                "attention_token_bound": 37,
+                "disk": {
+                  "pages": 11,
+                  "disk_bytes": 38963,
+                  "page_loads": 19,
+                  "searches": 98,
+                  "keys_scanned": 182,
+                  "index_batch": 64
+                }
+              }
+            ]
+          }
+        }
+      ]
+    }
+  ]
+}

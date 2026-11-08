@@ -1,0 +1,1 @@
+{"scope": "single-page role/readout only; one seed; 800 steps", "shuffled_roles": true, "heldout_examples": 256, "accuracy": 1.0, "value_only_chance": 0.125}

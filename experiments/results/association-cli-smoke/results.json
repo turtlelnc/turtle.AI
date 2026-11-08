@@ -1,0 +1,159 @@
+{
+  "arguments": {
+    "steps": 1,
+    "seeds": 1,
+    "width": 48,
+    "layers": 3,
+    "gist_slots": 2,
+    "query_gap": 2,
+    "batch_size": 16,
+    "learning_rate": 0.003,
+    "routing_weight": 0.5,
+    "keys": 32,
+    "values": 8,
+    "no_contradictions": false,
+    "local_gists": true,
+    "train_blocks": [
+      6
+    ],
+    "eval_blocks": [
+      6
+    ],
+    "stream_blocks": [
+      6
+    ],
+    "examples": 2,
+    "evaluation_seed": 1900000,
+    "modes": [
+      "retrieval"
+    ],
+    "output": "/workspace/work/association-cli-smoke"
+  },
+  "value_only_chance": 0.125,
+  "results": [
+    {
+      "mode": "retrieval",
+      "seed": 0,
+      "config": {
+        "vocab_size": 324,
+        "width": 48,
+        "layers": 3,
+        "block_size": 8,
+        "window": 32,
+        "sinks": 8,
+        "top_k": 2,
+        "max_tokens": 50,
+        "retain_threshold": 0.5,
+        "position_mode": "sinusoidal",
+        "gist_local_only": true
+      },
+      "training_seconds": 0.043460921000587405,
+      "routing_supervision_weight": 0.5,
+      "training": [
+        {
+          "step": 1,
+          "total": 6.911927223205566,
+          "ce": 5.9010186195373535,
+          "routing": 1.5862462520599365,
+          "batch_accuracy": 0.0
+        }
+      ],
+      "evaluation": [
+        {
+          "blocks": 6,
+          "input_tokens": 50,
+          "examples": 2,
+          "accuracy": 0.0,
+          "ce": 5.15101432800293,
+          "route_hit_rate": 0.5,
+          "oracle_page_accuracy": 0.0,
+          "counterfactual_examples": 2,
+          "counterfactual_joint_accuracy": 0.0,
+          "random_topk_page_chance": 0.4,
+          "position_prior_topk_chance": 0.5,
+          "fp32_cold_top1_disagreement": 0.0,
+          "mean_top2_margin": 0.189142107963562,
+          "evaluation_seconds": 0.01712851899992529
+        }
+      ],
+      "stream_checks": [
+        {
+          "input_tokens": 50,
+          "logits_close": true,
+          "top1_matches_dense": true,
+          "max_logit_difference": 5.960464477539062e-07,
+          "correct": false,
+          "route_hit": false,
+          "stats": {
+            "seen_tokens": 50,
+            "logical_positions": 56,
+            "persistent_payload_bytes": 24960,
+            "payload_bound_bytes": 33024,
+            "layers": [
+              {
+                "working_payload_bytes": 4992,
+                "cold_payload_bytes": 3328,
+                "persistent_payload_bytes": 8320,
+                "payload_bound_bytes": 11008,
+                "cold_pages": 4,
+                "evictions": 1,
+                "peak_payload_bytes": 10568,
+                "peak_attention_tokens": 36,
+                "seen_tokens": 50,
+                "attention_token_bound": 38,
+                "disk": {
+                  "pages": 5,
+                  "disk_bytes": 17641,
+                  "page_loads": 2,
+                  "searches": 50,
+                  "keys_scanned": 2,
+                  "index_batch": 64
+                }
+              },
+              {
+                "working_payload_bytes": 4992,
+                "cold_payload_bytes": 3328,
+                "persistent_payload_bytes": 8320,
+                "payload_bound_bytes": 11008,
+                "cold_pages": 4,
+                "evictions": 1,
+                "peak_payload_bytes": 10568,
+                "peak_attention_tokens": 36,
+                "seen_tokens": 50,
+                "attention_token_bound": 38,
+                "disk": {
+                  "pages": 5,
+                  "disk_bytes": 17641,
+                  "page_loads": 2,
+                  "searches": 50,
+                  "keys_scanned": 2,
+                  "index_batch": 64
+                }
+              },
+              {
+                "working_payload_bytes": 4992,
+                "cold_payload_bytes": 3328,
+                "persistent_payload_bytes": 8320,
+                "payload_bound_bytes": 11008,
+                "cold_pages": 4,
+                "evictions": 1,
+                "peak_payload_bytes": 10568,
+                "peak_attention_tokens": 36,
+                "seen_tokens": 50,
+                "attention_token_bound": 38,
+                "disk": {
+                  "pages": 5,
+                  "disk_bytes": 17641,
+                  "page_loads": 1,
+                  "searches": 50,
+                  "keys_scanned": 2,
+                  "index_batch": 64
+                }
+              }
+            ]
+          }
+        }
+      ]
+    }
+  ]
+}

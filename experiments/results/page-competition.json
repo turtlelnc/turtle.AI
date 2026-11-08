@@ -1,0 +1,53 @@
+{
+  "scope": "ground-truth-page diagnostic only, not an achievable retrieval score",
+  "results": [
+    {
+      "checkpoint": "/workspace/work/candidate-binding-curriculum/full_supervised-0/checkpoint.pt",
+      "mode": "full_supervised",
+      "seed": 0,
+      "examples": 64,
+      "normal": 0.5625,
+      "known_page_only": 0.859375
+    },
+    {
+      "checkpoint": "/workspace/work/candidate-binding-curriculum/full_supervised-1/checkpoint.pt",
+      "mode": "full_supervised",
+      "seed": 1,
+      "examples": 64,
+      "normal": 0.53125,
+      "known_page_only": 0.890625
+    },
+    {
+      "checkpoint": "/workspace/work/candidate-binding-curriculum/full_supervised-2/checkpoint.pt",
+      "mode": "full_supervised",
+      "seed": 2,
+      "examples": 64,
+      "normal": 0.53125,
+      "known_page_only": 0.78125
+    },
+    {
+      "checkpoint": "/workspace/work/candidate-binding-curriculum/retrieval-0/checkpoint.pt",
+      "mode": "retrieval",
+      "seed": 0,
+      "examples": 64,
+      "normal": 0.5,
+      "known_page_only": 0.890625
+    },
+    {
+      "checkpoint": "/workspace/work/candidate-binding-curriculum/retrieval-1/checkpoint.pt",
+      "mode": "retrieval",
+      "seed": 1,
+      "examples": 64,
+      "normal": 0.90625,
+      "known_page_only": 0.9375
+    },
+    {
+      "checkpoint": "/workspace/work/candidate-binding-curriculum/retrieval-2/checkpoint.pt",
+      "mode": "retrieval",
+      "seed": 2,
+      "examples": 64,
+      "normal": 0.53125,
+      "known_page_only": 0.90625
+    }
+  ]
+}

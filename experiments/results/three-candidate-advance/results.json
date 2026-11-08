@@ -1,0 +1,38 @@
+{
+  "selection": "failed gates with last two validation scores >=.75 and nondecreasing",
+  "results": [
+    {
+      "source": "/workspace/work/binding-continuation/retrieval-1.pt",
+      "mode": "retrieval",
+      "seed": 1,
+      "additional_steps": 1200,
+      "blocks": 5,
+      "advanced": true,
+      "validation": [
+        0.5625,
+        0.6875,
+        0.65625,
+        0.6875,
+        0.609375,
+        0.828125
+      ],
+      "passed": false,
+      "test": {
+        "blocks": 5,
+        "input_tokens": 42,
+        "examples": 128,
+        "accuracy": 0.6875,
+        "ce": 0.694458968937397,
+        "route_hit_rate": 0.984375,
+        "oracle_page_accuracy": 0.859375,
+        "counterfactual_examples": 127,
+        "counterfactual_joint_accuracy": 0.4645669291338583,
+        "random_topk_page_chance": 0.5,
+        "position_prior_topk_chance": 0.6666666666666666,
+        "fp32_cold_top1_disagreement": 0.015625,
+        "mean_top2_margin": 3.1560143679380417,
+        "evaluation_seconds": 0.37736648000009154
+      }
+    }
+  ]
+}

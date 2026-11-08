@@ -1,0 +1,565 @@
+{
+  "scope": "known-key CPU paging screen; no learned retrieval or inversion claim",
+  "results": [
+    {
+      "length": 1024,
+      "seed": 0,
+      "cold_budget_bytes": 65536,
+      "historical_queries": 30,
+      "retained_historical_pages": 23,
+      "page_retention_coverage": 0.7666666666666667,
+      "page_hit_rate_all": 0.7666666666666667,
+      "page_hit_rate_retained": 1.0,
+      "value_accuracy_retained_int4": 1.0,
+      "value_accuracy_retained_original_fp32": 1.0,
+      "value_accuracy_all": {
+        "full": 1,
+        "local": 0.03333333333333333,
+        "gist": 0.23333333333333334,
+        "retrieval_int4": 0.8,
+        "retrieval_original_fp32": 0.8
+      },
+      "query_latency_ms": {
+        "full": {
+          "median": 0.027862000479217386,
+          "p95": 0.058509000155027024
+        },
+        "local": {
+          "median": 0.011412500043661566,
+          "p95": 0.01656499989621807
+        },
+        "gist": {
+          "median": 0.01032049976856797,
+          "p95": 0.011137000001326669
+        },
+        "retrieval_int4": {
+          "median": 0.5732940003326803,
+          "p95": 0.7545669996034121
+        },
+        "retrieval_original_fp32": {
+          "median": 0.522668000030535,
+          "p95": 0.808808999863686
+        }
+      },
+      "insertion_seconds": 0.1112681109998448,
+      "stats": {
+        "working_payload_bytes": 40960,
+        "cold_payload_bytes": 64768,
+        "persistent_payload_bytes": 105728,
+        "payload_bound_bytes": 123904,
+        "cold_pages": 23,
+        "evictions": 7,
+        "peak_payload_bytes": 122112,
+        "peak_attention_tokens": 146,
+        "seen_tokens": 1024
+      },
+      "full_baseline_kv_payload_bytes": 524288
+    },
+    {
+      "length": 1024,
+      "seed": 1,
+      "cold_budget_bytes": 65536,
+      "historical_queries": 30,
+      "retained_historical_pages": 23,
+      "page_retention_coverage": 0.7666666666666667,
+      "page_hit_rate_all": 0.7666666666666667,
+      "page_hit_rate_retained": 1.0,
+      "value_accuracy_retained_int4": 1.0,
+      "value_accuracy_retained_original_fp32": 1.0,
+      "value_accuracy_all": {
+        "full": 1,
+        "local": 0.1,
+        "gist": 0.26666666666666666,
+        "retrieval_int4": 0.8,
+        "retrieval_original_fp32": 0.8
+      },
+      "query_latency_ms": {
+        "full": {
+          "median": 0.028016999749524985,
+          "p95": 0.07086699952196795
+        },
+        "local": {
+          "median": 0.011071500466641737,
+          "p95": 0.013631000001623761
+        },
+        "gist": {
+          "median": 0.010671999916667119,
+          "p95": 0.012618999789992813
+        },
+        "retrieval_int4": {
+          "median": 0.5604349998975522,
+          "p95": 0.7158290000006673
+        },
+        "retrieval_original_fp32": {
+          "median": 0.5195385001570685,
+          "p95": 0.569479000660067
+        }
+      },
+      "insertion_seconds": 0.11167095900054846,
+      "stats": {
+        "working_payload_bytes": 40960,
+        "cold_payload_bytes": 64768,
+        "persistent_payload_bytes": 105728,
+        "payload_bound_bytes": 123904,
+        "cold_pages": 23,
+        "evictions": 7,
+        "peak_payload_bytes": 122112,
+        "peak_attention_tokens": 146,
+        "seen_tokens": 1024
+      },
+      "full_baseline_kv_payload_bytes": 524288
+    },
+    {
+      "length": 1024,
+      "seed": 2,
+      "cold_budget_bytes": 65536,
+      "historical_queries": 30,
+      "retained_historical_pages": 23,
+      "page_retention_coverage": 0.7666666666666667,
+      "page_hit_rate_all": 0.7666666666666667,
+      "page_hit_rate_retained": 1.0,
+      "value_accuracy_retained_int4": 1.0,
+      "value_accuracy_retained_original_fp32": 1.0,
+      "value_accuracy_all": {
+        "full": 1,
+        "local": 0.06666666666666667,
+        "gist": 0.26666666666666666,
+        "retrieval_int4": 0.8,
+        "retrieval_original_fp32": 0.8
+      },
+      "query_latency_ms": {
+        "full": {
+          "median": 0.028117499823565595,
+          "p95": 0.07733599977655103
+        },
+        "local": {
+          "median": 0.011256999641773291,
+          "p95": 0.029494000045815483
+        },
+        "gist": {
+          "median": 0.010250500054098666,
+          "p95": 0.015442999938386492
+        },
+        "retrieval_int4": {
+          "median": 0.5705049998141476,
+          "p95": 0.6893489999129088
+        },
+        "retrieval_original_fp32": {
+          "median": 0.5281615003696061,
+          "p95": 0.6727640002281987
+        }
+      },
+      "insertion_seconds": 0.10996525799964729,
+      "stats": {
+        "working_payload_bytes": 40960,
+        "cold_payload_bytes": 64768,
+        "persistent_payload_bytes": 105728,
+        "payload_bound_bytes": 123904,
+        "cold_pages": 23,
+        "evictions": 7,
+        "peak_payload_bytes": 122112,
+        "peak_attention_tokens": 146,
+        "seen_tokens": 1024
+      },
+      "full_baseline_kv_payload_bytes": 524288
+    },
+    {
+      "length": 4096,
+      "seed": 0,
+      "cold_budget_bytes": 65536,
+      "historical_queries": 126,
+      "retained_historical_pages": 23,
+      "page_retention_coverage": 0.18253968253968253,
+      "page_hit_rate_all": 0.18253968253968253,
+      "page_hit_rate_retained": 1.0,
+      "value_accuracy_retained_int4": 1.0,
+      "value_accuracy_retained_original_fp32": 1.0,
+      "value_accuracy_all": {
+        "full": 1,
+        "local": 0.007936507936507936,
+        "gist": 0.05555555555555555,
+        "retrieval_int4": 0.20634920634920634,
+        "retrieval_original_fp32": 0.1984126984126984
+      },
+      "query_latency_ms": {
+        "full": {
+          "median": 0.0709569994796766,
+          "p95": 0.12284500007808674
+        },
+        "local": {
+          "median": 0.013185000170778949,
+          "p95": 0.017966999621421564
+        },
+        "gist": {
+          "median": 0.010310499419574626,
+          "p95": 0.013320000107341912
+        },
+        "retrieval_int4": {
+          "median": 0.5756329996984277,
+          "p95": 0.7802359996276209
+        },
+        "retrieval_original_fp32": {
+          "median": 0.5349160001060227,
+          "p95": 0.7107619994712877
+        }
+      },
+      "insertion_seconds": 0.44472350199976063,
+      "stats": {
+        "working_payload_bytes": 40960,
+        "cold_payload_bytes": 64768,
+        "persistent_payload_bytes": 105728,
+        "payload_bound_bytes": 123904,
+        "cold_pages": 23,
+        "evictions": 103,
+        "peak_payload_bytes": 122112,
+        "peak_attention_tokens": 146,
+        "seen_tokens": 4096
+      },
+      "full_baseline_kv_payload_bytes": 2097152
+    },
+    {
+      "length": 4096,
+      "seed": 1,
+      "cold_budget_bytes": 65536,
+      "historical_queries": 126,
+      "retained_historical_pages": 23,
+      "page_retention_coverage": 0.18253968253968253,
+      "page_hit_rate_all": 0.18253968253968253,
+      "page_hit_rate_retained": 1.0,
+      "value_accuracy_retained_int4": 1.0,
+      "value_accuracy_retained_original_fp32": 1.0,
+      "value_accuracy_all": {
+        "full": 1,
+        "local": 0.015873015873015872,
+        "gist": 0.06349206349206349,
+        "retrieval_int4": 0.1984126984126984,
+        "retrieval_original_fp32": 0.1984126984126984
+      },
+      "query_latency_ms": {
+        "full": {
+          "median": 0.0812769999356533,
+          "p95": 0.14652099980594357
+        },
+        "local": {
+          "median": 0.013610499991045799,
+          "p95": 0.020551000488922
+        },
+        "gist": {
+          "median": 0.010665999980119523,
+          "p95": 0.0138810000862577
+        },
+        "retrieval_int4": {
+          "median": 0.5773100001533749,
+          "p95": 0.8212679995267536
+        },
+        "retrieval_original_fp32": {
+          "median": 0.5314109998835193,
+          "p95": 0.7327940002141986
+        }
+      },
+      "insertion_seconds": 0.4428381299994726,
+      "stats": {
+        "working_payload_bytes": 40960,
+        "cold_payload_bytes": 64768,
+        "persistent_payload_bytes": 105728,
+        "payload_bound_bytes": 123904,
+        "cold_pages": 23,
+        "evictions": 103,
+        "peak_payload_bytes": 122112,
+        "peak_attention_tokens": 146,
+        "seen_tokens": 4096
+      },
+      "full_baseline_kv_payload_bytes": 2097152
+    },
+    {
+      "length": 4096,
+      "seed": 2,
+      "cold_budget_bytes": 65536,
+      "historical_queries": 126,
+      "retained_historical_pages": 23,
+      "page_retention_coverage": 0.18253968253968253,
+      "page_hit_rate_all": 0.18253968253968253,
+      "page_hit_rate_retained": 1.0,
+      "value_accuracy_retained_int4": 1.0,
+      "value_accuracy_retained_original_fp32": 1.0,
+      "value_accuracy_all": {
+        "full": 1,
+        "local": 0.03968253968253968,
+        "gist": 0.07936507936507936,
+        "retrieval_int4": 0.1984126984126984,
+        "retrieval_original_fp32": 0.1984126984126984
+      },
+      "query_latency_ms": {
+        "full": {
+          "median": 0.07018150017756852,
+          "p95": 0.11767700016207527
+        },
+        "local": {
+          "median": 0.013074499747744994,
+          "p95": 0.020971999219909776
+        },
+        "gist": {
+          "median": 0.010285499683959642,
+          "p95": 0.014662000467069447
+        },
+        "retrieval_int4": {
+          "median": 0.5765440000686795,
+          "p95": 0.8748379996177391
+        },
+        "retrieval_original_fp32": {
+          "median": 0.5326030000105675,
+          "p95": 0.6946470002731076
+        }
+      },
+      "insertion_seconds": 0.4722012639995228,
+      "stats": {
+        "working_payload_bytes": 40960,
+        "cold_payload_bytes": 64768,
+        "persistent_payload_bytes": 105728,
+        "payload_bound_bytes": 123904,
+        "cold_pages": 23,
+        "evictions": 103,
+        "peak_payload_bytes": 122112,
+        "peak_attention_tokens": 146,
+        "seen_tokens": 4096
+      },
+      "full_baseline_kv_payload_bytes": 2097152
+    },
+    {
+      "length": 16384,
+      "seed": 0,
+      "cold_budget_bytes": 65536,
+      "historical_queries": 510,
+      "retained_historical_pages": 23,
+      "page_retention_coverage": 0.045098039215686274,
+      "page_hit_rate_all": 0.045098039215686274,
+      "page_hit_rate_retained": 1.0,
+      "value_accuracy_retained_int4": 1.0,
+      "value_accuracy_retained_original_fp32": 1.0,
+      "value_accuracy_all": {
+        "full": 1,
+        "local": 0.021568627450980392,
+        "gist": 0.027450980392156862,
+        "retrieval_int4": 0.06470588235294118,
+        "retrieval_original_fp32": 0.06470588235294118
+      },
+      "query_latency_ms": {
+        "full": {
+          "median": 0.38003250028850744,
+          "p95": 0.5013959998905193
+        },
+        "local": {
+          "median": 0.01629450025575352,
+          "p95": 0.028061999728379305
+        },
+        "gist": {
+          "median": 0.010906499937846093,
+          "p95": 0.0159740002345643
+        },
+        "retrieval_int4": {
+          "median": 0.6068400002732233,
+          "p95": 0.8237319998443127
+        },
+        "retrieval_original_fp32": {
+          "median": 0.5406049999692186,
+          "p95": 0.6981630003792816
+        }
+      },
+      "insertion_seconds": 1.8271162629998798,
+      "stats": {
+        "working_payload_bytes": 40960,
+        "cold_payload_bytes": 64768,
+        "persistent_payload_bytes": 105728,
+        "payload_bound_bytes": 123904,
+        "cold_pages": 23,
+        "evictions": 487,
+        "peak_payload_bytes": 122112,
+        "peak_attention_tokens": 146,
+        "seen_tokens": 16384
+      },
+      "full_baseline_kv_payload_bytes": 8388608
+    },
+    {
+      "length": 16384,
+      "seed": 1,
+      "cold_budget_bytes": 65536,
+      "historical_queries": 510,
+      "retained_historical_pages": 23,
+      "page_retention_coverage": 0.045098039215686274,
+      "page_hit_rate_all": 0.045098039215686274,
+      "page_hit_rate_retained": 1.0,
+      "value_accuracy_retained_int4": 1.0,
+      "value_accuracy_retained_original_fp32": 1.0,
+      "value_accuracy_all": {
+        "full": 1,
+        "local": 0.01568627450980392,
+        "gist": 0.025490196078431372,
+        "retrieval_int4": 0.06274509803921569,
+        "retrieval_original_fp32": 0.06470588235294118
+      },
+      "query_latency_ms": {
+        "full": {
+          "median": 0.38812149978184607,
+          "p95": 0.5192850003368221
+        },
+        "local": {
+          "median": 0.017040499642462237,
+          "p95": 0.035213000046496745
+        },
+        "gist": {
+          "median": 0.010987000223394716,
+          "p95": 0.01653500021348009
+        },
+        "retrieval_int4": {
+          "median": 0.6100225000409409,
+          "p95": 0.8319469998241402
+        },
+        "retrieval_original_fp32": {
+          "median": 0.5419240005721804,
+          "p95": 0.7143000002542976
+        }
+      },
+      "insertion_seconds": 1.8321366419995684,
+      "stats": {
+        "working_payload_bytes": 40960,
+        "cold_payload_bytes": 64768,
+        "persistent_payload_bytes": 105728,
+        "payload_bound_bytes": 123904,
+        "cold_pages": 23,
+        "evictions": 487,
+        "peak_payload_bytes": 122112,
+        "peak_attention_tokens": 146,
+        "seen_tokens": 16384
+      },
+      "full_baseline_kv_payload_bytes": 8388608
+    },
+    {
+      "length": 16384,
+      "seed": 2,
+      "cold_budget_bytes": 65536,
+      "historical_queries": 510,
+      "retained_historical_pages": 23,
+      "page_retention_coverage": 0.045098039215686274,
+      "page_hit_rate_all": 0.045098039215686274,
+      "page_hit_rate_retained": 1.0,
+      "value_accuracy_retained_int4": 1.0,
+      "value_accuracy_retained_original_fp32": 1.0,
+      "value_accuracy_all": {
+        "full": 1,
+        "local": 0.011764705882352941,
+        "gist": 0.025490196078431372,
+        "retrieval_int4": 0.049019607843137254,
+        "retrieval_original_fp32": 0.050980392156862744
+      },
+      "query_latency_ms": {
+        "full": {
+          "median": 0.37626850007654866,
+          "p95": 0.46650500007672235
+        },
+        "local": {
+          "median": 0.015503000213357154,
+          "p95": 0.026931000320473686
+        },
+        "gist": {
+          "median": 0.01211849985338631,
+          "p95": 0.014412000382435508
+        },
+        "retrieval_int4": {
+          "median": 0.5967315000816598,
+          "p95": 0.7582059997730539
+        },
+        "retrieval_original_fp32": {
+          "median": 0.5410359999586944,
+          "p95": 0.7163089994719485
+        }
+      },
+      "insertion_seconds": 1.849759955999616,
+      "stats": {
+        "working_payload_bytes": 40960,
+        "cold_payload_bytes": 64768,
+        "persistent_payload_bytes": 105728,
+        "payload_bound_bytes": 123904,
+        "cold_pages": 23,
+        "evictions": 487,
+        "peak_payload_bytes": 122112,
+        "peak_attention_tokens": 146,
+        "seen_tokens": 16384
+      },
+      "full_baseline_kv_payload_bytes": 8388608
+    }
+  ],
+  "neural_smoke": [
+    {
+      "length": 1024,
+      "seconds": 0.922299715999543,
+      "stats": {
+        "seen_tokens": 1024,
+        "logical_positions": 1056,
+        "persistent_payload_bytes": 21248,
+        "payload_bound_bytes": 23680,
+        "layers": [
+          {
+            "working_payload_bytes": 5120,
+            "cold_payload_bytes": 16128,
+            "persistent_payload_bytes": 21248,
+            "payload_bound_bytes": 23680,
+            "cold_pages": 18,
+            "evictions": 12,
+            "peak_payload_bytes": 23296,
+            "peak_attention_tokens": 146,
+            "seen_tokens": 1024
+          }
+        ]
+      },
+      "note": "random weights; integration/budget test only, no quality metric"
+    },
+    {
+      "length": 4096,
+      "seconds": 3.8505675759997757,
+      "stats": {
+        "seen_tokens": 4096,
+        "logical_positions": 4224,
+        "persistent_payload_bytes": 21248,
+        "payload_bound_bytes": 23680,
+        "layers": [
+          {
+            "working_payload_bytes": 5120,
+            "cold_payload_bytes": 16128,
+            "persistent_payload_bytes": 21248,
+            "payload_bound_bytes": 23680,
+            "cold_pages": 18,
+            "evictions": 108,
+            "peak_payload_bytes": 23296,
+            "peak_attention_tokens": 146,
+            "seen_tokens": 4096
+          }
+        ]
+      },
+      "note": "random weights; integration/budget test only, no quality metric"
+    },
+    {
+      "length": 16384,
+      "seconds": 15.841633990000446,
+      "stats": {
+        "seen_tokens": 16384,
+        "logical_positions": 16896,
+        "persistent_payload_bytes": 21248,
+        "payload_bound_bytes": 23680,
+        "layers": [
+          {
+            "working_payload_bytes": 5120,
+            "cold_payload_bytes": 16128,
+            "persistent_payload_bytes": 21248,
+            "payload_bound_bytes": 23680,
+            "cold_pages": 18,
+            "evictions": 492,
+            "peak_payload_bytes": 23296,
+            "peak_attention_tokens": 146,
+            "seen_tokens": 16384
+          }
+        ]
+      },
+      "note": "random weights; integration/budget test only, no quality metric"
+    }
+  ]
+}

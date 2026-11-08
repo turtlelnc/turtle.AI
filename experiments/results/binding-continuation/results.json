@@ -1,0 +1,33 @@
+{
+  "selection": "failed gates with last two validation scores >=.75 and nondecreasing",
+  "results": [
+    {
+      "source": "/workspace/work/candidate-binding-curriculum/retrieval-1/checkpoint.pt",
+      "mode": "retrieval",
+      "seed": 1,
+      "additional_steps": 600,
+      "validation": [
+        0.9375,
+        0.96875,
+        0.984375
+      ],
+      "passed": true,
+      "test": {
+        "blocks": 4,
+        "input_tokens": 34,
+        "examples": 128,
+        "accuracy": 0.984375,
+        "ce": 0.05892108066473156,
+        "route_hit_rate": 1.0,
+        "oracle_page_accuracy": 0.9765625,
+        "counterfactual_examples": 114,
+        "counterfactual_joint_accuracy": 0.956140350877193,
+        "random_topk_page_chance": 0.6666666666666666,
+        "position_prior_topk_chance": 1.0,
+        "fp32_cold_top1_disagreement": 0.0078125,
+        "mean_top2_margin": 5.133897289633751,
+        "evaluation_seconds": 0.31209868699988874
+      }
+    }
+  ]
+}

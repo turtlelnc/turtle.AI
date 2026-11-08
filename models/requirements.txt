@@ -1,0 +1,2 @@
+# CPU reference installation; use an appropriate official wheel index for your hardware.
+torch==2.9.0

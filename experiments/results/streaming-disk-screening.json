@@ -1,0 +1,565 @@
+{
+  "scope": "known-key CPU paging screen; no learned retrieval or inversion claim",
+  "disk_backed": true,
+  "results": [
+    {
+      "length": 1024,
+      "seed": 0,
+      "cold_budget_bytes": 65536,
+      "historical_queries": 30,
+      "retained_historical_pages": 23,
+      "page_retention_coverage": 0.7666666666666667,
+      "page_hit_rate_all": 1.0,
+      "page_hit_rate_retained": 1.0,
+      "value_accuracy_retained_int4": 1.0,
+      "value_accuracy_retained_original_fp32": 1.0,
+      "value_accuracy_all": {
+        "full": 1,
+        "local": 0.03333333333333333,
+        "gist": 0.23333333333333334,
+        "retrieval_int4": 1,
+        "retrieval_original_fp32": 1
+      },
+      "query_latency_ms": {
+        "full": {
+          "median": 0.04815749980480177,
+          "p95": 0.12018100005661836
+        },
+        "local": {
+          "median": 0.014662000012322096,
+          "p95": 0.02343500000279164
+        },
+        "gist": {
+          "median": 0.0109360003079928,
+          "p95": 0.026540000362729188
+        },
+        "retrieval_int4": {
+          "median": 1.0179830005654367,
+          "p95": 1.6717580001568422
+        },
+        "retrieval_original_fp32": {
+          "median": 0.922790500226256,
+          "p95": 1.5720680003141752
+        }
+      },
+      "insertion_seconds": 0.1556006239998169,
+      "stats": {
+        "working_payload_bytes": 40960,
+        "cold_payload_bytes": 64768,
+        "persistent_payload_bytes": 105728,
+        "payload_bound_bytes": 123904,
+        "cold_pages": 23,
+        "evictions": 7,
+        "peak_payload_bytes": 122112,
+        "peak_attention_tokens": 146,
+        "seen_tokens": 1024,
+        "disk": {
+          "pages": 30,
+          "disk_bytes": 168166,
+          "page_loads": 45,
+          "searches": 90,
+          "keys_scanned": 630,
+          "index_batch": 64
+        }
+      },
+      "full_baseline_kv_payload_bytes": 524288
+    },
+    {
+      "length": 1024,
+      "seed": 1,
+      "cold_budget_bytes": 65536,
+      "historical_queries": 30,
+      "retained_historical_pages": 23,
+      "page_retention_coverage": 0.7666666666666667,
+      "page_hit_rate_all": 1.0,
+      "page_hit_rate_retained": 1.0,
+      "value_accuracy_retained_int4": 1.0,
+      "value_accuracy_retained_original_fp32": 1.0,
+      "value_accuracy_all": {
+        "full": 1,
+        "local": 0.1,
+        "gist": 0.26666666666666666,
+        "retrieval_int4": 1,
+        "retrieval_original_fp32": 1
+      },
+      "query_latency_ms": {
+        "full": {
+          "median": 0.0519579998581321,
+          "p95": 0.09044599937624298
+        },
+        "local": {
+          "median": 0.01515300027676858,
+          "p95": 0.017265999304072466
+        },
+        "gist": {
+          "median": 0.01118199998018099,
+          "p95": 0.06017099985911045
+        },
+        "retrieval_int4": {
+          "median": 1.2468229997466551,
+          "p95": 2.7715050000551855
+        },
+        "retrieval_original_fp32": {
+          "median": 1.1565224999685597,
+          "p95": 1.6962949994194787
+        }
+      },
+      "insertion_seconds": 0.1340442209993853,
+      "stats": {
+        "working_payload_bytes": 40960,
+        "cold_payload_bytes": 64768,
+        "persistent_payload_bytes": 105728,
+        "payload_bound_bytes": 123904,
+        "cold_pages": 23,
+        "evictions": 7,
+        "peak_payload_bytes": 122112,
+        "peak_attention_tokens": 146,
+        "seen_tokens": 1024,
+        "disk": {
+          "pages": 30,
+          "disk_bytes": 168166,
+          "page_loads": 57,
+          "searches": 90,
+          "keys_scanned": 630,
+          "index_batch": 64
+        }
+      },
+      "full_baseline_kv_payload_bytes": 524288
+    },
+    {
+      "length": 1024,
+      "seed": 2,
+      "cold_budget_bytes": 65536,
+      "historical_queries": 30,
+      "retained_historical_pages": 23,
+      "page_retention_coverage": 0.7666666666666667,
+      "page_hit_rate_all": 1.0,
+      "page_hit_rate_retained": 1.0,
+      "value_accuracy_retained_int4": 1.0,
+      "value_accuracy_retained_original_fp32": 1.0,
+      "value_accuracy_all": {
+        "full": 1,
+        "local": 0.06666666666666667,
+        "gist": 0.26666666666666666,
+        "retrieval_int4": 1,
+        "retrieval_original_fp32": 1
+      },
+      "query_latency_ms": {
+        "full": {
+          "median": 0.04019550033262931,
+          "p95": 0.1010429996313178
+        },
+        "local": {
+          "median": 0.013675500213139458,
+          "p95": 0.018497999917599373
+        },
+        "gist": {
+          "median": 0.010861499958991772,
+          "p95": 0.013349999790079892
+        },
+        "retrieval_int4": {
+          "median": 0.8038910000323085,
+          "p95": 2.0381309996082564
+        },
+        "retrieval_original_fp32": {
+          "median": 0.7608054997945146,
+          "p95": 1.9811740003206069
+        }
+      },
+      "insertion_seconds": 0.13138370300021052,
+      "stats": {
+        "working_payload_bytes": 40960,
+        "cold_payload_bytes": 64768,
+        "persistent_payload_bytes": 105728,
+        "payload_bound_bytes": 123904,
+        "cold_pages": 23,
+        "evictions": 7,
+        "peak_payload_bytes": 122112,
+        "peak_attention_tokens": 146,
+        "seen_tokens": 1024,
+        "disk": {
+          "pages": 30,
+          "disk_bytes": 168166,
+          "page_loads": 48,
+          "searches": 90,
+          "keys_scanned": 630,
+          "index_batch": 64
+        }
+      },
+      "full_baseline_kv_payload_bytes": 524288
+    },
+    {
+      "length": 4096,
+      "seed": 0,
+      "cold_budget_bytes": 65536,
+      "historical_queries": 126,
+      "retained_historical_pages": 23,
+      "page_retention_coverage": 0.18253968253968253,
+      "page_hit_rate_all": 1.0,
+      "page_hit_rate_retained": 1.0,
+      "value_accuracy_retained_int4": 1.0,
+      "value_accuracy_retained_original_fp32": 1.0,
+      "value_accuracy_all": {
+        "full": 1,
+        "local": 0.007936507936507936,
+        "gist": 0.05555555555555555,
+        "retrieval_int4": 1,
+        "retrieval_original_fp32": 1
+      },
+      "query_latency_ms": {
+        "full": {
+          "median": 0.1313275001848524,
+          "p95": 0.1965060000657104
+        },
+        "local": {
+          "median": 0.018327499674342107,
+          "p95": 0.032609000299999025
+        },
+        "gist": {
+          "median": 0.014156499673845246,
+          "p95": 0.016875999790499918
+        },
+        "retrieval_int4": {
+          "median": 2.064660000087315,
+          "p95": 2.8073889998267987
+        },
+        "retrieval_original_fp32": {
+          "median": 1.9757760005632008,
+          "p95": 2.972026999486843
+        }
+      },
+      "insertion_seconds": 0.5641114770005515,
+      "stats": {
+        "working_payload_bytes": 40960,
+        "cold_payload_bytes": 64768,
+        "persistent_payload_bytes": 105728,
+        "payload_bound_bytes": 123904,
+        "cold_pages": 23,
+        "evictions": 103,
+        "peak_payload_bytes": 122112,
+        "peak_attention_tokens": 146,
+        "seen_tokens": 4096,
+        "disk": {
+          "pages": 126,
+          "disk_bytes": 713982,
+          "page_loads": 618,
+          "searches": 378,
+          "keys_scanned": 38934,
+          "index_batch": 64
+        }
+      },
+      "full_baseline_kv_payload_bytes": 2097152
+    },
+    {
+      "length": 4096,
+      "seed": 1,
+      "cold_budget_bytes": 65536,
+      "historical_queries": 126,
+      "retained_historical_pages": 23,
+      "page_retention_coverage": 0.18253968253968253,
+      "page_hit_rate_all": 1.0,
+      "page_hit_rate_retained": 1.0,
+      "value_accuracy_retained_int4": 1.0,
+      "value_accuracy_retained_original_fp32": 1.0,
+      "value_accuracy_all": {
+        "full": 1,
+        "local": 0.015873015873015872,
+        "gist": 0.06349206349206349,
+        "retrieval_int4": 1,
+        "retrieval_original_fp32": 1
+      },
+      "query_latency_ms": {
+        "full": {
+          "median": 0.1207665000038105,
+          "p95": 0.18204399930255022
+        },
+        "local": {
+          "median": 0.018087000171362888,
+          "p95": 0.027811999643745366
+        },
+        "gist": {
+          "median": 0.01286449969484238,
+          "p95": 0.018058000023302156
+        },
+        "retrieval_int4": {
+          "median": 2.0393770000737277,
+          "p95": 2.6100310005858773
+        },
+        "retrieval_original_fp32": {
+          "median": 1.979962999939744,
+          "p95": 2.6938979999613366
+        }
+      },
+      "insertion_seconds": 0.5355762409999443,
+      "stats": {
+        "working_payload_bytes": 40960,
+        "cold_payload_bytes": 64768,
+        "persistent_payload_bytes": 105728,
+        "payload_bound_bytes": 123904,
+        "cold_pages": 23,
+        "evictions": 103,
+        "peak_payload_bytes": 122112,
+        "peak_attention_tokens": 146,
+        "seen_tokens": 4096,
+        "disk": {
+          "pages": 126,
+          "disk_bytes": 713982,
+          "page_loads": 615,
+          "searches": 378,
+          "keys_scanned": 38934,
+          "index_batch": 64
+        }
+      },
+      "full_baseline_kv_payload_bytes": 2097152
+    },
+    {
+      "length": 4096,
+      "seed": 2,
+      "cold_budget_bytes": 65536,
+      "historical_queries": 126,
+      "retained_historical_pages": 23,
+      "page_retention_coverage": 0.18253968253968253,
+      "page_hit_rate_all": 1.0,
+      "page_hit_rate_retained": 1.0,
+      "value_accuracy_retained_int4": 1.0,
+      "value_accuracy_retained_original_fp32": 1.0,
+      "value_accuracy_all": {
+        "full": 1,
+        "local": 0.03968253968253968,
+        "gist": 0.07936507936507936,
+        "retrieval_int4": 1,
+        "retrieval_original_fp32": 1
+      },
+      "query_latency_ms": {
+        "full": {
+          "median": 0.12636999963433482,
+          "p95": 0.16168399997695815
+        },
+        "local": {
+          "median": 0.017901999854075257,
+          "p95": 0.0455190001957817
+        },
+        "gist": {
+          "median": 0.013039499663136667,
+          "p95": 0.01665599938860396
+        },
+        "retrieval_int4": {
+          "median": 2.0327434999671823,
+          "p95": 2.240717999484332
+        },
+        "retrieval_original_fp32": {
+          "median": 1.9540210000741354,
+          "p95": 2.02551499933179
+        }
+      },
+      "insertion_seconds": 0.511104264000096,
+      "stats": {
+        "working_payload_bytes": 40960,
+        "cold_payload_bytes": 64768,
+        "persistent_payload_bytes": 105728,
+        "payload_bound_bytes": 123904,
+        "cold_pages": 23,
+        "evictions": 103,
+        "peak_payload_bytes": 122112,
+        "peak_attention_tokens": 146,
+        "seen_tokens": 4096,
+        "disk": {
+          "pages": 126,
+          "disk_bytes": 713982,
+          "page_loads": 612,
+          "searches": 378,
+          "keys_scanned": 38934,
+          "index_batch": 64
+        }
+      },
+      "full_baseline_kv_payload_bytes": 2097152
+    },
+    {
+      "length": 16384,
+      "seed": 0,
+      "cold_budget_bytes": 65536,
+      "historical_queries": 510,
+      "retained_historical_pages": 23,
+      "page_retention_coverage": 0.045098039215686274,
+      "page_hit_rate_all": 1.0,
+      "page_hit_rate_retained": 1.0,
+      "value_accuracy_retained_int4": 1.0,
+      "value_accuracy_retained_original_fp32": 1.0,
+      "value_accuracy_all": {
+        "full": 1,
+        "local": 0.021568627450980392,
+        "gist": 0.027450980392156862,
+        "retrieval_int4": 1,
+        "retrieval_original_fp32": 1
+      },
+      "query_latency_ms": {
+        "full": {
+          "median": 0.42968750040017767,
+          "p95": 0.6085069999244297
+        },
+        "local": {
+          "median": 0.021937999463261804,
+          "p95": 0.03478199960227357
+        },
+        "gist": {
+          "median": 0.014396500318980543,
+          "p95": 0.02095099989674054
+        },
+        "retrieval_int4": {
+          "median": 3.8366200001291872,
+          "p95": 4.948636000335682
+        },
+        "retrieval_original_fp32": {
+          "median": 3.691576999699464,
+          "p95": 4.639661000510387
+        }
+      },
+      "insertion_seconds": 2.093374725999638,
+      "stats": {
+        "working_payload_bytes": 40960,
+        "cold_payload_bytes": 64768,
+        "persistent_payload_bytes": 105728,
+        "payload_bound_bytes": 123904,
+        "cold_pages": 23,
+        "evictions": 487,
+        "peak_payload_bytes": 122112,
+        "peak_attention_tokens": 146,
+        "seen_tokens": 16384,
+        "disk": {
+          "pages": 510,
+          "disk_bytes": 2918526,
+          "page_loads": 2913,
+          "searches": 1530,
+          "keys_scanned": 745110,
+          "index_batch": 64
+        }
+      },
+      "full_baseline_kv_payload_bytes": 8388608
+    },
+    {
+      "length": 16384,
+      "seed": 1,
+      "cold_budget_bytes": 65536,
+      "historical_queries": 510,
+      "retained_historical_pages": 23,
+      "page_retention_coverage": 0.045098039215686274,
+      "page_hit_rate_all": 1.0,
+      "page_hit_rate_retained": 1.0,
+      "value_accuracy_retained_int4": 1.0,
+      "value_accuracy_retained_original_fp32": 1.0,
+      "value_accuracy_all": {
+        "full": 1,
+        "local": 0.01568627450980392,
+        "gist": 0.025490196078431372,
+        "retrieval_int4": 1,
+        "retrieval_original_fp32": 1
+      },
+      "query_latency_ms": {
+        "full": {
+          "median": 0.45760500006508664,
+          "p95": 0.6688180001219735
+        },
+        "local": {
+          "median": 0.021798000034323195,
+          "p95": 0.04379599977255566
+        },
+        "gist": {
+          "median": 0.01405100010742899,
+          "p95": 0.02157200015062699
+        },
+        "retrieval_int4": {
+          "median": 4.004792000159796,
+          "p95": 5.0482970000302885
+        },
+        "retrieval_original_fp32": {
+          "median": 3.834817500319332,
+          "p95": 4.6765099996264325
+        }
+      },
+      "insertion_seconds": 2.2540891159997045,
+      "stats": {
+        "working_payload_bytes": 40960,
+        "cold_payload_bytes": 64768,
+        "persistent_payload_bytes": 105728,
+        "payload_bound_bytes": 123904,
+        "cold_pages": 23,
+        "evictions": 487,
+        "peak_payload_bytes": 122112,
+        "peak_attention_tokens": 146,
+        "seen_tokens": 16384,
+        "disk": {
+          "pages": 510,
+          "disk_bytes": 2918526,
+          "page_loads": 2943,
+          "searches": 1530,
+          "keys_scanned": 745110,
+          "index_batch": 64
+        }
+      },
+      "full_baseline_kv_payload_bytes": 8388608
+    },
+    {
+      "length": 16384,
+      "seed": 2,
+      "cold_budget_bytes": 65536,
+      "historical_queries": 510,
+      "retained_historical_pages": 23,
+      "page_retention_coverage": 0.045098039215686274,
+      "page_hit_rate_all": 1.0,
+      "page_hit_rate_retained": 1.0,
+      "value_accuracy_retained_int4": 1.0,
+      "value_accuracy_retained_original_fp32": 1.0,
+      "value_accuracy_all": {
+        "full": 1,
+        "local": 0.011764705882352941,
+        "gist": 0.025490196078431372,
+        "retrieval_int4": 1,
+        "retrieval_original_fp32": 1
+      },
+      "query_latency_ms": {
+        "full": {
+          "median": 0.4644050004571909,
+          "p95": 0.6684380005026469
+        },
+        "local": {
+          "median": 0.021702500362152932,
+          "p95": 0.047090999942156486
+        },
+        "gist": {
+          "median": 0.01542350037198048,
+          "p95": 0.024718000531720463
+        },
+        "retrieval_int4": {
+          "median": 3.9033314997141133,
+          "p95": 5.090060999464185
+        },
+        "retrieval_original_fp32": {
+          "median": 3.6800660000153584,
+          "p95": 4.874085999290401
+        }
+      },
+      "insertion_seconds": 2.2527976539995507,
+      "stats": {
+        "working_payload_bytes": 40960,
+        "cold_payload_bytes": 64768,
+        "persistent_payload_bytes": 105728,
+        "payload_bound_bytes": 123904,
+        "cold_pages": 23,
+        "evictions": 487,
+        "peak_payload_bytes": 122112,
+        "peak_attention_tokens": 146,
+        "seen_tokens": 16384,
+        "disk": {
+          "pages": 510,
+          "disk_bytes": 2918526,
+          "page_loads": 2922,
+          "searches": 1530,
+          "keys_scanned": 745110,
+          "index_batch": 64
+        }
+      },
+      "full_baseline_kv_payload_bytes": 8388608
+    }
+  ],
+  "neural_smoke": []
+}

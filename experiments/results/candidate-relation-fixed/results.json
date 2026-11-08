@@ -1,0 +1,1795 @@
+{
+  "arguments": {
+    "parent": "/workspace/work/binding-continuation/retrieval-1.pt",
+    "replay": "/workspace/work/paired-replay-binding/replay-0/checkpoint.pt",
+    "output": "/workspace/work/candidate-relation-fixed",
+    "train_roles": "fixed",
+    "seeds": 3,
+    "steps": 600
+  },
+  "encoder_unchanged": true,
+  "results": [
+    {
+      "encoder": "parent",
+      "feature": "gist_kv_2",
+      "probe": "bilinear",
+      "seed": 0,
+      "training": {
+        "pair_choice": 0.61080002784729,
+        "binary_accuracy": 0.575950026512146,
+        "loss": 0.7047390937805176
+      },
+      "validation": {
+        "pair_choice": 0.628125011920929,
+        "binary_accuracy": 0.5960937738418579,
+        "loss": 0.6917409300804138
+      },
+      "tests": {
+        "mixed": {
+          "pair_choice": 0.508593738079071,
+          "binary_accuracy": 0.5074218511581421,
+          "loss": 0.8557942509651184
+        },
+        "fixed": {
+          "pair_choice": 0.596484363079071,
+          "binary_accuracy": 0.5707031488418579,
+          "loss": 0.7159019708633423
+        },
+        "swapped": {
+          "pair_choice": 0.4996093809604645,
+          "binary_accuracy": 0.50390625,
+          "loss": 0.8786302804946899
+        }
+      }
+    },
+    {
+      "encoder": "parent",
+      "feature": "gist_kv_2",
+      "probe": "bilinear",
+      "seed": 1,
+      "training": {
+        "pair_choice": 0.6254000067710876,
+        "binary_accuracy": 0.5874500274658203,
+        "loss": 0.6914247274398804
+      },
+      "validation": {
+        "pair_choice": 0.620312511920929,
+        "binary_accuracy": 0.582812488079071,
+        "loss": 0.6817147731781006
+      },
+      "tests": {
+        "mixed": {
+          "pair_choice": 0.490234375,
+          "binary_accuracy": 0.49101561307907104,
+          "loss": 0.839256763458252
+        },
+        "fixed": {
+          "pair_choice": 0.612500011920929,
+          "binary_accuracy": 0.5816406011581421,
+          "loss": 0.7047984600067139
+        },
+        "swapped": {
+          "pair_choice": 0.486328125,
+          "binary_accuracy": 0.49101561307907104,
+          "loss": 0.8484974503517151
+        }
+      }
+    },
+    {
+      "encoder": "parent",
+      "feature": "gist_kv_2",
+      "probe": "bilinear",
+      "seed": 2,
+      "training": {
+        "pair_choice": 0.6266999840736389,
+        "binary_accuracy": 0.590149998664856,
+        "loss": 0.6717739105224609
+      },
+      "validation": {
+        "pair_choice": 0.6195312738418579,
+        "binary_accuracy": 0.587109386920929,
+        "loss": 0.6654789447784424
+      },
+      "tests": {
+        "mixed": {
+          "pair_choice": 0.5179687738418579,
+          "binary_accuracy": 0.514843761920929,
+          "loss": 0.8035519123077393
+        },
+        "fixed": {
+          "pair_choice": 0.6324218511581421,
+          "binary_accuracy": 0.5986328125,
+          "loss": 0.6738876700401306
+        },
+        "swapped": {
+          "pair_choice": 0.48906248807907104,
+          "binary_accuracy": 0.4896484315395355,
+          "loss": 0.8440274000167847
+        }
+      }
+    },
+    {
+      "encoder": "parent",
+      "feature": "gist_kv_2",
+      "probe": "mlp",
+      "seed": 0,
+      "training": {
+        "pair_choice": 0.6633999943733215,
+        "binary_accuracy": 0.6495000123977661,
+        "loss": 0.5565148591995239
+      },
+      "validation": {
+        "pair_choice": 0.625781238079071,
+        "binary_accuracy": 0.6246093511581421,
+        "loss": 0.5716589689254761
+      },
+      "tests": {
+        "mixed": {
+          "pair_choice": 0.49296873807907104,
+          "binary_accuracy": 0.49140626192092896,
+          "loss": 0.9403302073478699
+        },
+        "fixed": {
+          "pair_choice": 0.6324218511581421,
+          "binary_accuracy": 0.62890625,
+          "loss": 0.5710310935974121
+        },
+        "swapped": {
+          "pair_choice": 0.48124998807907104,
+          "binary_accuracy": 0.478515625,
+          "loss": 0.9980809092521667
+        }
+      }
+    },
+    {
+      "encoder": "parent",
+      "feature": "gist_kv_2",
+      "probe": "mlp",
+      "seed": 1,
+      "training": {
+        "pair_choice": 0.6561999917030334,
+        "binary_accuracy": 0.6481000185012817,
+        "loss": 0.5627555251121521
+      },
+      "validation": {
+        "pair_choice": 0.629687488079071,
+        "binary_accuracy": 0.6343749761581421,
+        "loss": 0.5720797181129456
+      },
+      "tests": {
+        "mixed": {
+          "pair_choice": 0.500781238079071,
+          "binary_accuracy": 0.4986328184604645,
+          "loss": 0.9105366468429565
+        },
+        "fixed": {
+          "pair_choice": 0.628125011920929,
+          "binary_accuracy": 0.625781238079071,
+          "loss": 0.5793101787567139
+        },
+        "swapped": {
+          "pair_choice": 0.46953123807907104,
+          "binary_accuracy": 0.4898437559604645,
+          "loss": 0.9667366743087769
+        }
+      }
+    },
+    {
+      "encoder": "parent",
+      "feature": "gist_kv_2",
+      "probe": "mlp",
+      "seed": 2,
+      "training": {
+        "pair_choice": 0.6579999923706055,
+        "binary_accuracy": 0.6401500105857849,
+        "loss": 0.5649079084396362
+      },
+      "validation": {
+        "pair_choice": 0.625,
+        "binary_accuracy": 0.6187499761581421,
+        "loss": 0.5782806873321533
+      },
+      "tests": {
+        "mixed": {
+          "pair_choice": 0.498046875,
+          "binary_accuracy": 0.502734363079071,
+          "loss": 0.9282162189483643
+        },
+        "fixed": {
+          "pair_choice": 0.6292968988418579,
+          "binary_accuracy": 0.6236327886581421,
+          "loss": 0.5792459845542908
+        },
+        "swapped": {
+          "pair_choice": 0.47929686307907104,
+          "binary_accuracy": 0.4937500059604645,
+          "loss": 0.9881882667541504
+        }
+      }
+    },
+    {
+      "encoder": "parent",
+      "feature": "raw_bag",
+      "probe": "bilinear",
+      "seed": 0,
+      "training": {
+        "pair_choice": 0.5364999771118164,
+        "binary_accuracy": 0.5242999792098999,
+        "loss": 0.7293236255645752
+      },
+      "validation": {
+        "pair_choice": 0.508593738079071,
+        "binary_accuracy": 0.501171886920929,
+        "loss": 0.7503806948661804
+      },
+      "tests": {
+        "mixed": {
+          "pair_choice": 0.510546863079071,
+          "binary_accuracy": 0.5083984136581421,
+          "loss": 0.7483119964599609
+        },
+        "fixed": {
+          "pair_choice": 0.5035156011581421,
+          "binary_accuracy": 0.502148449420929,
+          "loss": 0.7490997910499573
+        },
+        "swapped": {
+          "pair_choice": 0.510546863079071,
+          "binary_accuracy": 0.5083984136581421,
+          "loss": 0.7483119964599609
+        }
+      }
+    },
+    {
+      "encoder": "parent",
+      "feature": "raw_bag",
+      "probe": "bilinear",
+      "seed": 1,
+      "training": {
+        "pair_choice": 0.5335999727249146,
+        "binary_accuracy": 0.5243499875068665,
+        "loss": 0.7318082451820374
+      },
+      "validation": {
+        "pair_choice": 0.5054687261581421,
+        "binary_accuracy": 0.498046875,
+        "loss": 0.7501164674758911
+      },
+      "tests": {
+        "mixed": {
+          "pair_choice": 0.4957031309604645,
+          "binary_accuracy": 0.4925781190395355,
+          "loss": 0.754767656326294
+        },
+        "fixed": {
+          "pair_choice": 0.5078125,
+          "binary_accuracy": 0.5,
+          "loss": 0.7547155618667603
+        },
+        "swapped": {
+          "pair_choice": 0.4957031309604645,
+          "binary_accuracy": 0.4925781190395355,
+          "loss": 0.754767656326294
+        }
+      }
+    },
+    {
+      "encoder": "parent",
+      "feature": "raw_bag",
+      "probe": "bilinear",
+      "seed": 2,
+      "training": {
+        "pair_choice": 0.5357999801635742,
+        "binary_accuracy": 0.5214999914169312,
+        "loss": 0.7371820211410522
+      },
+      "validation": {
+        "pair_choice": 0.51953125,
+        "binary_accuracy": 0.512499988079071,
+        "loss": 0.7438000440597534
+      },
+      "tests": {
+        "mixed": {
+          "pair_choice": 0.512499988079071,
+          "binary_accuracy": 0.5082031488418579,
+          "loss": 0.7575142979621887
+        },
+        "fixed": {
+          "pair_choice": 0.5078125,
+          "binary_accuracy": 0.501757800579071,
+          "loss": 0.7537553906440735
+        },
+        "swapped": {
+          "pair_choice": 0.512499988079071,
+          "binary_accuracy": 0.5082031488418579,
+          "loss": 0.7575142979621887
+        }
+      }
+    },
+    {
+      "encoder": "parent",
+      "feature": "raw_bag",
+      "probe": "mlp",
+      "seed": 0,
+      "training": {
+        "pair_choice": 0.5230000019073486,
+        "binary_accuracy": 0.5214499831199646,
+        "loss": 0.6922547817230225
+      },
+      "validation": {
+        "pair_choice": 0.48906248807907104,
+        "binary_accuracy": 0.4867187440395355,
+        "loss": 0.6992390155792236
+      },
+      "tests": {
+        "mixed": {
+          "pair_choice": 0.505859375,
+          "binary_accuracy": 0.503710925579071,
+          "loss": 0.694842517375946
+        },
+        "fixed": {
+          "pair_choice": 0.514453113079071,
+          "binary_accuracy": 0.5087890625,
+          "loss": 0.6945955753326416
+        },
+        "swapped": {
+          "pair_choice": 0.505859375,
+          "binary_accuracy": 0.503710925579071,
+          "loss": 0.694842517375946
+        }
+      }
+    },
+    {
+      "encoder": "parent",
+      "feature": "raw_bag",
+      "probe": "mlp",
+      "seed": 1,
+      "training": {
+        "pair_choice": 0.5357999801635742,
+        "binary_accuracy": 0.524399995803833,
+        "loss": 0.6907193064689636
+      },
+      "validation": {
+        "pair_choice": 0.5023437738418579,
+        "binary_accuracy": 0.4996093809604645,
+        "loss": 0.6955148577690125
+      },
+      "tests": {
+        "mixed": {
+          "pair_choice": 0.5121093988418579,
+          "binary_accuracy": 0.4994140565395355,
+          "loss": 0.6953798532485962
+        },
+        "fixed": {
+          "pair_choice": 0.5035156011581421,
+          "binary_accuracy": 0.5082031488418579,
+          "loss": 0.6952216625213623
+        },
+        "swapped": {
+          "pair_choice": 0.5121093988418579,
+          "binary_accuracy": 0.4994140565395355,
+          "loss": 0.6953798532485962
+        }
+      }
+    },
+    {
+      "encoder": "parent",
+      "feature": "raw_bag",
+      "probe": "mlp",
+      "seed": 2,
+      "training": {
+        "pair_choice": 0.5299000144004822,
+        "binary_accuracy": 0.5254999995231628,
+        "loss": 0.6912837028503418
+      },
+      "validation": {
+        "pair_choice": 0.507031261920929,
+        "binary_accuracy": 0.501953125,
+        "loss": 0.6947320699691772
+      },
+      "tests": {
+        "mixed": {
+          "pair_choice": 0.4925781190395355,
+          "binary_accuracy": 0.49296873807907104,
+          "loss": 0.69574373960495
+        },
+        "fixed": {
+          "pair_choice": 0.5,
+          "binary_accuracy": 0.501171886920929,
+          "loss": 0.695151686668396
+        },
+        "swapped": {
+          "pair_choice": 0.4925781190395355,
+          "binary_accuracy": 0.49296873807907104,
+          "loss": 0.69574373960495
+        }
+      }
+    },
+    {
+      "encoder": "parent",
+      "feature": "oracle_value",
+      "probe": "bilinear",
+      "seed": 0,
+      "training": {
+        "pair_choice": 1.0,
+        "binary_accuracy": 1.0,
+        "loss": 0.0011170690413564444
+      },
+      "validation": {
+        "pair_choice": 1.0,
+        "binary_accuracy": 1.0,
+        "loss": 0.0011109566548839211
+      },
+      "tests": {
+        "mixed": {
+          "pair_choice": 1.0,
+          "binary_accuracy": 1.0,
+          "loss": 0.0011237971484661102
+        },
+        "fixed": {
+          "pair_choice": 1.0,
+          "binary_accuracy": 1.0,
+          "loss": 0.0011254132259637117
+        },
+        "swapped": {
+          "pair_choice": 1.0,
+          "binary_accuracy": 1.0,
+          "loss": 0.0011237971484661102
+        }
+      }
+    },
+    {
+      "encoder": "parent",
+      "feature": "oracle_value",
+      "probe": "bilinear",
+      "seed": 1,
+      "training": {
+        "pair_choice": 1.0,
+        "binary_accuracy": 1.0,
+        "loss": 0.001960448455065489
+      },
+      "validation": {
+        "pair_choice": 1.0,
+        "binary_accuracy": 1.0,
+        "loss": 0.0019500416237860918
+      },
+      "tests": {
+        "mixed": {
+          "pair_choice": 1.0,
+          "binary_accuracy": 1.0,
+          "loss": 0.001968045486137271
+        },
+        "fixed": {
+          "pair_choice": 1.0,
+          "binary_accuracy": 1.0,
+          "loss": 0.0019711493514478207
+        },
+        "swapped": {
+          "pair_choice": 1.0,
+          "binary_accuracy": 1.0,
+          "loss": 0.001968045486137271
+        }
+      }
+    },
+    {
+      "encoder": "parent",
+      "feature": "oracle_value",
+      "probe": "bilinear",
+      "seed": 2,
+      "training": {
+        "pair_choice": 1.0,
+        "binary_accuracy": 1.0,
+        "loss": 0.0008340207277797163
+      },
+      "validation": {
+        "pair_choice": 1.0,
+        "binary_accuracy": 1.0,
+        "loss": 0.0008297143504023552
+      },
+      "tests": {
+        "mixed": {
+          "pair_choice": 1.0,
+          "binary_accuracy": 1.0,
+          "loss": 0.0008386954432353377
+        },
+        "fixed": {
+          "pair_choice": 1.0,
+          "binary_accuracy": 1.0,
+          "loss": 0.0008406881242990494
+        },
+        "swapped": {
+          "pair_choice": 1.0,
+          "binary_accuracy": 1.0,
+          "loss": 0.0008386954432353377
+        }
+      }
+    },
+    {
+      "encoder": "parent",
+      "feature": "oracle_value",
+      "probe": "mlp",
+      "seed": 0,
+      "training": {
+        "pair_choice": 1.0,
+        "binary_accuracy": 1.0,
+        "loss": 8.252758561866358e-05
+      },
+      "validation": {
+        "pair_choice": 1.0,
+        "binary_accuracy": 1.0,
+        "loss": 8.29134660307318e-05
+      },
+      "tests": {
+        "mixed": {
+          "pair_choice": 1.0,
+          "binary_accuracy": 1.0,
+          "loss": 8.336492464877665e-05
+        },
+        "fixed": {
+          "pair_choice": 1.0,
+          "binary_accuracy": 1.0,
+          "loss": 8.358550257980824e-05
+        },
+        "swapped": {
+          "pair_choice": 1.0,
+          "binary_accuracy": 1.0,
+          "loss": 8.336492464877665e-05
+        }
+      }
+    },
+    {
+      "encoder": "parent",
+      "feature": "oracle_value",
+      "probe": "mlp",
+      "seed": 1,
+      "training": {
+        "pair_choice": 1.0,
+        "binary_accuracy": 1.0,
+        "loss": 9.037066774908453e-05
+      },
+      "validation": {
+        "pair_choice": 1.0,
+        "binary_accuracy": 1.0,
+        "loss": 8.965446613729e-05
+      },
+      "tests": {
+        "mixed": {
+          "pair_choice": 1.0,
+          "binary_accuracy": 1.0,
+          "loss": 9.062593017006293e-05
+        },
+        "fixed": {
+          "pair_choice": 1.0,
+          "binary_accuracy": 1.0,
+          "loss": 9.178572508972138e-05
+        },
+        "swapped": {
+          "pair_choice": 1.0,
+          "binary_accuracy": 1.0,
+          "loss": 9.062593017006293e-05
+        }
+      }
+    },
+    {
+      "encoder": "parent",
+      "feature": "oracle_value",
+      "probe": "mlp",
+      "seed": 2,
+      "training": {
+        "pair_choice": 1.0,
+        "binary_accuracy": 1.0,
+        "loss": 7.308736530831084e-05
+      },
+      "validation": {
+        "pair_choice": 1.0,
+        "binary_accuracy": 1.0,
+        "loss": 7.315981201827526e-05
+      },
+      "tests": {
+        "mixed": {
+          "pair_choice": 1.0,
+          "binary_accuracy": 1.0,
+          "loss": 7.358650327660143e-05
+        },
+        "fixed": {
+          "pair_choice": 1.0,
+          "binary_accuracy": 1.0,
+          "loss": 7.363272015936673e-05
+        },
+        "swapped": {
+          "pair_choice": 1.0,
+          "binary_accuracy": 1.0,
+          "loss": 7.358650327660143e-05
+        }
+      }
+    },
+    {
+      "encoder": "replay",
+      "feature": "gist_kv_2",
+      "probe": "bilinear",
+      "seed": 0,
+      "training": {
+        "pair_choice": 0.6477000117301941,
+        "binary_accuracy": 0.616599977016449,
+        "loss": 0.6904745101928711
+      },
+      "validation": {
+        "pair_choice": 0.643750011920929,
+        "binary_accuracy": 0.610156238079071,
+        "loss": 0.6873701214790344
+      },
+      "tests": {
+        "mixed": {
+          "pair_choice": 0.506640613079071,
+          "binary_accuracy": 0.5111328363418579,
+          "loss": 0.8932580351829529
+        },
+        "fixed": {
+          "pair_choice": 0.6390625238418579,
+          "binary_accuracy": 0.6025390625,
+          "loss": 0.7005996704101562
+        },
+        "swapped": {
+          "pair_choice": 0.48750001192092896,
+          "binary_accuracy": 0.49628907442092896,
+          "loss": 0.9396601915359497
+        }
+      }
+    },
+    {
+      "encoder": "replay",
+      "feature": "gist_kv_2",
+      "probe": "bilinear",
+      "seed": 1,
+      "training": {
+        "pair_choice": 0.6689000129699707,
+        "binary_accuracy": 0.6366999745368958,
+        "loss": 0.6715829372406006
+      },
+      "validation": {
+        "pair_choice": 0.649218738079071,
+        "binary_accuracy": 0.6171875,
+        "loss": 0.6975890398025513
+      },
+      "tests": {
+        "mixed": {
+          "pair_choice": 0.508984386920929,
+          "binary_accuracy": 0.5087890625,
+          "loss": 0.8305635452270508
+        },
+        "fixed": {
+          "pair_choice": 0.665234386920929,
+          "binary_accuracy": 0.629101574420929,
+          "loss": 0.6824048161506653
+        },
+        "swapped": {
+          "pair_choice": 0.49531251192092896,
+          "binary_accuracy": 0.501757800579071,
+          "loss": 0.8456397652626038
+        }
+      }
+    },
+    {
+      "encoder": "replay",
+      "feature": "gist_kv_2",
+      "probe": "bilinear",
+      "seed": 2,
+      "training": {
+        "pair_choice": 0.6748999953269958,
+        "binary_accuracy": 0.6394500136375427,
+        "loss": 0.651092529296875
+      },
+      "validation": {
+        "pair_choice": 0.664843738079071,
+        "binary_accuracy": 0.628125011920929,
+        "loss": 0.664802074432373
+      },
+      "tests": {
+        "mixed": {
+          "pair_choice": 0.5074218511581421,
+          "binary_accuracy": 0.506054699420929,
+          "loss": 0.847396731376648
+        },
+        "fixed": {
+          "pair_choice": 0.673828125,
+          "binary_accuracy": 0.639453113079071,
+          "loss": 0.6568869352340698
+        },
+        "swapped": {
+          "pair_choice": 0.490234375,
+          "binary_accuracy": 0.502734363079071,
+          "loss": 0.8599483370780945
+        }
+      }
+    },
+    {
+      "encoder": "replay",
+      "feature": "gist_kv_2",
+      "probe": "mlp",
+      "seed": 0,
+      "training": {
+        "pair_choice": 0.7922999858856201,
+        "binary_accuracy": 0.7623000144958496,
+        "loss": 0.4693206250667572
+      },
+      "validation": {
+        "pair_choice": 0.7632812261581421,
+        "binary_accuracy": 0.7417968511581421,
+        "loss": 0.49196189641952515
+      },
+      "tests": {
+        "mixed": {
+          "pair_choice": 0.5308593511581421,
+          "binary_accuracy": 0.534375011920929,
+          "loss": 0.9631229043006897
+        },
+        "fixed": {
+          "pair_choice": 0.779296875,
+          "binary_accuracy": 0.7515624761581421,
+          "loss": 0.49140432476997375
+        },
+        "swapped": {
+          "pair_choice": 0.521484375,
+          "binary_accuracy": 0.5205078125,
+          "loss": 1.0109176635742188
+        }
+      }
+    },
+    {
+      "encoder": "replay",
+      "feature": "gist_kv_2",
+      "probe": "mlp",
+      "seed": 1,
+      "training": {
+        "pair_choice": 0.7878999710083008,
+        "binary_accuracy": 0.7595999836921692,
+        "loss": 0.47209545969963074
+      },
+      "validation": {
+        "pair_choice": 0.76953125,
+        "binary_accuracy": 0.7359374761581421,
+        "loss": 0.4901251792907715
+      },
+      "tests": {
+        "mixed": {
+          "pair_choice": 0.536328136920929,
+          "binary_accuracy": 0.5279296636581421,
+          "loss": 0.9046611785888672
+        },
+        "fixed": {
+          "pair_choice": 0.774218738079071,
+          "binary_accuracy": 0.7457031011581421,
+          "loss": 0.49207058548927307
+        },
+        "swapped": {
+          "pair_choice": 0.525390625,
+          "binary_accuracy": 0.519726574420929,
+          "loss": 0.9440796971321106
+        }
+      }
+    },
+    {
+      "encoder": "replay",
+      "feature": "gist_kv_2",
+      "probe": "mlp",
+      "seed": 2,
+      "training": {
+        "pair_choice": 0.7964000105857849,
+        "binary_accuracy": 0.7724000215530396,
+        "loss": 0.46098875999450684
+      },
+      "validation": {
+        "pair_choice": 0.7890625,
+        "binary_accuracy": 0.753125011920929,
+        "loss": 0.4779426157474518
+      },
+      "tests": {
+        "mixed": {
+          "pair_choice": 0.5433593988418579,
+          "binary_accuracy": 0.53125,
+          "loss": 0.9379324913024902
+        },
+        "fixed": {
+          "pair_choice": 0.7789062261581421,
+          "binary_accuracy": 0.756640613079071,
+          "loss": 0.48430460691452026
+        },
+        "swapped": {
+          "pair_choice": 0.520703136920929,
+          "binary_accuracy": 0.51953125,
+          "loss": 0.9814507365226746
+        }
+      }
+    },
+    {
+      "encoder": "replay",
+      "feature": "raw_bag",
+      "probe": "bilinear",
+      "seed": 0,
+      "training": {
+        "pair_choice": 0.5367000102996826,
+        "binary_accuracy": 0.5249000191688538,
+        "loss": 0.7298075556755066
+      },
+      "validation": {
+        "pair_choice": 0.5054687261581421,
+        "binary_accuracy": 0.5023437738418579,
+        "loss": 0.7509394884109497
+      },
+      "tests": {
+        "mixed": {
+          "pair_choice": 0.509765625,
+          "binary_accuracy": 0.5103515386581421,
+          "loss": 0.7488000392913818
+        },
+        "fixed": {
+          "pair_choice": 0.507031261920929,
+          "binary_accuracy": 0.5052734613418579,
+          "loss": 0.7489663362503052
+        },
+        "swapped": {
+          "pair_choice": 0.509765625,
+          "binary_accuracy": 0.5103515386581421,
+          "loss": 0.7488000392913818
+        }
+      }
+    },
+    {
+      "encoder": "replay",
+      "feature": "raw_bag",
+      "probe": "bilinear",
+      "seed": 1,
+      "training": {
+        "pair_choice": 0.5311999917030334,
+        "binary_accuracy": 0.524399995803833,
+        "loss": 0.7321186661720276
+      },
+      "validation": {
+        "pair_choice": 0.5054687261581421,
+        "binary_accuracy": 0.5035156011581421,
+        "loss": 0.7490547299385071
+      },
+      "tests": {
+        "mixed": {
+          "pair_choice": 0.4917968809604645,
+          "binary_accuracy": 0.4931640625,
+          "loss": 0.7556885480880737
+        },
+        "fixed": {
+          "pair_choice": 0.505859375,
+          "binary_accuracy": 0.5,
+          "loss": 0.75287264585495
+        },
+        "swapped": {
+          "pair_choice": 0.4917968809604645,
+          "binary_accuracy": 0.4931640625,
+          "loss": 0.7556885480880737
+        }
+      }
+    },
+    {
+      "encoder": "replay",
+      "feature": "raw_bag",
+      "probe": "bilinear",
+      "seed": 2,
+      "training": {
+        "pair_choice": 0.534600019454956,
+        "binary_accuracy": 0.5239499807357788,
+        "loss": 0.7363032102584839
+      },
+      "validation": {
+        "pair_choice": 0.522656261920929,
+        "binary_accuracy": 0.513671875,
+        "loss": 0.7423052787780762
+      },
+      "tests": {
+        "mixed": {
+          "pair_choice": 0.5132812261581421,
+          "binary_accuracy": 0.5083984136581421,
+          "loss": 0.757260799407959
+        },
+        "fixed": {
+          "pair_choice": 0.508984386920929,
+          "binary_accuracy": 0.5068359375,
+          "loss": 0.7517811059951782
+        },
+        "swapped": {
+          "pair_choice": 0.5132812261581421,
+          "binary_accuracy": 0.5083984136581421,
+          "loss": 0.757260799407959
+        }
+      }
+    },
+    {
+      "encoder": "replay",
+      "feature": "raw_bag",
+      "probe": "mlp",
+      "seed": 0,
+      "training": {
+        "pair_choice": 0.546500027179718,
+        "binary_accuracy": 0.5357000231742859,
+        "loss": 0.6881983280181885
+      },
+      "validation": {
+        "pair_choice": 0.48359376192092896,
+        "binary_accuracy": 0.49296873807907104,
+        "loss": 0.6993086338043213
+      },
+      "tests": {
+        "mixed": {
+          "pair_choice": 0.501953125,
+          "binary_accuracy": 0.507617175579071,
+          "loss": 0.6958743333816528
+        },
+        "fixed": {
+          "pair_choice": 0.524218738079071,
+          "binary_accuracy": 0.509960949420929,
+          "loss": 0.696739673614502
+        },
+        "swapped": {
+          "pair_choice": 0.501953125,
+          "binary_accuracy": 0.507617175579071,
+          "loss": 0.6958743333816528
+        }
+      }
+    },
+    {
+      "encoder": "replay",
+      "feature": "raw_bag",
+      "probe": "mlp",
+      "seed": 1,
+      "training": {
+        "pair_choice": 0.5364999771118164,
+        "binary_accuracy": 0.5258499979972839,
+        "loss": 0.6906294226646423
+      },
+      "validation": {
+        "pair_choice": 0.4984374940395355,
+        "binary_accuracy": 0.501953125,
+        "loss": 0.6954300999641418
+      },
+      "tests": {
+        "mixed": {
+          "pair_choice": 0.514843761920929,
+          "binary_accuracy": 0.4976562559604645,
+          "loss": 0.6953344941139221
+        },
+        "fixed": {
+          "pair_choice": 0.5042968988418579,
+          "binary_accuracy": 0.5074218511581421,
+          "loss": 0.6951776742935181
+        },
+        "swapped": {
+          "pair_choice": 0.514843761920929,
+          "binary_accuracy": 0.4976562559604645,
+          "loss": 0.6953344941139221
+        }
+      }
+    },
+    {
+      "encoder": "replay",
+      "feature": "raw_bag",
+      "probe": "mlp",
+      "seed": 2,
+      "training": {
+        "pair_choice": 0.5311999917030334,
+        "binary_accuracy": 0.5249999761581421,
+        "loss": 0.6911745667457581
+      },
+      "validation": {
+        "pair_choice": 0.5023437738418579,
+        "binary_accuracy": 0.4976562559604645,
+        "loss": 0.6947985291481018
+      },
+      "tests": {
+        "mixed": {
+          "pair_choice": 0.4859375059604645,
+          "binary_accuracy": 0.4921875,
+          "loss": 0.6957641839981079
+        },
+        "fixed": {
+          "pair_choice": 0.503125011920929,
+          "binary_accuracy": 0.5042968988418579,
+          "loss": 0.6951347589492798
+        },
+        "swapped": {
+          "pair_choice": 0.4859375059604645,
+          "binary_accuracy": 0.4921875,
+          "loss": 0.6957641839981079
+        }
+      }
+    },
+    {
+      "encoder": "replay",
+      "feature": "oracle_value",
+      "probe": "bilinear",
+      "seed": 0,
+      "training": {
+        "pair_choice": 1.0,
+        "binary_accuracy": 1.0,
+        "loss": 0.001092309132218361
+      },
+      "validation": {
+        "pair_choice": 1.0,
+        "binary_accuracy": 1.0,
+        "loss": 0.001085663796402514
+      },
+      "tests": {
+        "mixed": {
+          "pair_choice": 1.0,
+          "binary_accuracy": 1.0,
+          "loss": 0.0010967968264594674
+        },
+        "fixed": {
+          "pair_choice": 1.0,
+          "binary_accuracy": 1.0,
+          "loss": 0.0010998003417626023
+        },
+        "swapped": {
+          "pair_choice": 1.0,
+          "binary_accuracy": 1.0,
+          "loss": 0.0010967968264594674
+        }
+      }
+    },
+    {
+      "encoder": "replay",
+      "feature": "oracle_value",
+      "probe": "bilinear",
+      "seed": 1,
+      "training": {
+        "pair_choice": 1.0,
+        "binary_accuracy": 1.0,
+        "loss": 0.0019119983771815896
+      },
+      "validation": {
+        "pair_choice": 1.0,
+        "binary_accuracy": 1.0,
+        "loss": 0.0019005067879334092
+      },
+      "tests": {
+        "mixed": {
+          "pair_choice": 1.0,
+          "binary_accuracy": 1.0,
+          "loss": 0.001915352651849389
+        },
+        "fixed": {
+          "pair_choice": 1.0,
+          "binary_accuracy": 1.0,
+          "loss": 0.0019204143900424242
+        },
+        "swapped": {
+          "pair_choice": 1.0,
+          "binary_accuracy": 1.0,
+          "loss": 0.001915352651849389
+        }
+      }
+    },
+    {
+      "encoder": "replay",
+      "feature": "oracle_value",
+      "probe": "bilinear",
+      "seed": 2,
+      "training": {
+        "pair_choice": 1.0,
+        "binary_accuracy": 1.0,
+        "loss": 0.0008129064808599651
+      },
+      "validation": {
+        "pair_choice": 1.0,
+        "binary_accuracy": 1.0,
+        "loss": 0.0008081093546934426
+      },
+      "tests": {
+        "mixed": {
+          "pair_choice": 1.0,
+          "binary_accuracy": 1.0,
+          "loss": 0.0008156648837029934
+        },
+        "fixed": {
+          "pair_choice": 1.0,
+          "binary_accuracy": 1.0,
+          "loss": 0.000818669970612973
+        },
+        "swapped": {
+          "pair_choice": 1.0,
+          "binary_accuracy": 1.0,
+          "loss": 0.0008156648837029934
+        }
+      }
+    },
+    {
+      "encoder": "replay",
+      "feature": "oracle_value",
+      "probe": "mlp",
+      "seed": 0,
+      "training": {
+        "pair_choice": 1.0,
+        "binary_accuracy": 1.0,
+        "loss": 7.772503886371851e-05
+      },
+      "validation": {
+        "pair_choice": 1.0,
+        "binary_accuracy": 1.0,
+        "loss": 7.79138645157218e-05
+      },
+      "tests": {
+        "mixed": {
+          "pair_choice": 1.0,
+          "binary_accuracy": 1.0,
+          "loss": 7.886896491982043e-05
+        },
+        "fixed": {
+          "pair_choice": 1.0,
+          "binary_accuracy": 1.0,
+          "loss": 7.909732812549919e-05
+        },
+        "swapped": {
+          "pair_choice": 1.0,
+          "binary_accuracy": 1.0,
+          "loss": 7.886896491982043e-05
+        }
+      }
+    },
+    {
+      "encoder": "replay",
+      "feature": "oracle_value",
+      "probe": "mlp",
+      "seed": 1,
+      "training": {
+        "pair_choice": 1.0,
+        "binary_accuracy": 1.0,
+        "loss": 8.963290019892156e-05
+      },
+      "validation": {
+        "pair_choice": 1.0,
+        "binary_accuracy": 1.0,
+        "loss": 8.890587196219712e-05
+      },
+      "tests": {
+        "mixed": {
+          "pair_choice": 1.0,
+          "binary_accuracy": 1.0,
+          "loss": 8.972447540145367e-05
+        },
+        "fixed": {
+          "pair_choice": 1.0,
+          "binary_accuracy": 1.0,
+          "loss": 9.083043551072478e-05
+        },
+        "swapped": {
+          "pair_choice": 1.0,
+          "binary_accuracy": 1.0,
+          "loss": 8.972447540145367e-05
+        }
+      }
+    },
+    {
+      "encoder": "replay",
+      "feature": "oracle_value",
+      "probe": "mlp",
+      "seed": 2,
+      "training": {
+        "pair_choice": 1.0,
+        "binary_accuracy": 1.0,
+        "loss": 7.34190980438143e-05
+      },
+      "validation": {
+        "pair_choice": 1.0,
+        "binary_accuracy": 1.0,
+        "loss": 7.351294334512204e-05
+      },
+      "tests": {
+        "mixed": {
+          "pair_choice": 1.0,
+          "binary_accuracy": 1.0,
+          "loss": 7.391737017314881e-05
+        },
+        "fixed": {
+          "pair_choice": 1.0,
+          "binary_accuracy": 1.0,
+          "loss": 7.373471453320235e-05
+        },
+        "swapped": {
+          "pair_choice": 1.0,
+          "binary_accuracy": 1.0,
+          "loss": 7.391737017314881e-05
+        }
+      }
+    },
+    {
+      "encoder": "random",
+      "feature": "gist_kv_2",
+      "probe": "bilinear",
+      "seed": 0,
+      "training": {
+        "pair_choice": 0.5527999997138977,
+        "binary_accuracy": 0.5425500273704529,
+        "loss": 0.7375748157501221
+      },
+      "validation": {
+        "pair_choice": 0.530468761920929,
+        "binary_accuracy": 0.5257812738418579,
+        "loss": 0.7599214315414429
+      },
+      "tests": {
+        "mixed": {
+          "pair_choice": 0.506640613079071,
+          "binary_accuracy": 0.509570300579071,
+          "loss": 0.7892711162567139
+        },
+        "fixed": {
+          "pair_choice": 0.548828125,
+          "binary_accuracy": 0.5335937738418579,
+          "loss": 0.7561047077178955
+        },
+        "swapped": {
+          "pair_choice": 0.508984386920929,
+          "binary_accuracy": 0.5101562738418579,
+          "loss": 0.789101243019104
+        }
+      }
+    },
+    {
+      "encoder": "random",
+      "feature": "gist_kv_2",
+      "probe": "bilinear",
+      "seed": 1,
+      "training": {
+        "pair_choice": 0.5498999953269958,
+        "binary_accuracy": 0.5425000190734863,
+        "loss": 0.7294758558273315
+      },
+      "validation": {
+        "pair_choice": 0.516406238079071,
+        "binary_accuracy": 0.51953125,
+        "loss": 0.7552102208137512
+      },
+      "tests": {
+        "mixed": {
+          "pair_choice": 0.500781238079071,
+          "binary_accuracy": 0.5013672113418579,
+          "loss": 0.7818742394447327
+        },
+        "fixed": {
+          "pair_choice": 0.532031238079071,
+          "binary_accuracy": 0.522265613079071,
+          "loss": 0.7499938607215881
+        },
+        "swapped": {
+          "pair_choice": 0.49531251192092896,
+          "binary_accuracy": 0.502148449420929,
+          "loss": 0.7817323207855225
+        }
+      }
+    },
+    {
+      "encoder": "random",
+      "feature": "gist_kv_2",
+      "probe": "bilinear",
+      "seed": 2,
+      "training": {
+        "pair_choice": 0.539900004863739,
+        "binary_accuracy": 0.5282999873161316,
+        "loss": 0.7515484094619751
+      },
+      "validation": {
+        "pair_choice": 0.535937488079071,
+        "binary_accuracy": 0.530078113079071,
+        "loss": 0.7667496800422668
+      },
+      "tests": {
+        "mixed": {
+          "pair_choice": 0.5179687738418579,
+          "binary_accuracy": 0.507031261920929,
+          "loss": 0.7960764765739441
+        },
+        "fixed": {
+          "pair_choice": 0.521484375,
+          "binary_accuracy": 0.514453113079071,
+          "loss": 0.7727347612380981
+        },
+        "swapped": {
+          "pair_choice": 0.508593738079071,
+          "binary_accuracy": 0.516406238079071,
+          "loss": 0.7991924285888672
+        }
+      }
+    },
+    {
+      "encoder": "random",
+      "feature": "gist_kv_2",
+      "probe": "mlp",
+      "seed": 0,
+      "training": {
+        "pair_choice": 0.5587000250816345,
+        "binary_accuracy": 0.5514500141143799,
+        "loss": 0.685090184211731
+      },
+      "validation": {
+        "pair_choice": 0.54296875,
+        "binary_accuracy": 0.5484374761581421,
+        "loss": 0.6910762786865234
+      },
+      "tests": {
+        "mixed": {
+          "pair_choice": 0.5,
+          "binary_accuracy": 0.4984374940395355,
+          "loss": 0.7017507553100586
+        },
+        "fixed": {
+          "pair_choice": 0.5230468511581421,
+          "binary_accuracy": 0.525195300579071,
+          "loss": 0.6907221078872681
+        },
+        "swapped": {
+          "pair_choice": 0.4878906309604645,
+          "binary_accuracy": 0.4892578125,
+          "loss": 0.7032246589660645
+        }
+      }
+    },
+    {
+      "encoder": "random",
+      "feature": "gist_kv_2",
+      "probe": "mlp",
+      "seed": 1,
+      "training": {
+        "pair_choice": 0.5645999908447266,
+        "binary_accuracy": 0.5542500019073486,
+        "loss": 0.6829646825790405
+      },
+      "validation": {
+        "pair_choice": 0.55078125,
+        "binary_accuracy": 0.530468761920929,
+        "loss": 0.6904892921447754
+      },
+      "tests": {
+        "mixed": {
+          "pair_choice": 0.5,
+          "binary_accuracy": 0.49687498807907104,
+          "loss": 0.7031028270721436
+        },
+        "fixed": {
+          "pair_choice": 0.5445312261581421,
+          "binary_accuracy": 0.5341796875,
+          "loss": 0.6913442611694336
+        },
+        "swapped": {
+          "pair_choice": 0.4921875,
+          "binary_accuracy": 0.4945312440395355,
+          "loss": 0.7031346559524536
+        }
+      }
+    },
+    {
+      "encoder": "random",
+      "feature": "gist_kv_2",
+      "probe": "mlp",
+      "seed": 2,
+      "training": {
+        "pair_choice": 0.5496000051498413,
+        "binary_accuracy": 0.5427500009536743,
+        "loss": 0.6877336502075195
+      },
+      "validation": {
+        "pair_choice": 0.516406238079071,
+        "binary_accuracy": 0.5113281011581421,
+        "loss": 0.6944062113761902
+      },
+      "tests": {
+        "mixed": {
+          "pair_choice": 0.4984374940395355,
+          "binary_accuracy": 0.4986328184604645,
+          "loss": 0.6983494162559509
+        },
+        "fixed": {
+          "pair_choice": 0.5199218988418579,
+          "binary_accuracy": 0.514843761920929,
+          "loss": 0.6936328411102295
+        },
+        "swapped": {
+          "pair_choice": 0.49492186307907104,
+          "binary_accuracy": 0.49726563692092896,
+          "loss": 0.6989394426345825
+        }
+      }
+    },
+    {
+      "encoder": "random",
+      "feature": "raw_bag",
+      "probe": "bilinear",
+      "seed": 0,
+      "training": {
+        "pair_choice": 0.5321999788284302,
+        "binary_accuracy": 0.5224499702453613,
+        "loss": 0.741989016532898
+      },
+      "validation": {
+        "pair_choice": 0.5132812261581421,
+        "binary_accuracy": 0.505078136920929,
+        "loss": 0.7492342591285706
+      },
+      "tests": {
+        "mixed": {
+          "pair_choice": 0.5054687261581421,
+          "binary_accuracy": 0.4966796934604645,
+          "loss": 0.7577335834503174
+        },
+        "fixed": {
+          "pair_choice": 0.4898437559604645,
+          "binary_accuracy": 0.5003906488418579,
+          "loss": 0.7632826566696167
+        },
+        "swapped": {
+          "pair_choice": 0.5054687261581421,
+          "binary_accuracy": 0.4966796934604645,
+          "loss": 0.7577335834503174
+        }
+      }
+    },
+    {
+      "encoder": "random",
+      "feature": "raw_bag",
+      "probe": "bilinear",
+      "seed": 1,
+      "training": {
+        "pair_choice": 0.5296000242233276,
+        "binary_accuracy": 0.5211499929428101,
+        "loss": 0.7388272285461426
+      },
+      "validation": {
+        "pair_choice": 0.518750011920929,
+        "binary_accuracy": 0.5171874761581421,
+        "loss": 0.7447551488876343
+      },
+      "tests": {
+        "mixed": {
+          "pair_choice": 0.510937511920929,
+          "binary_accuracy": 0.508593738079071,
+          "loss": 0.7566104531288147
+        },
+        "fixed": {
+          "pair_choice": 0.4820312559604645,
+          "binary_accuracy": 0.49492186307907104,
+          "loss": 0.7702698707580566
+        },
+        "swapped": {
+          "pair_choice": 0.510937511920929,
+          "binary_accuracy": 0.508593738079071,
+          "loss": 0.7566104531288147
+        }
+      }
+    },
+    {
+      "encoder": "random",
+      "feature": "raw_bag",
+      "probe": "bilinear",
+      "seed": 2,
+      "training": {
+        "pair_choice": 0.5210999846458435,
+        "binary_accuracy": 0.519349992275238,
+        "loss": 0.7442409992218018
+      },
+      "validation": {
+        "pair_choice": 0.526562511920929,
+        "binary_accuracy": 0.517578125,
+        "loss": 0.7441599369049072
+      },
+      "tests": {
+        "mixed": {
+          "pair_choice": 0.5062500238418579,
+          "binary_accuracy": 0.5,
+          "loss": 0.7574580907821655
+        },
+        "fixed": {
+          "pair_choice": 0.4898437559604645,
+          "binary_accuracy": 0.4921875,
+          "loss": 0.767565131187439
+        },
+        "swapped": {
+          "pair_choice": 0.5062500238418579,
+          "binary_accuracy": 0.5,
+          "loss": 0.7574580907821655
+        }
+      }
+    },
+    {
+      "encoder": "random",
+      "feature": "raw_bag",
+      "probe": "mlp",
+      "seed": 0,
+      "training": {
+        "pair_choice": 0.5439000129699707,
+        "binary_accuracy": 0.538100004196167,
+        "loss": 0.6883226633071899
+      },
+      "validation": {
+        "pair_choice": 0.5132812261581421,
+        "binary_accuracy": 0.510546863079071,
+        "loss": 0.6957179307937622
+      },
+      "tests": {
+        "mixed": {
+          "pair_choice": 0.49492186307907104,
+          "binary_accuracy": 0.49824219942092896,
+          "loss": 0.699691891670227
+        },
+        "fixed": {
+          "pair_choice": 0.4828124940395355,
+          "binary_accuracy": 0.4917968809604645,
+          "loss": 0.7025446891784668
+        },
+        "swapped": {
+          "pair_choice": 0.49492186307907104,
+          "binary_accuracy": 0.49824219942092896,
+          "loss": 0.699691891670227
+        }
+      }
+    },
+    {
+      "encoder": "random",
+      "feature": "raw_bag",
+      "probe": "mlp",
+      "seed": 1,
+      "training": {
+        "pair_choice": 0.5393000245094299,
+        "binary_accuracy": 0.5332499742507935,
+        "loss": 0.690359354019165
+      },
+      "validation": {
+        "pair_choice": 0.49296873807907104,
+        "binary_accuracy": 0.509765625,
+        "loss": 0.694657564163208
+      },
+      "tests": {
+        "mixed": {
+          "pair_choice": 0.51171875,
+          "binary_accuracy": 0.5087890625,
+          "loss": 0.694405198097229
+        },
+        "fixed": {
+          "pair_choice": 0.48515623807907104,
+          "binary_accuracy": 0.49335938692092896,
+          "loss": 0.6958931684494019
+        },
+        "swapped": {
+          "pair_choice": 0.51171875,
+          "binary_accuracy": 0.5087890625,
+          "loss": 0.694405198097229
+        }
+      }
+    },
+    {
+      "encoder": "random",
+      "feature": "raw_bag",
+      "probe": "mlp",
+      "seed": 2,
+      "training": {
+        "pair_choice": 0.5321000218391418,
+        "binary_accuracy": 0.5217999815940857,
+        "loss": 0.6916652321815491
+      },
+      "validation": {
+        "pair_choice": 0.49921876192092896,
+        "binary_accuracy": 0.5015624761581421,
+        "loss": 0.6953541040420532
+      },
+      "tests": {
+        "mixed": {
+          "pair_choice": 0.49687498807907104,
+          "binary_accuracy": 0.5003906488418579,
+          "loss": 0.6963901519775391
+        },
+        "fixed": {
+          "pair_choice": 0.501171886920929,
+          "binary_accuracy": 0.4878906309604645,
+          "loss": 0.697074294090271
+        },
+        "swapped": {
+          "pair_choice": 0.49687498807907104,
+          "binary_accuracy": 0.5003906488418579,
+          "loss": 0.6963901519775391
+        }
+      }
+    },
+    {
+      "encoder": "random",
+      "feature": "oracle_value",
+      "probe": "bilinear",
+      "seed": 0,
+      "training": {
+        "pair_choice": 1.0,
+        "binary_accuracy": 1.0,
+        "loss": 0.001073329010978341
+      },
+      "validation": {
+        "pair_choice": 1.0,
+        "binary_accuracy": 1.0,
+        "loss": 0.0010649522300809622
+      },
+      "tests": {
+        "mixed": {
+          "pair_choice": 1.0,
+          "binary_accuracy": 1.0,
+          "loss": 0.0010760219302028418
+        },
+        "fixed": {
+          "pair_choice": 1.0,
+          "binary_accuracy": 1.0,
+          "loss": 0.001060765003785491
+        },
+        "swapped": {
+          "pair_choice": 1.0,
+          "binary_accuracy": 1.0,
+          "loss": 0.0010760219302028418
+        }
+      }
+    },
+    {
+      "encoder": "random",
+      "feature": "oracle_value",
+      "probe": "bilinear",
+      "seed": 1,
+      "training": {
+        "pair_choice": 1.0,
+        "binary_accuracy": 1.0,
+        "loss": 0.0011591886868700385
+      },
+      "validation": {
+        "pair_choice": 1.0,
+        "binary_accuracy": 1.0,
+        "loss": 0.0011485873255878687
+      },
+      "tests": {
+        "mixed": {
+          "pair_choice": 1.0,
+          "binary_accuracy": 1.0,
+          "loss": 0.001157843740656972
+        },
+        "fixed": {
+          "pair_choice": 1.0,
+          "binary_accuracy": 1.0,
+          "loss": 0.0011491773184388876
+        },
+        "swapped": {
+          "pair_choice": 1.0,
+          "binary_accuracy": 1.0,
+          "loss": 0.001157843740656972
+        }
+      }
+    },
+    {
+      "encoder": "random",
+      "feature": "oracle_value",
+      "probe": "bilinear",
+      "seed": 2,
+      "training": {
+        "pair_choice": 1.0,
+        "binary_accuracy": 1.0,
+        "loss": 0.0011807692935690284
+      },
+      "validation": {
+        "pair_choice": 1.0,
+        "binary_accuracy": 1.0,
+        "loss": 0.0011668046936392784
+      },
+      "tests": {
+        "mixed": {
+          "pair_choice": 1.0,
+          "binary_accuracy": 1.0,
+          "loss": 0.0011782830115407705
+        },
+        "fixed": {
+          "pair_choice": 1.0,
+          "binary_accuracy": 1.0,
+          "loss": 0.0011657613795250654
+        },
+        "swapped": {
+          "pair_choice": 1.0,
+          "binary_accuracy": 1.0,
+          "loss": 0.0011782830115407705
+        }
+      }
+    },
+    {
+      "encoder": "random",
+      "feature": "oracle_value",
+      "probe": "mlp",
+      "seed": 0,
+      "training": {
+        "pair_choice": 1.0,
+        "binary_accuracy": 1.0,
+        "loss": 7.622526027262211e-05
+      },
+      "validation": {
+        "pair_choice": 1.0,
+        "binary_accuracy": 1.0,
+        "loss": 7.401453331112862e-05
+      },
+      "tests": {
+        "mixed": {
+          "pair_choice": 1.0,
+          "binary_accuracy": 1.0,
+          "loss": 7.586040010210127e-05
+        },
+        "fixed": {
+          "pair_choice": 1.0,
+          "binary_accuracy": 1.0,
+          "loss": 7.472399738617241e-05
+        },
+        "swapped": {
+          "pair_choice": 1.0,
+          "binary_accuracy": 1.0,
+          "loss": 7.586040010210127e-05
+        }
+      }
+    },
+    {
+      "encoder": "random",
+      "feature": "oracle_value",
+      "probe": "mlp",
+      "seed": 1,
+      "training": {
+        "pair_choice": 1.0,
+        "binary_accuracy": 1.0,
+        "loss": 8.234241977334023e-05
+      },
+      "validation": {
+        "pair_choice": 1.0,
+        "binary_accuracy": 1.0,
+        "loss": 8.023293048609048e-05
+      },
+      "tests": {
+        "mixed": {
+          "pair_choice": 1.0,
+          "binary_accuracy": 1.0,
+          "loss": 8.182194142136723e-05
+        },
+        "fixed": {
+          "pair_choice": 1.0,
+          "binary_accuracy": 1.0,
+          "loss": 8.061331755015999e-05
+        },
+        "swapped": {
+          "pair_choice": 1.0,
+          "binary_accuracy": 1.0,
+          "loss": 8.182194142136723e-05
+        }
+      }
+    },
+    {
+      "encoder": "random",
+      "feature": "oracle_value",
+      "probe": "mlp",
+      "seed": 2,
+      "training": {
+        "pair_choice": 1.0,
+        "binary_accuracy": 1.0,
+        "loss": 7.657353125978261e-05
+      },
+      "validation": {
+        "pair_choice": 1.0,
+        "binary_accuracy": 1.0,
+        "loss": 7.400047616101801e-05
+      },
+      "tests": {
+        "mixed": {
+          "pair_choice": 1.0,
+          "binary_accuracy": 1.0,
+          "loss": 7.643380376975983e-05
+        },
+        "fixed": {
+          "pair_choice": 1.0,
+          "binary_accuracy": 1.0,
+          "loss": 7.490797725040466e-05
+        },
+        "swapped": {
+          "pair_choice": 1.0,
+          "binary_accuracy": 1.0,
+          "loss": 7.643380376975983e-05
+        }
+      }
+    }
+  ]
+}

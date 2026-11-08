@@ -1,0 +1,104 @@
+{
+  "scope": "known-key CPU paging screen; no learned retrieval or inversion claim",
+  "disk_backed": true,
+  "results": [
+    {
+      "length": 1024,
+      "seed": 0,
+      "cold_budget_bytes": 65536,
+      "historical_queries": 30,
+      "retained_historical_pages": 23,
+      "page_retention_coverage": 0.7666666666666667,
+      "page_hit_rate_all": 1.0,
+      "page_hit_rate_retained": 1.0,
+      "value_accuracy_retained_int4": 1.0,
+      "value_accuracy_retained_original_fp32": 1.0,
+      "value_accuracy_all": {
+        "full": 1,
+        "local": 0.03333333333333333,
+        "gist": 0.23333333333333334,
+        "retrieval_int4": 1,
+        "retrieval_original_fp32": 1
+      },
+      "query_latency_ms": {
+        "full": {
+          "median": 0.05237899995336193,
+          "p95": 0.11246000030951109
+        },
+        "local": {
+          "median": 0.014808000287303003,
+          "p95": 0.02303400015080115
+        },
+        "gist": {
+          "median": 0.012103000244678697,
+          "p95": 0.017145999663625844
+        },
+        "retrieval_int4": {
+          "median": 0.9904474995892087,
+          "p95": 2.7966040006504045
+        },
+        "retrieval_original_fp32": {
+          "median": 1.1197724998055492,
+          "p95": 3.8404570004786365
+        }
+      },
+      "insertion_seconds": 0.15205923300072755,
+      "stats": {
+        "working_payload_bytes": 40960,
+        "cold_payload_bytes": 64768,
+        "persistent_payload_bytes": 105728,
+        "payload_bound_bytes": 123904,
+        "cold_pages": 23,
+        "evictions": 7,
+        "peak_payload_bytes": 122112,
+        "peak_attention_tokens": 146,
+        "seen_tokens": 1024,
+        "attention_token_bound": 179,
+        "disk": {
+          "pages": 30,
+          "disk_bytes": 168166,
+          "page_loads": 45,
+          "searches": 90,
+          "keys_scanned": 630,
+          "index_batch": 64
+        }
+      },
+      "full_baseline_kv_payload_bytes": 524288
+    }
+  ],
+  "neural_smoke": [
+    {
+      "length": 1024,
+      "seconds": 1.2602852479994908,
+      "stats": {
+        "seen_tokens": 1024,
+        "logical_positions": 1056,
+        "persistent_payload_bytes": 21248,
+        "payload_bound_bytes": 23680,
+        "layers": [
+          {
+            "working_payload_bytes": 5120,
+            "cold_payload_bytes": 16128,
+            "persistent_payload_bytes": 21248,
+            "payload_bound_bytes": 23680,
+            "cold_pages": 18,
+            "evictions": 12,
+            "peak_payload_bytes": 23296,
+            "peak_attention_tokens": 146,
+            "seen_tokens": 1024,
+            "attention_token_bound": 146,
+            "disk": {
+              "pages": 30,
+              "disk_bytes": 105190,
+              "page_loads": 73,
+              "searches": 1056,
+              "keys_scanned": 2178,
+              "index_batch": 64
+            }
+          }
+        ]
+      },
+      "note": "random weights; integration/budget test only, no quality metric"
+    }
+  ]
+}
