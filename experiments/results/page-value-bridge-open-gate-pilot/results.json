@@ -1,0 +1,198 @@
+{
+  "arguments": {
+    "checkpoint": "/workspace/work/relation-auxiliary-order-pilot/retrieval-aux1-0/checkpoint.pt",
+    "output": "/workspace/work/page-value-bridge-open-gate-pilot",
+    "seeds": 1,
+    "steps": 600,
+    "examples": 512,
+    "mix_initial": 0.0
+  },
+  "parent_sha256": "9c427b5d28d93928c44a58232b351b79d68ed6fd4857bb91bf3dcca1778f674f",
+  "frozen_parent_unchanged": true,
+  "bridge_parameters": 2305,
+  "summary": {
+    "4": {
+      "fixed": {
+        "native": 0.984375,
+        "bridge": 0.98046875,
+        "untrained_bridge": 0.986328125,
+        "uniform_selector": 0.978515625,
+        "misaligned_values": 0.134765625,
+        "native_and_bridge_joint": 0.97265625,
+        "route_hit": 0.998046875,
+        "true_page_head": 0.978515625,
+        "native_ce": 0.15227045328356326,
+        "bridge_ce": 0.18177864549215883
+      },
+      "mixed": {
+        "native": 0.96875,
+        "bridge": 0.986328125,
+        "untrained_bridge": 0.982421875,
+        "uniform_selector": 0.96484375,
+        "misaligned_values": 0.123046875,
+        "native_and_bridge_joint": 0.96484375,
+        "route_hit": 1.0,
+        "true_page_head": 0.984375,
+        "native_ce": 0.24102358426898718,
+        "bridge_ce": 0.17056261212565005
+      },
+      "swapped": {
+        "native": 0.955078125,
+        "bridge": 0.974609375,
+        "untrained_bridge": 0.970703125,
+        "uniform_selector": 0.95703125,
+        "misaligned_values": 0.1171875,
+        "native_and_bridge_joint": 0.951171875,
+        "route_hit": 1.0,
+        "true_page_head": 0.998046875,
+        "native_ce": 0.30214789882302284,
+        "bridge_ce": 0.18965094513259828
+      }
+    },
+    "5": {
+      "fixed": {
+        "native": 0.69921875,
+        "bridge": 0.69140625,
+        "untrained_bridge": 0.703125,
+        "uniform_selector": 0.693359375,
+        "misaligned_values": 0.12890625,
+        "native_and_bridge_joint": 0.669921875,
+        "route_hit": 0.9921875,
+        "true_page_head": 0.892578125,
+        "native_ce": 1.2136963941156864,
+        "bridge_ce": 0.7208721619099379
+      },
+      "mixed": {
+        "native": 0.69921875,
+        "bridge": 0.708984375,
+        "untrained_bridge": 0.697265625,
+        "uniform_selector": 0.6953125,
+        "misaligned_values": 0.109375,
+        "native_and_bridge_joint": 0.671875,
+        "route_hit": 0.966796875,
+        "true_page_head": 0.935546875,
+        "native_ce": 1.1829480789601803,
+        "bridge_ce": 0.7698554499074817
+      },
+      "swapped": {
+        "native": 0.685546875,
+        "bridge": 0.705078125,
+        "untrained_bridge": 0.6875,
+        "uniform_selector": 0.69140625,
+        "misaligned_values": 0.119140625,
+        "native_and_bridge_joint": 0.6640625,
+        "route_hit": 0.962890625,
+        "true_page_head": 0.9453125,
+        "native_ce": 1.274882322177291,
+        "bridge_ce": 0.7868697652593255
+      }
+    }
+  },
+  "runs": [
+    {
+      "fit_seed": 0,
+      "history": [
+        {
+          "step": 200,
+          "mix": 0.5769898295402527,
+          "last_half_ce": 0.6309998631477356
+        },
+        {
+          "step": 400,
+          "mix": 0.6372620463371277,
+          "last_half_ce": 0.5325618982315063
+        },
+        {
+          "step": 600,
+          "mix": 0.6921437978744507,
+          "last_half_ce": 0.8662502765655518
+        }
+      ],
+      "tests": {
+        "4": {
+          "fixed": {
+            "native": 0.984375,
+            "bridge": 0.98046875,
+            "untrained_bridge": 0.986328125,
+            "uniform_selector": 0.978515625,
+            "misaligned_values": 0.134765625,
+            "native_and_bridge_joint": 0.97265625,
+            "route_hit": 0.998046875,
+            "true_page_head": 0.978515625,
+            "native_ce": 0.15227045328356326,
+            "bridge_ce": 0.18177864549215883,
+            "examples": 512
+          },
+          "mixed": {
+            "native": 0.96875,
+            "bridge": 0.986328125,
+            "untrained_bridge": 0.982421875,
+            "uniform_selector": 0.96484375,
+            "misaligned_values": 0.123046875,
+            "native_and_bridge_joint": 0.96484375,
+            "route_hit": 1.0,
+            "true_page_head": 0.984375,
+            "native_ce": 0.24102358426898718,
+            "bridge_ce": 0.17056261212565005,
+            "examples": 512
+          },
+          "swapped": {
+            "native": 0.955078125,
+            "bridge": 0.974609375,
+            "untrained_bridge": 0.970703125,
+            "uniform_selector": 0.95703125,
+            "misaligned_values": 0.1171875,
+            "native_and_bridge_joint": 0.951171875,
+            "route_hit": 1.0,
+            "true_page_head": 0.998046875,
+            "native_ce": 0.30214789882302284,
+            "bridge_ce": 0.18965094513259828,
+            "examples": 512
+          }
+        },
+        "5": {
+          "fixed": {
+            "native": 0.69921875,
+            "bridge": 0.69140625,
+            "untrained_bridge": 0.703125,
+            "uniform_selector": 0.693359375,
+            "misaligned_values": 0.12890625,
+            "native_and_bridge_joint": 0.669921875,
+            "route_hit": 0.9921875,
+            "true_page_head": 0.892578125,
+            "native_ce": 1.2136963941156864,
+            "bridge_ce": 0.7208721619099379,
+            "examples": 512
+          },
+          "mixed": {
+            "native": 0.69921875,
+            "bridge": 0.708984375,
+            "untrained_bridge": 0.697265625,
+            "uniform_selector": 0.6953125,
+            "misaligned_values": 0.109375,
+            "native_and_bridge_joint": 0.671875,
+            "route_hit": 0.966796875,
+            "true_page_head": 0.935546875,
+            "native_ce": 1.1829480789601803,
+            "bridge_ce": 0.7698554499074817,
+            "examples": 512
+          },
+          "swapped": {
+            "native": 0.685546875,
+            "bridge": 0.705078125,
+            "untrained_bridge": 0.6875,
+            "uniform_selector": 0.69140625,
+            "misaligned_values": 0.119140625,
+            "native_and_bridge_joint": 0.6640625,
+            "route_hit": 0.962890625,
+            "true_page_head": 0.9453125,
+            "native_ce": 1.274882322177291,
+            "bridge_ce": 0.7868697652593255,
+            "examples": 512
+          }
+        }
+      }
+    }
+  ],
+  "scope": "Screening only: three fit-data seeds share one frozen backbone and test set; dense last-token adapter, no streaming support or latency claims."
+}

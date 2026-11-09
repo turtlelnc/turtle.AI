@@ -1169,3 +1169,77 @@ stores and binary checkpoints remain outside Git; the continuation commands
 require the named parent checkpoint in the local work directory. These synthetic
 screens do not establish real-document quality, numerical Top-1 stability, or
 hardware latency/memory gains.
+
+## Frozen page-reader to answer bridge
+
+`return_page_features=True` exposes final-layer queries, working-precision Gist
+keys, actual retrieved page IDs and learned page-value logits, without source
+labels. It leaves the main logits unchanged. `models/page_value_bridge.py`
+implements a separate, last-token research adapter: a learned bilinear correction
+reranks **only the selected pages**, then mixes their reader probability
+distributions with the native LM distribution using a learned scalar gate. Missing
+pages receive zero weight, and a query without recalled pages uses the native
+distribution. The reference computes dense page features; it is not wired into
+streaming decoding and makes no claim about runtime memory savings.
+
+The screen freezes the entire random-order-trained `retrieval-aux1-0` parent,
+including its auxiliary head. Only 2,305 bridge parameters are fitted with answer
+cross entropy, 600 updates of 8 four-page plus 8 five-page documents, random
+per-page record order, AdamW learning rate 0.003. There is no source-page loss,
+oracle routing, validation selection, or end-to-end backbone update. A state
+fingerprint checks that the parent remains unchanged. Three seeds vary fitting
+data; they share one parent, identical initial bridge parameters and one test set.
+
+```sh
+python -m tools.train_page_value_bridge \
+  work/relation-auxiliary-order-pilot/retrieval-aux1-0/checkpoint.pt \
+  --output work/page-value-bridge-screen
+python -m tools.train_page_value_bridge \
+  work/relation-auxiliary-order-pilot/retrieval-aux1-0/checkpoint.pt \
+  --mix-initial 0 --seeds 1 --output work/page-value-bridge-open-gate-pilot
+python -m tools.analyze_page_value_bridge work/page-value-bridge-screen
+python -m tools.analyze_page_value_bridge work/page-value-bridge-open-gate-pilot
+```
+
+The primary test contains 512 documents at each length, evaluated in fixed,
+mixed and reversed record-order views of the same sources. A matched diagnostic
+sets page relevance scores to uniform; another rotates page-value predictions
+across documents while preserving relevance keys, routes and native logits.
+
+| Five-page mixed-order test | Native | Fitted bridge | Uniform selector | Misaligned values | Bridge CE |
+|---|---:|---:|---:|---:|---:|
+| Low initial gate, three fit seeds, mean | 69.92% | 70.12% | 69.92% | 69.92% | 0.9571 |
+| 50% initial gate, one fit seed | 69.92% | 70.90% | 69.53% | 10.94% | 0.7699 |
+
+Native CE is 1.1829. The low-gate run starts at sigmoid(-4), about 1.8%, and ends
+at 7.0--7.4%. Its low gate creates a recoverable training limitation, so the
+single-seed control instead starts at sigmoid(0), 50%, and ends at 69.2%.
+Opening the gate clearly makes predictions depend on memory content, but neither
+the small Top-1 gain nor lower CE establishes reliable task improvement.
+Four-page mixed accuracy in this control rises from 96.88% to 98.63%, while
+five-page fixed accuracy falls from 69.92% to 69.14%.
+
+Fresh five-page mixed-order diagnostic data use seed 55100005, with 512 sources
+and 508 sources admitting a different-key, different-answer question. Predictions
+for the counterfactual use the same document and a changed query; source facts
+are used solely to construct/score the questions, never as bridge inputs. In the
+open-gate pilot, native accuracy is 65.23% and bridge accuracy 66.21%, but answering
+**both** questions correctly falls from 53.74% to 51.57%. The corresponding
+low-gate means are 65.63% single-answer and 54.07% joint-answer accuracy. These
+are diagnostic holdouts, separate from the primary test and not used for fitting.
+
+On that fresh data, the selected-page set contains the true page 98.05% of the
+time and the head reads the known correct page at 91.99%, while the open-gate
+bridge's highest-scored page is correct only 64.45% of the time. That gap points
+to candidate discrimination as a useful next target; it does not prove a unique
+failure mechanism. Test a key-aware page reranker with matched source-page
+supervision before increasing the mixture weight or declaring that the reader
+solves native recall. This is screening evidence, not a veto of end-to-end memory
+architectures. The open-gate control has only one fit seed, and all workloads
+remain short synthetic records rather than real long documents.
+
+The two result directories under `experiments/results/` preserve primary scores,
+protocols, parent state fingerprints and query-switch diagnostics. Binary bridge
+and parent checkpoints remain in the local work directory. All 40 regression
+tests pass, including unchanged native logits, causal page-feature prefixes,
+absence of frozen-backbone gradients, ignored unselected pages and empty recall.

@@ -1,0 +1,28 @@
+{
+  "test_seed": 55100005,
+  "augmentation_seed": 55200005,
+  "blocks": 5,
+  "scope": "Fresh-data diagnostics only; source page labels used for scoring, never prediction.",
+  "runs": [
+    {
+      "native": 334,
+      "bridge": 339,
+      "native_joint": 273,
+      "bridge_joint": 262,
+      "selector_hit": 330,
+      "route_hit": 502,
+      "true_page_head": 471,
+      "count": 512,
+      "paired_count": 508,
+      "accuracy": {
+        "native": 0.65234375,
+        "bridge": 0.662109375,
+        "native_joint": 0.5374015748031497,
+        "bridge_joint": 0.515748031496063,
+        "selector_hit": 0.64453125,
+        "route_hit": 0.98046875,
+        "true_page_head": 0.919921875
+      }
+    }
+  ]
+}

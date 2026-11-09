@@ -127,6 +127,26 @@
       "sha256": "8edcaeb9a3759334a6cd1cb29fc47a68e2628655f6b3f74f0887ee70505913b6"
     },
     {
+      "path": "page-value-bridge-open-gate-pilot/query-switch-analysis.json",
+      "bytes": 709,
+      "sha256": "88981aa376cf91f9f7c1e304f1f94fb622ec09c065b868d7a10cee6202313e23"
+    },
+    {
+      "path": "page-value-bridge-open-gate-pilot/results.json",
+      "bytes": 6486,
+      "sha256": "01dafb9413b51d2ae1c48c197fc30a88157ec6d3d8c3048716acb12ffce2e29e"
+    },
+    {
+      "path": "page-value-bridge-screen/query-switch-analysis.json",
+      "bytes": 1739,
+      "sha256": "86f7fb3a9faa6c140069dbdf27d7ff02923ea5ea893837a52bf3be603a54ae19"
+    },
+    {
+      "path": "page-value-bridge-screen/results.json",
+      "bytes": 13253,
+      "sha256": "b8a47afce80b7f1956e1a46a477ec84e44cce9cd4e9ce856c0787791e6e4a712"
+    },
+    {
       "path": "paired-replay-binding/analysis.json",
       "bytes": 33000,
       "sha256": "655a6fe27f2730a6b395de869b0451befc61921c04bad5b528704da5063aa1bf"
