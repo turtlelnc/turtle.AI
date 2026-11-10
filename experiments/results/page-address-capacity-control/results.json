@@ -1,0 +1,110 @@
+{
+  "arguments": {
+    "checkpoint": "/workspace/work/relation-auxiliary-order-pilot/retrieval-aux1-0/checkpoint.pt",
+    "output": "/workspace/work/page-address-capacity-control",
+    "steps": 1000,
+    "seeds": 3,
+    "features": "gist_kv",
+    "hidden": 720
+  },
+  "parent_state_sha256": "9c427b5d28d93928c44a58232b351b79d68ed6fd4857bb91bf3dcca1778f674f",
+  "parent_unchanged": true,
+  "native_test": 0.685546875,
+  "first_selected_baseline": 0.638671875,
+  "results": [
+    {
+      "feature": "gist_kv",
+      "seed": 0,
+      "parameters": 105121,
+      "scores": {
+        "train": {
+          "coverage": 0.9697265625,
+          "conditional_accuracy": 0.7092145085334778,
+          "all_document_accuracy": 0.687744140625,
+          "covered_ce": 0.5066277980804443
+        },
+        "val": {
+          "coverage": 0.96484375,
+          "conditional_accuracy": 0.670040488243103,
+          "all_document_accuracy": 0.646484375,
+          "covered_ce": 0.544998049736023
+        },
+        "test": {
+          "coverage": 0.978515625,
+          "conditional_accuracy": 0.6756486892700195,
+          "all_document_accuracy": 0.6611328125,
+          "covered_ce": 0.5318150520324707
+        }
+      },
+      "query_shuffled": {
+        "coverage": 0.978515625,
+        "conditional_accuracy": 0.6626746654510498,
+        "all_document_accuracy": 0.6484375,
+        "covered_ce": 0.5335701704025269
+      }
+    },
+    {
+      "feature": "gist_kv",
+      "seed": 1,
+      "parameters": 105121,
+      "scores": {
+        "train": {
+          "coverage": 0.9697265625,
+          "conditional_accuracy": 0.733635425567627,
+          "all_document_accuracy": 0.71142578125,
+          "covered_ce": 0.47775450348854065
+        },
+        "val": {
+          "coverage": 0.96484375,
+          "conditional_accuracy": 0.670040488243103,
+          "all_document_accuracy": 0.646484375,
+          "covered_ce": 0.542938768863678
+        },
+        "test": {
+          "coverage": 0.978515625,
+          "conditional_accuracy": 0.6686626672744751,
+          "all_document_accuracy": 0.654296875,
+          "covered_ce": 0.5448471903800964
+        }
+      },
+      "query_shuffled": {
+        "coverage": 0.978515625,
+        "conditional_accuracy": 0.6317365169525146,
+        "all_document_accuracy": 0.6181640625,
+        "covered_ce": 0.5616965293884277
+      }
+    },
+    {
+      "feature": "gist_kv",
+      "seed": 2,
+      "parameters": 105121,
+      "scores": {
+        "train": {
+          "coverage": 0.9697265625,
+          "conditional_accuracy": 0.7036757469177246,
+          "all_document_accuracy": 0.682373046875,
+          "covered_ce": 0.5082333087921143
+        },
+        "val": {
+          "coverage": 0.96484375,
+          "conditional_accuracy": 0.6275303363800049,
+          "all_document_accuracy": 0.60546875,
+          "covered_ce": 0.5547679662704468
+        },
+        "test": {
+          "coverage": 0.978515625,
+          "conditional_accuracy": 0.6497005820274353,
+          "all_document_accuracy": 0.6357421875,
+          "covered_ce": 0.5328453183174133
+        }
+      },
+      "query_shuffled": {
+        "coverage": 0.978515625,
+        "conditional_accuracy": 0.6626746654510498,
+        "all_document_accuracy": 0.6484375,
+        "covered_ce": 0.5387853384017944
+      }
+    }
+  ],
+  "scope": "Frozen diagnostic heads, supervised source-page labels, same learned candidates; different input parameter counts. Negative probe results do not establish information loss."
+}

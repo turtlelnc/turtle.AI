@@ -1,0 +1,386 @@
+{
+  "arguments": {
+    "checkpoint": "/workspace/work/relation-auxiliary-order-pilot/retrieval-aux1-0/checkpoint.pt",
+    "output": "/workspace/work/page-address-probes",
+    "steps": 1000,
+    "seeds": 3
+  },
+  "parent_state_sha256": "9c427b5d28d93928c44a58232b351b79d68ed6fd4857bb91bf3dcca1778f674f",
+  "parent_unchanged": true,
+  "native_test": 0.685546875,
+  "results": [
+    {
+      "feature": "gist_k",
+      "seed": 0,
+      "parameters": 12545,
+      "scores": {
+        "train": {
+          "coverage": 0.9697265625,
+          "conditional_accuracy": 0.6966263651847839,
+          "all_document_accuracy": 0.675537109375,
+          "covered_ce": 0.5206218957901001
+        },
+        "val": {
+          "coverage": 0.96484375,
+          "conditional_accuracy": 0.6862348318099976,
+          "all_document_accuracy": 0.662109375,
+          "covered_ce": 0.540631890296936
+        },
+        "test": {
+          "coverage": 0.978515625,
+          "conditional_accuracy": 0.6776447296142578,
+          "all_document_accuracy": 0.6630859375,
+          "covered_ce": 0.5316389799118042
+        }
+      },
+      "query_shuffled": {
+        "coverage": 0.978515625,
+        "conditional_accuracy": 0.6656686663627625,
+        "all_document_accuracy": 0.6513671875,
+        "covered_ce": 0.5325741767883301
+      }
+    },
+    {
+      "feature": "gist_k",
+      "seed": 1,
+      "parameters": 12545,
+      "scores": {
+        "train": {
+          "coverage": 0.9697265625,
+          "conditional_accuracy": 0.7575528621673584,
+          "all_document_accuracy": 0.734619140625,
+          "covered_ce": 0.4594447612762451
+        },
+        "val": {
+          "coverage": 0.96484375,
+          "conditional_accuracy": 0.6761133670806885,
+          "all_document_accuracy": 0.65234375,
+          "covered_ce": 0.5311248302459717
+        },
+        "test": {
+          "coverage": 0.978515625,
+          "conditional_accuracy": 0.673652708530426,
+          "all_document_accuracy": 0.6591796875,
+          "covered_ce": 0.5441287159919739
+        }
+      },
+      "query_shuffled": {
+        "coverage": 0.978515625,
+        "conditional_accuracy": 0.652694582939148,
+        "all_document_accuracy": 0.638671875,
+        "covered_ce": 0.5681774020195007
+      }
+    },
+    {
+      "feature": "gist_k",
+      "seed": 2,
+      "parameters": 12545,
+      "scores": {
+        "train": {
+          "coverage": 0.9697265625,
+          "conditional_accuracy": 0.7238166928291321,
+          "all_document_accuracy": 0.701904296875,
+          "covered_ce": 0.4852767586708069
+        },
+        "val": {
+          "coverage": 0.96484375,
+          "conditional_accuracy": 0.6761133670806885,
+          "all_document_accuracy": 0.65234375,
+          "covered_ce": 0.5388551950454712
+        },
+        "test": {
+          "coverage": 0.978515625,
+          "conditional_accuracy": 0.6656686663627625,
+          "all_document_accuracy": 0.6513671875,
+          "covered_ce": 0.5365855693817139
+        }
+      },
+      "query_shuffled": {
+        "coverage": 0.978515625,
+        "conditional_accuracy": 0.6606786251068115,
+        "all_document_accuracy": 0.646484375,
+        "covered_ce": 0.5533590912818909
+      }
+    },
+    {
+      "feature": "gist_kv",
+      "seed": 0,
+      "parameters": 18689,
+      "scores": {
+        "train": {
+          "coverage": 0.9697265625,
+          "conditional_accuracy": 0.7613292932510376,
+          "all_document_accuracy": 0.73828125,
+          "covered_ce": 0.45871874690055847
+        },
+        "val": {
+          "coverage": 0.96484375,
+          "conditional_accuracy": 0.6518218517303467,
+          "all_document_accuracy": 0.62890625,
+          "covered_ce": 0.5361731648445129
+        },
+        "test": {
+          "coverage": 0.978515625,
+          "conditional_accuracy": 0.6816367506980896,
+          "all_document_accuracy": 0.6669921875,
+          "covered_ce": 0.5357199311256409
+        }
+      },
+      "query_shuffled": {
+        "coverage": 0.978515625,
+        "conditional_accuracy": 0.6397205591201782,
+        "all_document_accuracy": 0.6259765625,
+        "covered_ce": 0.5545006990432739
+      }
+    },
+    {
+      "feature": "gist_kv",
+      "seed": 1,
+      "parameters": 18689,
+      "scores": {
+        "train": {
+          "coverage": 0.9697265625,
+          "conditional_accuracy": 0.7255790829658508,
+          "all_document_accuracy": 0.70361328125,
+          "covered_ce": 0.48677563667297363
+        },
+        "val": {
+          "coverage": 0.96484375,
+          "conditional_accuracy": 0.6558704376220703,
+          "all_document_accuracy": 0.6328125,
+          "covered_ce": 0.5412452816963196
+        },
+        "test": {
+          "coverage": 0.978515625,
+          "conditional_accuracy": 0.6636726260185242,
+          "all_document_accuracy": 0.6494140625,
+          "covered_ce": 0.5484209060668945
+        }
+      },
+      "query_shuffled": {
+        "coverage": 0.978515625,
+        "conditional_accuracy": 0.6427145600318909,
+        "all_document_accuracy": 0.62890625,
+        "covered_ce": 0.5523349642753601
+      }
+    },
+    {
+      "feature": "gist_kv",
+      "seed": 2,
+      "parameters": 18689,
+      "scores": {
+        "train": {
+          "coverage": 0.9697265625,
+          "conditional_accuracy": 0.7260825634002686,
+          "all_document_accuracy": 0.7041015625,
+          "covered_ce": 0.48547062277793884
+        },
+        "val": {
+          "coverage": 0.96484375,
+          "conditional_accuracy": 0.6578947305679321,
+          "all_document_accuracy": 0.634765625,
+          "covered_ce": 0.5490004420280457
+        },
+        "test": {
+          "coverage": 0.978515625,
+          "conditional_accuracy": 0.6686626672744751,
+          "all_document_accuracy": 0.654296875,
+          "covered_ce": 0.5326899290084839
+        }
+      },
+      "query_shuffled": {
+        "coverage": 0.978515625,
+        "conditional_accuracy": 0.6696606874465942,
+        "all_document_accuracy": 0.6552734375,
+        "covered_ce": 0.5424997210502625
+      }
+    },
+    {
+      "feature": "body_int4",
+      "seed": 0,
+      "parameters": 104705,
+      "scores": {
+        "train": {
+          "coverage": 0.9697265625,
+          "conditional_accuracy": 0.7849949598312378,
+          "all_document_accuracy": 0.76123046875,
+          "covered_ce": 0.44728708267211914
+        },
+        "val": {
+          "coverage": 0.96484375,
+          "conditional_accuracy": 0.7105262875556946,
+          "all_document_accuracy": 0.685546875,
+          "covered_ce": 0.5445490479469299
+        },
+        "test": {
+          "coverage": 0.978515625,
+          "conditional_accuracy": 0.71257483959198,
+          "all_document_accuracy": 0.697265625,
+          "covered_ce": 0.5087139010429382
+        }
+      },
+      "query_shuffled": {
+        "coverage": 0.978515625,
+        "conditional_accuracy": 0.673652708530426,
+        "all_document_accuracy": 0.6591796875,
+        "covered_ce": 0.5549830794334412
+      }
+    },
+    {
+      "feature": "body_int4",
+      "seed": 1,
+      "parameters": 104705,
+      "scores": {
+        "train": {
+          "coverage": 0.9697265625,
+          "conditional_accuracy": 0.9201913475990295,
+          "all_document_accuracy": 0.892333984375,
+          "covered_ce": 0.20870999991893768
+        },
+        "val": {
+          "coverage": 0.96484375,
+          "conditional_accuracy": 0.7651821970939636,
+          "all_document_accuracy": 0.73828125,
+          "covered_ce": 0.5435482859611511
+        },
+        "test": {
+          "coverage": 0.978515625,
+          "conditional_accuracy": 0.7794411182403564,
+          "all_document_accuracy": 0.7626953125,
+          "covered_ce": 0.4863187074661255
+        }
+      },
+      "query_shuffled": {
+        "coverage": 0.978515625,
+        "conditional_accuracy": 0.6576846241950989,
+        "all_document_accuracy": 0.6435546875,
+        "covered_ce": 0.8534048795700073
+      }
+    },
+    {
+      "feature": "body_int4",
+      "seed": 2,
+      "parameters": 104705,
+      "scores": {
+        "train": {
+          "coverage": 0.9697265625,
+          "conditional_accuracy": 0.9463745951652527,
+          "all_document_accuracy": 0.917724609375,
+          "covered_ce": 0.159502774477005
+        },
+        "val": {
+          "coverage": 0.96484375,
+          "conditional_accuracy": 0.7874494194984436,
+          "all_document_accuracy": 0.759765625,
+          "covered_ce": 0.5447399020195007
+        },
+        "test": {
+          "coverage": 0.978515625,
+          "conditional_accuracy": 0.8013972043991089,
+          "all_document_accuracy": 0.7841796875,
+          "covered_ce": 0.4366982579231262
+        }
+      },
+      "query_shuffled": {
+        "coverage": 0.978515625,
+        "conditional_accuracy": 0.6556886434555054,
+        "all_document_accuracy": 0.6416015625,
+        "covered_ce": 0.8973824381828308
+      }
+    },
+    {
+      "feature": "gist_kv_context",
+      "seed": 0,
+      "parameters": 18689,
+      "scores": {
+        "train": {
+          "coverage": 0.9697265625,
+          "conditional_accuracy": 0.7248237729072571,
+          "all_document_accuracy": 0.702880859375,
+          "covered_ce": 0.4646094739437103
+        },
+        "val": {
+          "coverage": 0.96484375,
+          "conditional_accuracy": 0.6963562965393066,
+          "all_document_accuracy": 0.671875,
+          "covered_ce": 0.48709002137184143
+        },
+        "test": {
+          "coverage": 0.978515625,
+          "conditional_accuracy": 0.688622772693634,
+          "all_document_accuracy": 0.673828125,
+          "covered_ce": 0.49348777532577515
+        }
+      },
+      "query_shuffled": {
+        "coverage": 0.978515625,
+        "conditional_accuracy": 0.49700599908828735,
+        "all_document_accuracy": 0.486328125,
+        "covered_ce": 1.526417851448059
+      }
+    },
+    {
+      "feature": "gist_kv_context",
+      "seed": 1,
+      "parameters": 18689,
+      "scores": {
+        "train": {
+          "coverage": 0.9697265625,
+          "conditional_accuracy": 0.7462235689163208,
+          "all_document_accuracy": 0.7236328125,
+          "covered_ce": 0.4546096622943878
+        },
+        "val": {
+          "coverage": 0.96484375,
+          "conditional_accuracy": 0.7044534683227539,
+          "all_document_accuracy": 0.6796875,
+          "covered_ce": 0.4784208834171295
+        },
+        "test": {
+          "coverage": 0.978515625,
+          "conditional_accuracy": 0.7005987763404846,
+          "all_document_accuracy": 0.685546875,
+          "covered_ce": 0.4880199134349823
+        }
+      },
+      "query_shuffled": {
+        "coverage": 0.978515625,
+        "conditional_accuracy": 0.49500998854637146,
+        "all_document_accuracy": 0.484375,
+        "covered_ce": 1.6781355142593384
+      }
+    },
+    {
+      "feature": "gist_kv_context",
+      "seed": 2,
+      "parameters": 18689,
+      "scores": {
+        "train": {
+          "coverage": 0.9697265625,
+          "conditional_accuracy": 0.7202920317649841,
+          "all_document_accuracy": 0.698486328125,
+          "covered_ce": 0.46252596378326416
+        },
+        "val": {
+          "coverage": 0.96484375,
+          "conditional_accuracy": 0.6821862459182739,
+          "all_document_accuracy": 0.658203125,
+          "covered_ce": 0.4803325831890106
+        },
+        "test": {
+          "coverage": 0.978515625,
+          "conditional_accuracy": 0.6856287717819214,
+          "all_document_accuracy": 0.6708984375,
+          "covered_ce": 0.49306029081344604
+        }
+      },
+      "query_shuffled": {
+        "coverage": 0.978515625,
+        "conditional_accuracy": 0.4870259463787079,
+        "all_document_accuracy": 0.4765625,
+        "covered_ce": 1.5903067588806152
+      }
+    }
+  ],
+  "scope": "Frozen diagnostic heads, supervised source-page labels, same learned candidates; different input parameter counts. Negative probe results do not establish information loss."
+}

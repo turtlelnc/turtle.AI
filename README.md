@@ -1243,3 +1243,56 @@ protocols, parent state fingerprints and query-switch diagnostics. Binary bridge
 and parent checkpoints remain in the local work directory. All 40 regression
 tests pass, including unchanged native logits, causal page-feature prefixes,
 absence of frozen-backbone gradients, ignored unselected pages and empty recall.
+
+## Frozen page-address diagnosis
+
+`tools/probe_page_address.py` compares address decodability on the same frozen
+random-order parent and its actual Top-2 candidates. It fits separate shared
+candidate MLP scorers using source-page cross entropy. The main model is unchanged;
+these are additional supervised probes, not native answer improvements.
+Training/validation/test contain 4,096/512/1,024 independent five-page mixed-order
+documents (seeds 56100000/56200000/56300000), with 1,000 updates, batch 128,
+validation-CE checkpoint selection every 100 steps and three probe seeds sharing
+one frozen parent and dataset. Training uses only documents whose true page was
+recalled. Tests report conditional and all-document scores, with misses counted
+wrong in the latter. Coverage is 97.85%; native answer accuracy is 68.55%.
+
+```sh
+python -m tools.probe_page_address \
+  work/relation-auxiliary-order-pilot/retrieval-aux1-0/checkpoint.pt \
+  --output work/page-address-probes
+python -m tools.probe_page_address \
+  work/relation-auxiliary-order-pilot/retrieval-aux1-0/checkpoint.pt \
+  --features gist_kv --hidden 720 --output work/page-address-capacity-control
+```
+
+| Page features / query | Parameters | Covered train | Covered test | Covered query-shuffled test |
+|---|---:|---:|---:|---:|
+| Gist K / raw key embedding | 12,545 | 72.60% | 67.23% | 65.97% |
+| Gist KV / raw key embedding | 18,689 | 73.77% | 67.13% | 65.07% |
+| INT4 body KV / raw key embedding | 104,705 | 88.39% | 76.45% | 66.23% |
+| Gist KV / contextual query | 18,689 | 73.04% | 69.16% | 49.30% |
+| Wide Gist KV / raw key embedding | 105,121 | 71.55% | 66.47% | 65.24% |
+
+Query shuffling rotates query features across documents while keeping pages and
+labels fixed. The original first-ranked candidate baseline is 63.87% over all
+documents; query-shuffled performance can exceed 50% due to page and candidate
+priors. Scorers see page features but no candidate-rank embedding. The contextual
+query itself was computed using the model's earlier memory reads; its result is
+not a pure raw-query addressability measurement.
+
+The capacity control weakens the explanation that the body advantage is solely
+its larger parameter count. The body features support better supervised address
+reading and more useful raw-query dependence under this recipe. However, wide
+Gist training accuracy remains low, so optimization and feature geometry remain
+recoverable explanations. These negative probes cannot prove information was
+irreversibly erased from Gist. Equal parameter counts also do not equalize input
+structure or optimization difficulty. The body probe still has substantial
+training/generalization errors. No architecture feasibility veto or real-text
+quality claim follows. The next discriminating control should assess whether a
+more explicitly key-aligned objective can make the existing Gist addressable,
+before treating its compression capacity as exhausted.
+
+Parent state fingerprints were checked unchanged. The archived JSON directories
+are `page-address-probes/` and `page-address-capacity-control/`. Production model
+and inference code are unchanged; the 40 regression tests pass.

@@ -112,6 +112,16 @@
       "sha256": "82ffcf7f097f483658048bdd7e5ea0b56302ead2abfbbfac2d90cf3054b4b5f7"
     },
     {
+      "path": "page-address-capacity-control/results.json",
+      "bytes": 3502,
+      "sha256": "fa851b1e8029a409bb5401c510749fdd44cd322801740cc339a61fad2dfbcb67"
+    },
+    {
+      "path": "page-address-probes/results.json",
+      "bytes": 11950,
+      "sha256": "585126dd52528f6bdc12b0f6f58f7a1470f1f723f721df0be5c5967f0863f7f9"
+    },
+    {
       "path": "page-competition.json",
       "bytes": 1524,
       "sha256": "f255e38b52bc524a0ec249b0e69a8a1125ea4f316061b1a23074f87005509a58"
